@@ -1,6 +1,5 @@
 # CSC190_Pacman
 Repository for CSC190 term project - tasked with developing a Pacman game in Java.
-Waka waka waka.
 
 Team Members:
 1) Ryan LaRouche
