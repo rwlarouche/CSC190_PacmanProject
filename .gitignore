@@ -20,9 +20,13 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+<<<<<<< HEAD
 /src/GameEngine2/nbproject/private/
 /src/PacMan2/nbproject/private/
 /src/GameEngine2/build/
 /src/PacMan2/build/
 /src/GameEngine/nbproject/private/
 /src/GameEngine/build/
+=======
+/src/GameEngine/nbproject/private/
+>>>>>>> fcbfb607c9df3cb937eae4a22d9aadf912e06567
