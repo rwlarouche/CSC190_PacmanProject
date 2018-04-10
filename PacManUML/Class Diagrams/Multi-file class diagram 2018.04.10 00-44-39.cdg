@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ClassDiagram name="game.PacmanRemastered">
+<ClassDiagram name="Multi-file class diagram">
   <ClassDiagramComponents>
     <Class name="Game" package="game.PacmanRemastered" visibility="public" xPosition="20.0" yPosition="20.0">
       <Fields>
