@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ClassDiagram name="engine">
+<ClassDiagram name="Multi-file class diagram">
   <ClassDiagramComponents>
     <Class name="Engine" package="engine" visibility="public" isAbstract="true" xPosition="20.0" yPosition="20.0">
       <Fields>
@@ -100,26 +100,12 @@ void" visibility="public"/>
         </Method>
       </Methods>
     </Class>
-    <Class name="Map2DTile" package="engine.Map" visibility="public" xPosition="1220.0" yPosition="20.0">
-      <Fields/>
-      <Constructors/>
-      <Methods>
-        <Method name="actionPerformed" returnType="void" visibility="public">
-          <Argument type="ActionEvent" name="e"/>
-        </Method>
-      </Methods>
-    </Class>
-    <Class name="Map2DTileEvent" package="engine.Map" visibility="public" xPosition="1520.0" yPosition="20.0">
-      <Fields/>
-      <Constructors/>
-      <Methods/>
-    </Class>
   </ClassDiagramComponents>
   <ClassDiagramRelations>
     <HasRelation name="game" source="engine.EngineRun" target="engine.Engine" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="game" source="engine.EngineIO" target="engine.Engine" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation source="engine.EngineBuild" target="engine.Engine" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="canvas" source="engine.EngineRun" target="engine.EngineIO" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="engine.EngineIO" target="engine.Engine" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="canvas" source="engine.EngineRun" target="engine.EngineIO" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="engine.EngineBuild" target="engine.Engine" sourceCardinality="1..1" targetCardinality="1..1"/>
   </ClassDiagramRelations>
 </ClassDiagram>
