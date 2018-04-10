@@ -9,6 +9,7 @@ package game.PacmanRemastered;
 
 import engine.*;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -29,15 +30,6 @@ public class Game extends Engine {
         width = height = 500;       // Game window dimensions
         pacman = new GamePacman(this);
     } // constructor
-    
-    /**
-     * Runs the main components of the PacmanRemastered game
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-      // Builds a new engine game session for this game
-      EngineBuild.build(new Game());
-    }
     
     /**
      * Attempts to load BufferedImage asset with File passed as a parameter (i.e.A sprite)
@@ -63,4 +55,9 @@ public class Game extends Engine {
     public void render(Graphics g) {
         pacman.render(g);
     }    // Draws canvas
+    
+    @Override
+    public void keyPressed(KeyEvent key){
+        pacman.keyPressed(key);
+    }
 }

@@ -84,6 +84,7 @@ public class GamePacman {
         
         // User input controls for pacman
 	public void keyPressed(KeyEvent e) {
+                System.out.print(e.getKeyCode());
 		dir = e.getKeyCode();
 	} // keyPressed
 }

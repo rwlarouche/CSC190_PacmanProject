@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="game.PacmanRemastered">
+  <ClassDiagramComponents>
+    <Class name="Game" package="game.PacmanRemastered" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="pacman" type="GamePacman" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="loadAsset" returnType="BufferedImage" visibility="public" isStatic="true">
+          <Argument type="String" name="path"/>
+        </Method>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="render" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="keyPressed" returnType="void" visibility="public">
+          <Argument type="KeyEvent" name="key"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="GamePacman" package="game.PacmanRemastered" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields>
+        <Field name="STEP" type="int" visibility="package" isFinal="true"/>
+        <Field name="pacman" type="BufferedImage" visibility="package"/>
+        <Field name="frame" type="int" visibility="package"/>
+        <Field name="dir" type="int" visibility="package"/>
+        <Field name="x" type="int" visibility="package"/>
+        <Field name="width" type="int" visibility="package"/>
+        <Field name="height" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Game" name="game"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="render" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="keyPressed" returnType="void" visibility="public">
+          <Argument type="KeyEvent" name="e"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="pacman" source="game.PacmanRemastered.Game" target="game.PacmanRemastered.GamePacman" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
