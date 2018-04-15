@@ -22,38 +22,99 @@ public class blinky implements GhostInterface{
     int frame;
     int dir;
     
-    int x,y;
-    int width;
-    int height;
+    private int horizontal, vertical;
+    private int size;
     
     boolean alive = true;
     
-    public blinky(Game game){
+    public blinky(int x, int y, int s){
             frame = 0;
-            dir=KeyEvent.VK_UP;
+            horizontal = x;
+            vertical = y;
+            size = s;
        }
-    
-    public void move()
+   
+    public int getX()
     {
+        return horizontal;
+    }
+    
+    public int getY()
+    {
+        return vertical;
+    }
+    
+    public void setX(int x)
+    {
+        horizontal = x;
+    }
+    
+    public void setY(int y)
+    {
+        vertical = y;
+    }
+    
+    private boolean valid(int x, int y)
+    {
+        boolean check = true;
+        if(x==0 || x>size-1 || y==0 || y>size-1)
+        {
+            check = false;
+        }
+        return check;
+    }
+    
+    public boolean move()
+    {
+        boolean canMove = true;
         while(alive==true){
         int movement = (int)(Math.random() * 4);
         if(movement==0) // Also add this condition to every direction: if the next space in the grid is not a wall
         {
-            dir=KeyEvent.VK_UP;
+            if(valid(horizontal-1, vertical)==false) // North
+            {
+                canMove=false;
+            }
+            else
+            {
+                horizontal=horizontal-1;
+            }
         }
-        if(movement==1)
+        if(movement==1) // South
         {
-            dir=KeyEvent.VK_DOWN;
+            if(valid(horizontal+1, vertical)==false)
+            {
+                canMove=false;
+            }
+            else
+            {
+                horizontal=horizontal+1;
+            }
         }
-        if(movement==2) // Also add this condition to every direction: if the next space in the grid is not a wall
+        if(movement==2) // East 
         {
-            dir=KeyEvent.VK_LEFT;
+            if(valid(horizontal, vertical-1)==false)
+            {
+                canMove=false;
+            }
+            else
+            {
+                vertical=vertical-1;
+            }
         }
-        if(movement==3)
+        if(movement==3) //West
         {
-            dir=KeyEvent.VK_RIGHT;
+            if(valid(horizontal, vertical+1)==false)
+            {
+                canMove=false;
+            }
+            else
+            {
+                vertical=vertical+1;
+            }
         }
         }
+        return canMove;
     }
     
     public void chase(int speed)
