@@ -24,6 +24,11 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{//Would
     
     //Will contain all things present on the map tile, including characters, items, powerups, etc.
     final private ArrayList<Object> entities;
+    
+    final private Map2DTile up;
+    final private Map2DTile left;
+    final private Map2DTile right;
+    final private Map2DTile down;
 
     @Override
     public int size() {
@@ -93,19 +98,8 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{//Would
     @Override
     public Spliterator<Object> spliterator() {
         return List.super.spliterator();
-    }
-    
-    @Override
-    public Iterator<Object> iterator() {
-        return entities.iterator();
-    }
-  
-    
-    final private Map2DTile up;
-    final private Map2DTile left;
-    final private Map2DTile right;
-    final private Map2DTile down;
-
+    }    
+        
     public Map2DTile getUp() {
         return up;
     }
@@ -118,12 +112,12 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{//Would
         return right;
     }
 
-    public Map2DTile getDown() { //Insert Goldeneye meme.
+    public Map2DTile getDown() { //Insert Golden Eye meme.
         return down;
     }
     
     protected void raiseMapEvent(Map2DTileEvent e){
-        for (Map2DTileEventListener eL : eList.getListeners(Map2DTileEventListener.class)){
+        for (Map2DTileEventListener eL:eList.getListeners(Map2DTileEventListener.class)){
             eL.raiseMapEvent(e);
         }
     }
@@ -132,27 +126,18 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{//Would
         eList.add(Map2DTileEventListener.class, e);
     }
     
-    public void removeMapEventListener(Map2DTileEventListener e){
-        eList.remove(Map2DTileEventListener.class, e);
-    }
-    
     protected abstract boolean canEnterTile(Object entity); //Should actually take an Entity class.
     
-    protected abstract boolean doAddEntity(Object entity); //Should actually take an Entity class.
+    protected abstract boolean onAddEntity(Object entity); //Should actually take an Entity class.
     
     protected abstract void onRemoveEntity(Object entity); //Should actually take an Entity class, or at least an index.
     
     public abstract void update();
     
-    public boolean addEntity(Object entity){
-        return doAddEntity(entity);
-    }
-    
     public boolean doTraverseUp(Object entity){ //Should actually take an Entity class, or at least an index for the array.
         if (up == null ||!entities.contains(entity))
             return false;
-        else if (up.canEnterTile(entity)&&up.doAddEntity(entity)){
-            //entity.setTile(up); //Sample syntax.
+        else if (up.canEnterTile(entity)&&up.onAddEntity(entity)){
             onRemoveEntity(entity);
             return true;
         }
@@ -160,10 +145,9 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{//Would
     }
     
     public boolean doTraverseLeft(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (left == null || !entities.contains(entity))
+        if (up == null || !entities.contains(entity))
             return false;
-        else if (left.canEnterTile(entity)&&left.doAddEntity(entity)){
-            //entity.setTile(left); //Sample syntax.
+        else if (left.canEnterTile(entity)&&left.onAddEntity(entity)){
             onRemoveEntity(entity);
             return true;
         }
@@ -171,10 +155,9 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{//Would
     }
     
     public boolean doTraverseDown(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (down == null || !entities.contains(entity))
+        if (up == null || !entities.contains(entity))
             return false;
-        else if (down.canEnterTile(entity)&&down.doAddEntity(entity)){
-            //entity.setTile(down); //Sample syntax.
+        else if (down.canEnterTile(entity)&&down.onAddEntity(entity)){
             onRemoveEntity(entity);
             return true;
         }
@@ -182,10 +165,9 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{//Would
     }
     
     public boolean doTraverseRight(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (right == null || !entities.contains(entity))
+        if (up == null || !entities.contains(entity))
             return false;
-        else if (right.canEnterTile(entity)&&right.doAddEntity(entity)){
-            //entity.setTile(right); //Sample syntax.
+        else if (right.canEnterTile(entity)&&right.onAddEntity(entity)){
             onRemoveEntity(entity);
             return true;
         }
@@ -200,5 +182,12 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{//Would
         this.down = down;
         this.left = left;
         this.right = right;
-    }    
+    }
+    
+    @Override
+    public Iterator<Object> iterator() {
+        return entities.iterator();
+    }
+  
+
 }

@@ -55,7 +55,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Map2DTileEvent" package="engine.Map" visibility="public" isAbstract="true" xPosition="320.0" yPosition="20.0">
+    <Class name="Map2DTileEvent" package="engine.Map" visibility="public" isAbstract="true" xPosition="776.0" yPosition="30.0">
       <Fields>
         <Field name="sender" type="Map2DTile" visibility="public" isFinal="true"/>
         <Field name="event" type="String" visibility="public" isFinal="true"/>
@@ -72,7 +72,7 @@
         <Method name="toString" returnType="String" visibility="public"/>
       </Methods>
     </Class>
-    <Interface name="Map2DTileEventListener" package="engine.Map" visibility="public" xPosition="620.0" yPosition="20.0">
+    <Interface name="Map2DTileEventListener" package="engine.Map" visibility="public" xPosition="695.0" yPosition="358.0">
       <Methods>
         <Method name="raiseMapEvent" returnType="void" visibility="public">
           <Argument type="Map2DTileEvent" name="e"/>
@@ -81,14 +81,14 @@
     </Interface>
   </ClassDiagramComponents>
   <ClassDiagramRelations>
-    <UseRelation source="engine.Map.Map2DTile" target="engine.Map.Map2DTileEventListener" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="right" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
-    <HasRelation name="left" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
     <HasRelation name="down" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
-    <UseRelation source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="engine.Map.Map2DTile" target="engine.Map.Map2DTileEvent" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="right" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <UseRelation source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="sender" source="engine.Map.Map2DTileEvent" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
-    <HasRelation name="up" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <UseRelation source="engine.Map.Map2DTile" target="engine.Map.Map2DTileEventListener" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="engine.Map.Map2DTileEventListener" target="engine.Map.Map2DTileEvent" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="up" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <HasRelation name="left" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
   </ClassDiagramRelations>
 </ClassDiagram>
