@@ -56,7 +56,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="EngineBuild" package="engine" visibility="public" xPosition="382.0" yPosition="20.0">
+    <Class name="EngineBuild" package="engine" visibility="public" xPosition="320.0" yPosition="20.0">
       <Fields/>
       <Constructors/>
       <Methods>
@@ -65,7 +65,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="EngineRun" package="engine" visibility="public" xPosition="685.0" yPosition="59.0">
+    <Class name="EngineRun" package="engine" visibility="public" xPosition="620.0" yPosition="20.0">
       <Fields>
         <Field name="game" type="Engine" visibility="private"/>
         <Field name="canvas" type="EngineIO" visibility="private"/>
@@ -77,10 +77,11 @@
         </Constructor>
       </Constructors>
       <Methods>
-        <Method name="run" returnType="// Runs a game after it has been built by the engine void" visibility="public"/>
+        <Method name="run" returnType="// Runs a game after it has been built by the engine
+void" visibility="public"/>
       </Methods>
     </Class>
-    <Class name="EngineIO" package="engine" visibility="public" xPosition="880.0" yPosition="352.0">
+    <Class name="EngineIO" package="engine" visibility="public" xPosition="920.0" yPosition="20.0">
       <Fields>
         <Field name="game" type="Engine" visibility="private" isFinal="true"/>
       </Fields>
@@ -101,10 +102,10 @@
     </Class>
   </ClassDiagramComponents>
   <ClassDiagramRelations>
-    <UseRelation source="engine.EngineBuild" target="engine.Engine" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="game" source="engine.EngineIO" target="engine.Engine" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="game" source="engine.EngineRun" target="engine.Engine" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="game" source="engine.EngineIO" target="engine.Engine" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="engine.EngineIO" target="engine.Engine" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="canvas" source="engine.EngineRun" target="engine.EngineIO" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="engine.EngineBuild" target="engine.Engine" sourceCardinality="1..1" targetCardinality="1..1"/>
   </ClassDiagramRelations>
 </ClassDiagram>
