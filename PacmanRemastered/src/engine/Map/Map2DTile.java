@@ -16,7 +16,7 @@ import javax.swing.event.EventListenerList;
 
 /**
  *
- * @author jolt1
+ * @author CMM
  */
 public abstract class Map2DTile implements Iterable<Object>,List<Object>{//Would iterate over Entity instead.
     
