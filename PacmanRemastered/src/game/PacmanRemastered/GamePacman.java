@@ -6,16 +6,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author csc190
- */
 public class GamePacman {
         // Class properties
 	final int STEP = 2;     // Movement speed of pacman	
@@ -27,6 +17,10 @@ public class GamePacman {
         int width;
         int height;
         
+        /**
+         * Constructor for Pacman character
+         * @param game Instance of game
+         */
         public GamePacman(Game game) {
             frame = 0;                  // Initial frame
             x = y = 128;
@@ -41,8 +35,19 @@ public class GamePacman {
             
             width = game.width;
             height = game.height;
+        } // constructor
+        
+        /**
+         * Returns the x,y ordered pair coordinates of the Pacman character
+         * @return An int [] array with x,y coordinates
+         */
+        public int [] getLocation() {
+            return new int[]{x,y};
         }
         
+        /** 
+         * Updates Pacman position based on movement direction
+         */
         public void update() {
             // Frame is used by draw to parse through sprite-sheet
             frame++;
@@ -76,14 +81,21 @@ public class GamePacman {
             }
 	} // update
         
+        /**
+         * Renders Pacman graphics
+         * @param g 
+         */
         public void render(Graphics g) {
             // Break sprite-sheet into single-sprite components
             // (frame/2) because frame goes to 6 (5) for smoother animations
             g.drawImage(pacman.getSubimage((frame/2)*30, (dir-37)*30, 28, 28), x, y, null);
         } // render
         
-        // User input controls for pacman
-	public void keyPressed(KeyEvent e) {
+        /**
+         * Processes key event user input for pacman
+         * @param e 
+         */
+	protected void keyPressed(KeyEvent e) {
 		dir = e.getKeyCode();
 	} // keyPressed
 }
