@@ -24,5 +24,4 @@ public class Map2DTileEvent {
         this.event = event;
         this.affected = affected;
     }
-    
 }
