@@ -108,6 +108,4 @@ public class Pacman implements Sprite{
         api.drawSprite(index, pic, x, y, 3, 4, frame, dir_num);
     }
     // ============================
-    
-    // g.drawImage(pacman.getSubimage((frame/2)*30, (dir-37)*30, 28, 28), x, y, null);
 }
