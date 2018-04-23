@@ -5,12 +5,10 @@
  */
 package engine.Map;
 
-import java.util.EventListener;
-
 /**
  *
- * @author CMM
+ * Allows wrap-around of a tile on the left side of the screen. Not using this will cause the program to throw an error.
  */
-public interface Map2DTileEventListener extends EventListener{
-    public void onMapEvent(Map2DTileEvent e);
+public interface Map2DTileWrapToDown {
+    
 }

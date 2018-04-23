@@ -17,20 +17,33 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
-import javax.swing.event.EventListenerList;
 
 /**
  *
  * 
  */
-public abstract class Map2DTile implements Iterable<Object>,List<Object>{
+public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTileEventListener{
 
     
      /**
      * 
      * @return Path relative path to the image in question, from the asset root location.
      */
-    public abstract String getTileImage();
+    public abstract String getTileImagePath();
+    
+    public abstract int getTileImageX();
+    
+    public abstract int getTileImageY();
+    
+    private Map2D map;
+
+    public Map2D getMap() {
+        return map;
+    }
+
+    void setMap(Map2D map) {
+        this.map = map;
+    }
     
     protected abstract boolean canEnterTile(Object entity); //Should actually take an Entity class.
     
@@ -45,18 +58,16 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
     
     public abstract void update();
     
+    
     /**
      * Contains event handlers for map events. Should only be thrown when necessary.
      */
-    final private EventListenerList eList;
-    
+    final private ArrayList<Map2DTileEventListener> eList;
     /**
      * Contains all things present on the map tile, including characters, items, powerups, etc.
      */
     final protected ArrayList<Object> entities;
-    
     protected boolean traversing; //Should actually be a semaphore, but that's okay because we don't need this for the most part yet.
-    
     protected Map2DTile up;
     protected Map2DTile left;
     protected Map2DTile right;
@@ -68,8 +79,10 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
 
     public boolean setUp(Map2DTile up) {
         if (!traversing){
+            Map2DTile old = this.up;
             this.up = up;
-            raiseMapEvent(new TileNewNeighborEvent(this, "New tile neighbor!", up, "up"));
+            raiseMapEvent(new TileNewNeighborEvent(this, "up", old, up));
+            
             return true;
         } else return false;
     }
@@ -80,8 +93,9 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
 
     public boolean setLeft(Map2DTile left) {
         if (!traversing){
+            Map2DTile old = this.left;
             this.left = left;
-            raiseMapEvent(new TileNewNeighborEvent(this, "New tile neighbor!", left, "left"));
+            raiseMapEvent(new TileNewNeighborEvent(this, "left", old, left));
             return true;
         } else return false;
     }
@@ -92,8 +106,9 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
 
     public boolean setRight(Map2DTile right) {
         if (!traversing){
+            Map2DTile old = this.right;
             this.right = right;
-            raiseMapEvent(new TileNewNeighborEvent(this, "New tile neighbor!", right, "right"));
+            raiseMapEvent(new TileNewNeighborEvent(this, "right", old, right));
             return true;
         } else return false;
     }
@@ -104,24 +119,29 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
 
     public boolean setDown(Map2DTile down) {
         if (!traversing){
+            Map2DTile old = this.down;
             this.down = down;
-            raiseMapEvent(new TileNewNeighborEvent(this, "New tile neighbor!", down, "down"));
+            raiseMapEvent(new TileNewNeighborEvent(this, "down", old, down));
             return true;
         } else return false;
     }
     
     protected void raiseMapEvent(Map2DTileEvent e){
-        for (Map2DTileEventListener eL:eList.getListeners(Map2DTileEventListener.class)){
-            eL.raiseMapEvent(e);
+        eList.forEach((eL) -> {
+            eL.onMapEvent(e);
+        });
+    }
+    
+
+    
+    public void addMapEventListener(Map2DTileEventListener e){
+        if (!eList.contains(e)){
+            eList.add(e);
         }
     }
     
-    public void addMapEventListener(Map2DTileEventListener e){
-        eList.add(Map2DTileEventListener.class, e);
-    }
-    
     public void removeMapEventListener(Map2DTileEventListener e){
-        eList.remove(Map2DTileEventListener.class, e);
+        eList.remove(e);
     }    
     
     public boolean doTraverseUp(Object entity){ //Should actually take an Entity class, or at least an index for the array.
@@ -136,7 +156,7 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
     }
     
     public boolean doTraverseLeft(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (up == null || !entities.contains(entity))
+        if (left == null || !entities.contains(entity))
             return false;
         else if (left.canEnterTile(entity)&&left.doAddEntitiy(entity)){
             doRemoveEntity(entity);
@@ -147,7 +167,7 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
     }
     
     public boolean doTraverseDown(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (up == null || !entities.contains(entity))
+        if (down == null || !entities.contains(entity))
             return false;
         else if (down.canEnterTile(entity)&&down.doAddEntitiy(entity)){
             doRemoveEntity(entity);
@@ -158,7 +178,7 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
     }
     
     public boolean doTraverseRight(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (up == null || !entities.contains(entity))
+        if (right == null || !entities.contains(entity))
             return false;
         if (right.canEnterTile(entity)&&right.doAddEntitiy(entity)){
             doRemoveEntity(entity);
@@ -171,7 +191,7 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
     public Map2DTile(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Object... initEntities) { //Need to add array for initial Entities to be added.
         entities = new ArrayList<>();
         entities.add(initEntities);
-        eList = new EventListenerList();
+        eList = new ArrayList<>();
         this.up = up;
         this.down = down;
         this.left = left;
@@ -181,12 +201,12 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>{
     
     public Map2DTile(){
         entities = new ArrayList<>();
-        eList = new EventListenerList();
+        eList = new ArrayList<>();
         this.up = null;
         this.down = null;
         this.left = null;
         this.right = null;
-        traversing = false;        
+        traversing = false;
     }
 
         @Override
