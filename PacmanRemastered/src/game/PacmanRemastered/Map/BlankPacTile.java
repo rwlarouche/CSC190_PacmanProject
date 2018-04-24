@@ -7,6 +7,7 @@
 package game.PacmanRemastered.Map;
 
 import engine.Map.Map2DTile;
+import engine.Map.Map2DTileEvent;
 
 /**
  *
@@ -19,7 +20,7 @@ public class BlankPacTile extends Map2DTile{
     }
 
     @Override
-    public String getTileImage() {
+    public String getTileImagePath() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -41,6 +42,21 @@ public class BlankPacTile extends Map2DTile{
     @Override
     public void update() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getTileImageX() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getTileImageY() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onMapEvent(Map2DTileEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
