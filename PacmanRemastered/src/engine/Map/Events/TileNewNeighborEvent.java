@@ -10,7 +10,7 @@ import engine.Map.Map2DTileEvent;
 
 /**
  *
- * @author jolt1
+ *
  */
 public class TileNewNeighborEvent extends Map2DTileEvent {
     

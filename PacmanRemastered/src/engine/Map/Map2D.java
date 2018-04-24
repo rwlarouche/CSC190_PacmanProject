@@ -124,67 +124,6 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
      */
     public final int tileDrawSizeY;
     
-    
-
-    
-//    protected Map2DTile getUpperLeftCorner()throws DisallowedWrapAroundException{
-//        Map2DTile next = rootTile;
-//        boolean mightStillHaveSomething = true;
-//        HashSet<Map2DTile> wraparoundprotector = new HashSet<>();
-//        while (mightStillHaveSomething){
-//            while (((next.getUp()!= null) || (next.getLeft()!= null))){
-//                if (next.getUp()!= null && (!(next instanceof Map2DTileWrapToUp))){
-//                    wraparoundprotector.add(next);
-//                    if (wraparoundprotector.contains(next.getUp()))
-//                        throw new DisallowedWrapAroundException("Wrap-around detected in case of at least one non-wrap-around tile.");
-//                    next = next.getUp();
-//                }
-//                if (next.getLeft()!= null && (!(next instanceof Map2DTileWrapToLeft)))
-//                    next = next.getLeft();
-//            }
-//            Map2DTile iNext = next;
-//            while (iNext.getRight()!= null && iNext.getUp() == null){
-//                iNext = iNext.getRight();
-//            }
-//            if (iNext.getUp()!= null)
-//                next = iNext;
-//            else
-//                mightStillHaveSomething = false;    
-//        }
-//        return next;
-//    }
-//    
-//    protected MapDimensions getMapDimensions(Map2DTile head){
-//        MapDimensions retThis = new MapDimensions();
-//        Map2DTile current = head;
-//        int rowPos = 0;
-//        HashSet<Map2DTile> iteratedOver = new HashSet<>();
-//        while (current.getRight() != null || current.getDown() != null){
-//            HashSet<Map2DTile> wraparoundprotector = new HashSet<>();
-//            while (current.getLeft()!=null){
-//                if (wraparoundprotector.contains(current.getLeft())){
-//                    
-//                }
-//                wraparoundprotector.add(current);
-//                current = current.getLeft();
-//            }
-//        }
-//        return retThis;
-//    }
-//    
-//    
-//    protected void MakeStandardRows()throws DisallowedWrapAroundException{
-//        int longestRow = 0;
-//        int longestColumn = 0;
-//        Map2DTile head = getUpperLeftCorner();
-//        HashSet<Map2DTile> iteratedOver = new HashSet<>();
-//        int maxDepth = 0;
-//        int maxRowRight = 0;
-//        int maxBehindHead = 0;
-//        //while ((next.getUp()!= null && !iteratedOver.contains(next)) || (next.getLeft()!= null && !iteratedOver.contains(next.getLeft()))){
-//        
-//    }
-    
     @Override
     public Iterator<Map2DTile> iterator() {
         return new Map2DIterator();

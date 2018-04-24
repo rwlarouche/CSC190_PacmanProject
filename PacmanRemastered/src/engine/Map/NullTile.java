@@ -5,6 +5,8 @@
  */
 package engine.Map;
 
+import engine.Sprite;
+
 /**
  * A tile that does not allow anything to enter it. Used for padding a map that was loaded with uneven rows and columns.
  * 
@@ -21,17 +23,17 @@ public class NullTile extends Map2DTile{
     }
 
     @Override
-    protected boolean canEnterTile(Object entity) {
+    protected boolean canEnterTile(Sprite entity) {
         return false;
     }
 
     @Override
-    protected boolean doAddEntitiy(Object entity) {
+    protected boolean doAddSprite(Sprite entity) {
         throw new UnsupportedOperationException("Not supported; null tile."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected boolean doRemoveEntity(Object entity) {
+    protected boolean doRemoveSprite(Sprite entity) {
         throw new UnsupportedOperationException("Not supported; null tile."); //To change body of generated methods, choose Tools | Templates.
     }
 

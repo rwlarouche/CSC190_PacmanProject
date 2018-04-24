@@ -7,10 +7,11 @@ package game.PacmanRemastered.Map;
 
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
+import engine.Sprite;
 
 /**
  *
- * @author jolt1
+ * 
  */
 public class PacTileWall extends Map2DTile{
 
@@ -30,17 +31,17 @@ public class PacTileWall extends Map2DTile{
     }
 
     @Override
-    protected boolean canEnterTile(Object entity) {
+    protected boolean canEnterTile(Sprite entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected boolean doAddEntitiy(Object entity) {
+    protected boolean doAddSprite(Sprite entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected boolean doRemoveEntity(Object entity) {
+    protected boolean doRemoveSprite(Sprite entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

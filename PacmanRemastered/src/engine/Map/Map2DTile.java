@@ -6,6 +6,7 @@
 package engine.Map;
 
 import engine.Map.Events.*;
+import engine.Sprite;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -22,7 +23,7 @@ import java.util.stream.Stream;
  *
  * 
  */
-public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTileEventListener{
+public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTileEventListener{
 
     
      /**
@@ -45,16 +46,16 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTi
         this.map = map;
     }
     
-    protected abstract boolean canEnterTile(Object entity); //Should actually take an Entity class.
+    protected abstract boolean canEnterTile(Sprite entity); //Should actually take an Entity class.
     
     /**
      * Add an Entity to the tile. The actual call to entities.add(Object) must be called in here manually once the entity is prepared.
      * @param entity
      * @return Success of addition operation.
      */
-    protected abstract boolean doAddEntitiy(Object entity);
+    protected abstract boolean doAddSprite(Sprite entity);
     
-    protected abstract boolean doRemoveEntity(Object entity); //Should actually take an Entity class, or at least an index.
+    protected abstract boolean doRemoveSprite(Sprite entity); //Should actually take an Entity class, or at least an index.
     
     public abstract void update();
     
@@ -66,7 +67,7 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTi
     /**
      * Contains all things present on the map tile, including characters, items, powerups, etc.
      */
-    final protected ArrayList<Object> entities;
+    final protected ArrayList<Sprite> sprites;
     protected boolean traversing; //Should actually be a semaphore, but that's okay because we don't need this for the most part yet.
     protected Map2DTile up;
     protected Map2DTile left;
@@ -144,53 +145,54 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTi
         eList.remove(e);
     }    
     
-    public boolean doTraverseUp(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (up == null ||!entities.contains(entity))
+    public boolean doTraverseUp(Sprite sprite){ //Should actually take an Entity class, or at least an index for the array.
+        if (up == null ||!sprites.contains(sprite))
             return false;
-        else if (up.canEnterTile(entity)&&up.doAddEntitiy(entity)){
-            doRemoveEntity(entity);
-            raiseMapEvent(new TileEntityTraverseEvent(this, " has changed moved one tile up.", up, "up"));
+        else if (up.canEnterTile(sprite)&&up.doAddSprite(sprite)){
+            doRemoveSprite(sprite);
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has changed moved one tile up.", up, "up"));
             return true;
         }
         else return false;
     }
     
-    public boolean doTraverseLeft(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (left == null || !entities.contains(entity))
+    public boolean doTraverseLeft(Sprite sprite){ //Should actually take an Entity class, or at least an index for the array.
+        if (left == null || !sprites.contains(sprite))
             return false;
-        else if (left.canEnterTile(entity)&&left.doAddEntitiy(entity)){
-            doRemoveEntity(entity);
-            raiseMapEvent(new TileEntityTraverseEvent(this, " has changed moved one tile left.", left, "left"));
+        else if (left.canEnterTile(sprite)&&left.doAddSprite(sprite)){
+            doRemoveSprite(sprite);
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has changed moved one tile left.", left, "left"));
             return true;
         }
         else return false;
     }
     
-    public boolean doTraverseDown(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (down == null || !entities.contains(entity))
+    public boolean doTraverseDown(Sprite sprite){ //Should actually take an Entity class, or at least an index for the array.
+        if (down == null || !sprites.contains(sprite))
             return false;
-        else if (down.canEnterTile(entity)&&down.doAddEntitiy(entity)){
-            doRemoveEntity(entity);
-            raiseMapEvent(new TileEntityTraverseEvent(this, " has changed moved one tile down.", down, "down"));
+        else if (down.canEnterTile(sprite)&&down.doAddSprite(sprite)){
+            doRemoveSprite(sprite);
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has changed moved one tile down.", down, "down"));
             return true;
         }
         else return false;
     }
     
-    public boolean doTraverseRight(Object entity){ //Should actually take an Entity class, or at least an index for the array.
-        if (right == null || !entities.contains(entity))
+    public boolean doTraverseRight(Sprite sprite){ //Should actually take an Entity class, or at least an index for the array.
+        if (right == null || !sprites.contains(sprite))
             return false;
-        if (right.canEnterTile(entity)&&right.doAddEntitiy(entity)){
-            doRemoveEntity(entity);
-            raiseMapEvent(new TileEntityTraverseEvent(this, " has changed moved one tile right.", right, "right"));
+        if (right.canEnterTile(sprite)&&right.doAddSprite(sprite)){
+            doRemoveSprite(sprite);
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has changed moved one tile right.", right, "right"));
             return true;
         }
         else return false;
     }
     
-    public Map2DTile(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Object... initEntities) { //Need to add array for initial Entities to be added.
-        entities = new ArrayList<>();
-        entities.add(initEntities);
+    public Map2DTile(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Sprite... initEntities) { //Need to add array for initial Entities to be added.
+        sprites = new ArrayList<>();
+        for (Sprite s :initEntities)
+            sprites.add(s);
         eList = new ArrayList<>();
         this.up = up;
         this.down = down;
@@ -200,7 +202,7 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTi
     }  
     
     public Map2DTile(){
-        entities = new ArrayList<>();
+        sprites = new ArrayList<>();
         eList = new ArrayList<>();
         this.up = null;
         this.down = null;
@@ -210,21 +212,21 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTi
     }
 
         @Override
-    public Stream<Object> stream() {
-        return entities.stream(); //To change body of generated methods, choose Tools | Templates.
+    public Stream<Sprite> stream() {
+        return sprites.stream(); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Stream<Object> parallelStream() {
-        return entities.parallelStream(); //To change body of generated methods, choose Tools | Templates.
+    public Stream<Sprite> parallelStream() {
+        return sprites.parallelStream(); //To change body of generated methods, choose Tools | Templates.
     }
 
 
     @Override
-    public boolean add(Object e) {
-        if (canEnterTile(e) && !entities.contains(e) && doAddEntitiy(e))
+    public boolean add(Sprite e) {
+        if (canEnterTile(e) && !sprites.contains(e) && doAddSprite(e))
         {
-            raiseMapEvent(new TileEntityAddedEvent(this, "Entity entered tile.", e));
+            raiseMapEvent(new TileSpriteAddedEvent(this, "Sprite entered tile.", e));
             return true;
         }
         else return false;
@@ -232,84 +234,84 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTi
 
     @Override
     public boolean remove(Object o) {
-        boolean retThis = doRemoveEntity(o);
-        raiseMapEvent(new TileEntityRemovedEvent(this, "Entity exited tile.", o));
+        boolean retThis = doRemoveSprite((Sprite)o);
+        raiseMapEvent(new TileSpriteRemovedEvent(this, "Sprite exited tile.", o));
         return retThis;
     }
     
     @Override
     public int size() {
-        return entities.size();
+        return sprites.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return entities.isEmpty();
+        return sprites.isEmpty();
     }
 
     @Override
     public boolean contains(Object o) {
-        return entities.contains(o);
+        return sprites.contains(o);
     }
 
     @Override
-    public Object[] toArray() {
-        return entities.toArray();
+    public Sprite[] toArray() {
+        return sprites.toArray(new Sprite[]{});
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return entities.toArray(a);
+        return sprites.toArray(a);
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return entities.containsAll(c);
+        return sprites.containsAll(c);
     }
 
     @Override
-    public Object get(int index) {
-        return entities.get(index);
+    public Sprite get(int index) {
+        return sprites.get(index);
     }
 
     @Override
     public int indexOf(Object o) {
-        return entities.indexOf(o);
+        return sprites.indexOf(o);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return entities.lastIndexOf(o);
+        return sprites.lastIndexOf(o);
     }
 
     @Override
-    public ListIterator<Object> listIterator() {
-        return entities.listIterator();
+    public ListIterator<Sprite> listIterator() {
+        return sprites.listIterator();
     }
 
     @Override
-    public ListIterator<Object> listIterator(int index) {
-        return entities.listIterator(index);
+    public ListIterator<Sprite> listIterator(int index) {
+        return sprites.listIterator(index);
     }
 
     @Override
-    public List<Object> subList(int fromIndex, int toIndex) {
-        return entities.subList(fromIndex, toIndex);
+    public List<Sprite> subList(int fromIndex, int toIndex) {
+        return sprites.subList(fromIndex, toIndex);
     }
 
     @Override
-    public void forEach(Consumer<? super Object> action) {
-        entities.forEach(action);
+    public void forEach(Consumer<? super Sprite> action) {
+        sprites.forEach(action);
     }
 
     @Override
-    public Spliterator<Object> spliterator() {
-        return entities.spliterator();
+    public Spliterator<Sprite> spliterator() {
+        return sprites.spliterator();
     }    
     
     @Override
-    public Iterator<Object> iterator() {
-        return entities.iterator();
+    public Iterator<Sprite> iterator() {
+        return sprites.iterator();
     }
     
     
@@ -318,13 +320,13 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTi
     
     @Override
     @Deprecated
-    public boolean addAll(Collection<? extends Object> c) {
+    public boolean addAll(Collection<? extends Sprite> c) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Deprecated
-    public boolean addAll(int index, Collection<? extends Object> c) {
+    public boolean addAll(int index, Collection<? extends Sprite> c) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -342,43 +344,43 @@ public abstract class Map2DTile implements Iterable<Object>,List<Object>,Map2DTi
 
     @Override
     @Deprecated
-    public void replaceAll(UnaryOperator<Object> operator) {
+    public void replaceAll(UnaryOperator<Sprite> operator) {
         List.super.replaceAll(operator); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Deprecated
-    public void sort(Comparator<? super Object> c) {
+    public void sort(Comparator<? super Sprite> c) {
         List.super.sort(c); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Deprecated
     public void clear() {
+        sprites.clear();
+    }
+
+    @Override
+    @Deprecated
+    public Sprite set(int index, Sprite element) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Deprecated
-    public Object set(int index, Object element) {
+    public void add(int index, Sprite element) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Deprecated
-    public void add(int index, Object element) {
+    public Sprite remove(int index) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Deprecated
-    public Object remove(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    @Deprecated
-    public boolean removeIf(Predicate<? super Object> filter) {
+    public boolean removeIf(Predicate<? super Sprite> filter) {
         return List.super.removeIf(filter); //To change body of generated methods, choose Tools | Templates.
     }
 

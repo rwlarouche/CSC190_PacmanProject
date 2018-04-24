@@ -9,7 +9,7 @@ import java.util.EventListener;
 
 /**
  *
- * @author CMM
+ *
  */
 public interface Map2DTileEventListener extends EventListener{
     public void onMapEvent(Map2DTileEvent e);

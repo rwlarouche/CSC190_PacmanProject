@@ -7,7 +7,7 @@ package engine.Map;
 
 /**
  *
- * @author CMM
+ * 
  */
 public class Map2DTileEvent {
     final public Map2DTile sender;

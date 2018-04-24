@@ -7,7 +7,7 @@ package engine.Map;
 
 /**
  *
- * @author jolt1
+ * 
  */
     /**
      * Unsure if I'll use this, but I was thinking that maybe we might want to make sure that tiles may only wrap around the edges where specifically allowed to.
