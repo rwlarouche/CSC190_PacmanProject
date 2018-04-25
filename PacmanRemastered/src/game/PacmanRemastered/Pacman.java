@@ -1,6 +1,8 @@
 package game.PacmanRemastered;
 
 import engine.GameEngine;
+import engine.Map.Map2DTile;
+import engine.Map.Map2DTileEvent;
 import engine.Sprite;
 
 public class Pacman implements Sprite{
@@ -18,6 +20,7 @@ public class Pacman implements Sprite{
                 
     int width;
     int height;
+    Map2DTile mapTile;
     // ============================
     
     // ======= CONSTRUCTOR ========
@@ -108,4 +111,19 @@ public class Pacman implements Sprite{
         api.drawSprite(index, pic, x, y, 3, 4, frame, dir_num);
     }
     // ============================
+
+    @Override
+    public Map2DTile getMapTile() {
+        return mapTile;
+    }
+
+    @Override
+    public void setMapTile(Map2DTile tile) {
+        this.mapTile = tile;
+    }
+
+    @Override
+    public void onMapEvent(Map2DTileEvent e) {
+        
+    }
 }
