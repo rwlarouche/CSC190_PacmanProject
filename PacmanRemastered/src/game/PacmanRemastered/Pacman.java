@@ -16,7 +16,7 @@ public class Pacman implements Sprite{
     int dir_num;            // Corresponds to sprite frame direction
     
     int x, y;               // Tracks x,y location/coordinates of Pacman
-    String pic = "images/packman.png";
+    String pic = "images/pacSprite.png";
                 
     int width;
     int height;
@@ -88,15 +88,15 @@ public class Pacman implements Sprite{
         // Limit x bounds from moving out of frame
         if (x < 0) {
             x = 0;
-        } else if (x > width - 28 - STEP) {
-            x = width - 28 - STEP;
+        } else if (x > width - 64 - STEP) {
+            x = width - 64 - STEP;
         }
         
         // Limit y bounds from moving out of frame
         if (y < 0) {
             y = 0;
-        } else if (y > height - 28 - STEP) {
-            y = width - 28 - STEP;
+        } else if (y > height - 64 - STEP) {
+            y = width - 64 - STEP;
         }
     } // update
             
