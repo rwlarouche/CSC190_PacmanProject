@@ -16,7 +16,7 @@ cd FlipThese
 for /r %%i in (*.*) do (
 	echo %%i
 	copy "%%i" "%~dp0\readyToMakeSheet\%%~nxi"
-	convert "%%i" -rotate -180 "%~dp0\readyToMakeSheet\%%~ni-180%%~xi"
+	convert "%%i" -flip "%~dp0\readyToMakeSheet\%%~ni-flipped%%~xi"
 )
 cd ..\
 echo -----------------------------rotate once-------------------------------------

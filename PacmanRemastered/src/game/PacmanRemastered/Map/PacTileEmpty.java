@@ -27,7 +27,7 @@ public class PacTileEmpty extends Map2DTile{
     
     @Override
     public String getTileImagePath() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "/images/pactiles.png";
     }
 
     @Override
@@ -52,12 +52,12 @@ public class PacTileEmpty extends Map2DTile{
 
     @Override
     public int getTileImageX() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0; //The current tile image has this as the first one.
     }
 
     @Override
     public int getTileImageY() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0; //The tile image is horizontal.
     }
     
 }
