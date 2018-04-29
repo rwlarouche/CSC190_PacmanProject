@@ -17,8 +17,6 @@ import java.util.function.Consumer;
  */
 public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
     
-
-    
     /**
      * So, apparently, nested classes can access parent class attributes. Odd choice, Java, but I'll make use of it anyway.
      */
@@ -38,7 +36,7 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
         }
         @Override
         public boolean hasNext() {
-            return tagIndex < getTag(getRowCount(), getColumnCount());
+            return tagIndex < getTag(getRowCount()-1, getColumnCount()-1);
         }
         @Override
         public Map2DTile next() {
@@ -64,6 +62,10 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
             doIt.onMapEvent(e);
         });
     }
+    
+    final public String assetsRoot;
+    
+    final public String levelRootPath;
     
     protected Map2DTile[][] mapTiles;
     
@@ -144,5 +146,7 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
         tileDrawSizeX = b.tileSizeX;
         tileDrawSizeY = b.tileSizeY;
         prepMap(b.mapGrid);
+        levelRootPath = b.rootLevelPath;
+        assetsRoot = (b.assetsRoot==null)? b.rootLevelPath: b.assetsRoot;
     }
 }

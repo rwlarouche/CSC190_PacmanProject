@@ -6,6 +6,8 @@
 
 package game.PacmanRemastered.Map;
 
+import engine.Map.Map2D;
+import engine.Map.Map2DBuilder;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
@@ -19,6 +21,10 @@ public class PacTileEmpty extends Map2DTile{
     public PacTileEmpty(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Sprite... initEntities) {
         super(up, down, left, right, initEntities);
     }
+    
+    public PacTileEmpty(){
+        super(null,null,null,null);
+    }
 
     @Override
     public void onMapEvent(Map2DTileEvent e){
@@ -27,7 +33,7 @@ public class PacTileEmpty extends Map2DTile{
     
     @Override
     public String getTileImagePath() {
-        return "/images/pactiles.png";
+        return getMap().assetsRoot + "/images/pactiles.png";
     }
 
     @Override
@@ -58,6 +64,16 @@ public class PacTileEmpty extends Map2DTile{
     @Override
     public int getTileImageY() {
         return 0; //The tile image is horizontal.
+    }
+    
+    public static Map2DTile[][] makeEmptyTileBoardArray(int numRows, int numColumns){
+        Map2DTile[][] tileMaker = new Map2DTile[numRows][numColumns];
+        for (int row = 0; row < numRows; row++){
+            for (int col = 0; col < numColumns; col++ ){
+                tileMaker[row][col] = new PacTileEmpty();
+            }
+        }
+        return tileMaker;
     }
     
 }
