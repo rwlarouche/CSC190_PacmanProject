@@ -6,6 +6,7 @@
 package engine.Map;
 
 
+import engine.API;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Spliterator;
@@ -66,6 +67,8 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
     final public String assetsRoot;
     
     final public String levelRootPath;
+    
+    final public API api;
     
     protected Map2DTile[][] mapTiles;
     
@@ -148,5 +151,6 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
         prepMap(b.mapGrid);
         levelRootPath = b.rootLevelPath;
         assetsRoot = (b.assetsRoot==null)? b.rootLevelPath: b.assetsRoot;
+        api = b.api;
     }
 }

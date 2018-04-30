@@ -5,6 +5,8 @@
  */
 package engine.Map;
 
+import engine.API;
+
 /**
  *
  * 
@@ -14,6 +16,7 @@ package engine.Map;
         public String rootLevelPath = null;
         public String assetsRoot = null;
         public int tileSizeX, tileSizeY;
+        public API api;
         /**
          * Array of tiles, stored left to right. Null tiles will be replaced with a default tile class that allows nothing to enter.
          */

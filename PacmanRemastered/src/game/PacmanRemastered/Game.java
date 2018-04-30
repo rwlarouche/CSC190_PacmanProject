@@ -8,6 +8,7 @@
 package game.PacmanRemastered;
 
 import engine.*;
+import engine.Map.Map2D;
 import java.util.ArrayList;
 
 public class Game { 
@@ -18,7 +19,9 @@ public class Game {
     protected Pacman pacman;    // Pacman character
     protected String key = "Right";     // String of name of last key pressed (Right default)
     protected ArrayList<Sprite> sprites;    // Array of game sprites
+    public Map2D map;
     // ============================
+
     
     // ======== CONSTRUCTOR =======
     public Game() {
@@ -26,7 +29,7 @@ public class Game {
         width = 500;
         height = 500;
         pacman = new Pacman(this);
-        sprites = new ArrayList<Sprite>();
+        sprites = new ArrayList<>();
         sprites.add(this.pacman);
     } // constructor
     // ============================

@@ -7,7 +7,8 @@
 
 package engine;
 
-import game.PacmanRemastered.*;
+import engine.Map.Map2D;
+import game.PacmanRemastered.Game;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -45,6 +46,9 @@ public class GameEngine extends Application implements API {
     
     protected boolean over = false; // Track whether the game is over
     protected Timeline timer;
+    
+    //This needs to be set by the game itself.
+    protected Map2D map = null;
     // ============================
 
     // ====== PRIVATE METHODS =====
@@ -54,7 +58,7 @@ public class GameEngine extends Application implements API {
      */
     private void build(Game game){
         this.game = game;
-                
+        this.map = game.map;        
         this.width = game.getWidth();
         this.height = game.getHeight();
         this.title = game.getTitle();

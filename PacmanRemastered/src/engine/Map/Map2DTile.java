@@ -25,7 +25,6 @@ import java.util.stream.Stream;
  * 
  */
 public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTileEventListener{
-
     
      /**
      * 
@@ -37,17 +36,8 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     
     public abstract int getTileImageY();
     
-    private Map2D map;
 
-    public Map2D getMap() {
-        return map;
-    }
-
-    void setMap(Map2D map) {
-        this.map = map;
-    }
-    
-    protected abstract boolean canEnterTile(Sprite entity); //Should actually take an Entity class.
+    protected abstract boolean canEnterTile(Sprite entity); 
     
     /**
      * Add an Entity to the tile. The actual call to entities.add(Object) must be called in here manually once the entity is prepared.
@@ -61,10 +51,19 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
      * @param entity
      * @return 
      */
-    protected abstract boolean doRemoveSprite(Sprite entity); //Should actually take an Entity class, or at least an index.
+    protected abstract boolean doRemoveSprite(Sprite entity);
     
     public abstract void update();
     
+    private Map2D map;
+
+    public Map2D getMap() {
+        return map;
+    }
+
+    void setMap(Map2D map) {
+        this.map = map;
+    }
     
     /**
      * Contains event handlers for map events. Should only be thrown when necessary.
@@ -150,7 +149,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         eList.remove(e);
     }    
     
-    public boolean doTraverseUp(Sprite sprite){ //Should actually take an Entity class, or at least an index for the array.
+    public boolean doTraverseUp(Sprite sprite){
         if (up == null ||!sprites.contains(sprite))
             return false;
         else if (up.canEnterTile(sprite)&&up.doAddSprite(sprite)){
@@ -164,7 +163,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         else return false;
     }
     
-    public boolean doTraverseLeft(Sprite sprite){ //Should actually take an Entity class, or at least an index for the array.
+    public boolean doTraverseLeft(Sprite sprite){
         if (left == null || !sprites.contains(sprite))
             return false;
         else if (left.canEnterTile(sprite)&&left.doAddSprite(sprite)){
@@ -178,7 +177,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         else return false;
     }
     
-    public boolean doTraverseDown(Sprite sprite){ //Should actually take an Entity class, or at least an index for the array.
+    public boolean doTraverseDown(Sprite sprite){
         if (down == null || !sprites.contains(sprite))
             return false;
         else if (down.canEnterTile(sprite)&&down.doAddSprite(sprite)){
@@ -192,7 +191,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         else return false;
     }
     
-    public boolean doTraverseRight(Sprite sprite){ //Should actually take an Entity class, or at least an index for the array.
+    public boolean doTraverseRight(Sprite sprite){
         if (right == null || !sprites.contains(sprite))
             return false;
         if (right.canEnterTile(sprite)&&right.doAddSprite(sprite)){
@@ -206,7 +205,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         else return false;
     }
     
-    public Map2DTile(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Sprite... initEntities) { //Need to add array for initial Entities to be added.
+    public Map2DTile(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Sprite... initEntities) {
         sprites = new ArrayList<>();
         sprites.addAll(Arrays.asList(initEntities));
         sprites.forEach((s)->{addMapEventListener(s);});
@@ -230,12 +229,12 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
 
     @Override
     public Stream<Sprite> stream() {
-        return sprites.stream(); //To change body of generated methods, choose Tools | Templates.
+        return sprites.stream();
     }
 
     @Override
     public Stream<Sprite> parallelStream() {
-        return sprites.parallelStream(); //To change body of generated methods, choose Tools | Templates.
+        return sprites.parallelStream();
     }
 
 
@@ -344,7 +343,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     @Override
     @Deprecated
     public boolean addAll(Collection<? extends Sprite> c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
