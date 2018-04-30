@@ -44,6 +44,14 @@ public class PacDot implements Sprite{
         return y;
     }
     
+    public int getLength(){
+        return length;
+    }
+    
+    public int getWidth(){
+        return width;
+    }
+    
     @Override
     public void update() {
 
