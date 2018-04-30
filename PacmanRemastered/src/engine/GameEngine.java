@@ -12,8 +12,6 @@ import game.PacmanRemastered.Game;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -51,6 +49,33 @@ public class GameEngine extends Application implements API {
     protected Map2D map = null;
     // ============================
 
+    // ====== PUBLIC METHODS ======
+    /**
+     * Adds a sprite to the ArrayList of game sprites
+     * @param sprite The sprite object to be added
+     */
+    public void addSprite(Sprite sprite) {
+        sprites.add(sprite);
+    }
+    
+    /**
+     * Removes a sprite from the ArrayList of game sprites (i.e. on death)
+     * Also deletes the ImageView of the object
+     * @param sprite The sprite to be removed
+     */
+    public void removeSprite(Sprite sprite) {
+        int index = sprites.indexOf(sprite);
+        sprites.remove(sprite);
+        
+        ImageView image = sprite_images.get(index);
+        if (image != null) {
+            canvas.getChildren().remove(image);
+            image.imageProperty().set(null);
+            sprite_images.remove(index);
+        }
+    }
+    // ============================
+    
     // ====== PRIVATE METHODS =====
     /**
      * Builds new game session using passed Game
@@ -169,7 +194,7 @@ public class GameEngine extends Application implements API {
     }
         
     @Override
-    public void drawSprite(int index, String picname, int x, int y, int w, int h, int fx, int fy){
+    public void drawSprite(int index, String picname, double x, double y, int w, int h, int fx, int fy){
         // Return if invalid index
         if (index > sprite_images.size() -1) return;
         

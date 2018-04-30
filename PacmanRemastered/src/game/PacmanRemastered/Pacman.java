@@ -9,17 +9,17 @@ public class Pacman implements Sprite{
     // ======= DATA MEMBERS =======
     Game game;
         
-    final int STEP = 8;     // Movement speed of pacman	
+    final double STEP = 8;     // Movement speed of pacman	
     int frame;              // Track frame within sprite-sheets
     
     String dir;             // Corresponds to direction pacman is moving
     int dir_num;            // Corresponds to sprite frame direction
     
-    int x, y;               // Tracks x,y location/coordinates of Pacman
-    String pic = "images/packman.png";
+    double x, y;               // Tracks x,y location/coordinates of Pacman
+    String pic = "images/PacmanSprite.png";
                 
-    int width;
-    int height;
+    double width;
+    double height;
     Map2DTile mapTile;
     // ============================
     
@@ -36,8 +36,8 @@ public class Pacman implements Sprite{
         
         this.game = game;
         
-        width = 500;
-        height = 500;
+        width = game.width;
+        height = game.height;
     } // constructor
     // ============================
     
@@ -46,7 +46,7 @@ public class Pacman implements Sprite{
      * Returns the x coordinate of the Pacman character
      * @return An int x coordinate
      */
-    public int getLocationX() {
+    public double getLocationX() {
         return x;
     }
         
@@ -54,7 +54,7 @@ public class Pacman implements Sprite{
      * Returns the y coordinate of the Pacman character
      * @return An int y coordinate
      */
-    public int getLocationY() {
+    public double getLocationY() {
         return y;
     }
     // ============================
@@ -88,15 +88,15 @@ public class Pacman implements Sprite{
         // Limit x bounds from moving out of frame
         if (x < 0) {
             x = 0;
-        } else if (x > width - 28 - STEP) {
-            x = width - 28 - STEP;
+        } else if (x > width - 64 - STEP) {
+            x = width - 64 - STEP;
         }
         
         // Limit y bounds from moving out of frame
         if (y < 0) {
             y = 0;
-        } else if (y > height - 28 - STEP) {
-            y = width - 28 - STEP;
+        } else if (y > height - 64 - STEP) {
+            y = width - 64 - STEP;
         }
     } // update
             
@@ -107,7 +107,6 @@ public class Pacman implements Sprite{
         if (frame > 2) {
             frame = 0;
         }
-
         api.drawSprite(index, pic, x, y, 3, 4, frame, dir_num);
     }
     // ============================

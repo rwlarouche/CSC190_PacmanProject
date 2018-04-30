@@ -26,8 +26,8 @@ public class Game {
     // ======== CONSTRUCTOR =======
     public Game() {
         title = "Pacman Remastered";
-        width = 500;
-        height = 500;
+        width = 640;
+        height = 640;
         pacman = new Pacman(this);
         sprites = new ArrayList<>();
         sprites.add(this.pacman);
