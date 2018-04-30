@@ -205,6 +205,27 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         else return false;
     }
     
+    public Map2DCoords getBoardIndicies(){
+        Map2D.Map2DIterator iterate = (Map2D.Map2DIterator)getMap().iterator();
+        while (iterate.hasNext() && iterate.next() != this){}
+        return new Map2DCoords(iterate.getTagRow(iterate.tagIndex), iterate.getTagColumn(iterate.tagIndex));
+    }
+
+    public Map2DCoords getAbsCoordinates(){
+        Map2DCoords indicies = getBoardIndicies();
+        return new Map2DCoords(getMap().mapRootX + (indicies.x *getMap().tileDrawW), getMap().mapRootY + (indicies.y *getMap().tileDrawH));
+    }
+    
+    public void snapSpritesToTile(){
+        Map2DCoords coordinates = getAbsCoordinates();
+        this.stream().map((sprite) -> {
+            sprite.setX(coordinates.x);
+            return sprite;
+        }).forEachOrdered((sprite) -> {
+            sprite.setY(coordinates.y);
+        });
+    }
+    
     public Map2DTile(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Sprite... initEntities) {
         sprites = new ArrayList<>();
         sprites.addAll(Arrays.asList(initEntities));

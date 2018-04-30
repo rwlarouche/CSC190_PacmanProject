@@ -16,6 +16,8 @@ public class Pacman implements Sprite{
     int dir_num;            // Corresponds to sprite frame direction
     
     double x, y;               // Tracks x,y location/coordinates of Pacman
+
+
     String pic = "images/PacmanSprite.png";
                 
     double width;
@@ -46,7 +48,8 @@ public class Pacman implements Sprite{
      * Returns the x coordinate of the Pacman character
      * @return An int x coordinate
      */
-    public double getLocationX() {
+    @Override
+    public double getX() {
         return x;
     }
         
@@ -54,8 +57,20 @@ public class Pacman implements Sprite{
      * Returns the y coordinate of the Pacman character
      * @return An int y coordinate
      */
-    public double getLocationY() {
+    @Override
+    public double getY() {
         return y;
+    }
+    
+
+    @Override
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    @Override
+    public void setY(double y) {
+        this.y = y;
     }
     // ============================
     

@@ -31,4 +31,5 @@ public interface API {
      * @param fy Sprite frame y
      */
     public void drawSprite(int index, String picname, double x, double y, int w, int h, int fx, int fy);
+
 }

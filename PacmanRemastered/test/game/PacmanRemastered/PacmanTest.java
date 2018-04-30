@@ -48,7 +48,7 @@ public class PacmanTest {
         System.out.println("getLocationX");
         Pacman instance = null;
         double expResult = 0.0;
-        double result = instance.getLocationX();
+        double result = instance.getX();
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -62,7 +62,7 @@ public class PacmanTest {
         System.out.println("getLocationY");
         Pacman instance = null;
         double expResult = 0.0;
-        double result = instance.getLocationY();
+        double result = instance.getY();
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

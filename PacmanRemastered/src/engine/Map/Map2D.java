@@ -7,6 +7,8 @@ package engine.Map;
 
 
 import engine.API;
+import engine.Sprite;
+import game.PacmanRemastered.Game;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Spliterator;
@@ -70,6 +72,8 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
     
     final public API api;
     
+    final public Game game;
+    
     protected Map2DTile[][] mapTiles;
     
     public int getRowCount(){
@@ -84,50 +88,56 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
     
     /**
      * Prepares map for use and sets the map to it; usually called in constructor, but perhaps it should technically also be called every time a map tile is updated?
-     * @param rows
+     * @param mapTiles
      */
-    protected final void prepMap(Map2DTile[]... rows){
+    protected final void prepMapTiles(){
         
-        for (int ri = 0; ri < rows.length; ri++){
-            for (int ci = 0; ci < rows[ri].length; ci++){
-                if (rows[ri][ci] == null)
-                        rows[ri][ci] = new NullTile();
-                Map2DTile curTile = rows[ri][ci];
+        for (int ri = 0; ri < mapTiles.length; ri++){
+            for (int ci = 0; ci < mapTiles[ri].length; ci++){
+                if (mapTiles[ri][ci] == null)
+                        mapTiles[ri][ci] = new NullTile();
+                Map2DTile curTile = mapTiles[ri][ci];
                 curTile.setMap(this);                
                 if (ci - 1 > -1){
-                    if (rows[ri][ci-1] == null)
-                        rows[ri][ci-1] = new NullTile();
-                    curTile.setLeft(rows[ri][ci-1]);
+                    if (mapTiles[ri][ci-1] == null)
+                        mapTiles[ri][ci-1] = new NullTile();
+                    curTile.setLeft(mapTiles[ri][ci-1]);
                 }
-                if (ci + 1 < rows[ri].length){
-                    if (rows[ri][ci+1] == null)
-                        rows[ri][ci+1] = new NullTile();
-                    curTile.setRight(rows[ri][ci+1]);
+                if (ci + 1 < mapTiles[ri].length){
+                    if (mapTiles[ri][ci+1] == null)
+                        mapTiles[ri][ci+1] = new NullTile();
+                    curTile.setRight(mapTiles[ri][ci+1]);
                 }
                 if (ri - 1 > -1){
-                    if (rows[ri-1][ci] == null)
-                        rows[ri-1][ci] = new NullTile();
-                    curTile.setUp(rows[ri-1][ci]);
+                    if (mapTiles[ri-1][ci] == null)
+                        mapTiles[ri-1][ci] = new NullTile();
+                    curTile.setUp(mapTiles[ri-1][ci]);
                 }
-                if (ri + 1 < rows.length){
-                    if (rows[ri+1][ci] == null)
-                        rows[ri+1][ci] = new NullTile();
-                    curTile.setDown(rows[ri+1][ci]);
+                if (ri + 1 < mapTiles.length){
+                    if (mapTiles[ri+1][ci] == null)
+                        mapTiles[ri+1][ci] = new NullTile();
+                    curTile.setDown(mapTiles[ri+1][ci]);
                 }
                 curTile.addMapEventListener(this);
             }
         }
-        mapTiles = rows;
     }
     
+    protected final void snapAllSpritesToAllTiles(){
+        for (Map2DTile tile: this){
+            tile.snapSpritesToTile();
+        }
+    }
+
     /**
-     * Each tile is the same size. This is its X length.
+     * Location of the top-left corner of the map.
      */
-    public final int tileDrawSizeX;
+    public final double mapRootX, mapRootY;
+    
     /**
-     * Each tile is the same size. This is its Y length.
+     * Tile width and height, in pixels.
      */
-    public final int tileDrawSizeY;
+    public final int tileDrawW, tileDrawH;
     
     @Override
     public Iterator<Map2DTile> iterator() {
@@ -146,9 +156,14 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
         
     public Map2D(Map2DBuilder b){
         eList = new ArrayList<>();
-        tileDrawSizeX = b.tileSizeX;
-        tileDrawSizeY = b.tileSizeY;
-        prepMap(b.mapGrid);
+        mapRootX = b.topLeftX;
+        mapRootY = b.topLeftY;
+        tileDrawW = b.tileSizeW;
+        tileDrawH = b.tileSizeH;
+        game = b.game;
+        mapTiles = b.mapGrid;
+        prepMapTiles();
+        snapAllSpritesToAllTiles();
         levelRootPath = b.rootLevelPath;
         assetsRoot = (b.assetsRoot==null)? b.rootLevelPath: b.assetsRoot;
         api = b.api;
