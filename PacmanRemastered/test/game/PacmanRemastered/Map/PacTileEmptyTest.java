@@ -7,9 +7,12 @@ package game.PacmanRemastered.Map;
 
 import engine.Map.Map2D;
 import engine.Map.Map2DBuilder;
+import engine.Map.Map2DCoords;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
+import game.PacmanRemastered.Game;
+import game.PacmanRemastered.Pacman;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -158,7 +161,7 @@ public class PacTileEmptyTest {
      * Test of MakeEmptyMap method, of class PacTileEmpty.
      */
     @Test
-    public void testMakeEmptyMap() {
+    public void testMapGen() {
         System.out.println("MakeEmptyMap");
         int numRows = 5;
         int numColumns = 5;
@@ -166,13 +169,19 @@ public class PacTileEmptyTest {
         Map2DBuilder b = new Map2DBuilder();
         b.rootLevelPath = "";
         b.assetsRoot = "";
-        b.tileSizeX = 64;
-        b.tileSizeY = 64;
+        b.tileSizeW = 64;
+        b.tileSizeH = 64;
         b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(numRows, numColumns);
+        b.mapGrid[b.mapGrid.length/2][b.mapGrid[0].length/2].add(new Pacman(new Game()));
         Map2D result = b.build();
         for (Map2DTile e: result){
             if (e.getMap() == null || (e.getUp() == null && e.getLeft() == null && e.getDown() == null && e.getRight() == null))
                 fail("Map tiles missing associations.");
+            for (Sprite s: e){
+                Map2DCoords coords = e.getAbsCoordinates();
+                if (s.getX() != coords.x || s.getY() != e.getAbsCoordinates().y)
+                    fail("One or more sprites un-centered!");
+            }
         }
         //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.

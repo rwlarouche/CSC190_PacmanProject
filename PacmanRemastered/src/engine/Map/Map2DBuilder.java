@@ -6,6 +6,7 @@
 package engine.Map;
 
 import engine.API;
+import game.PacmanRemastered.Game;
 
 /**
  *
@@ -15,7 +16,9 @@ import engine.API;
         public String name;
         public String rootLevelPath = null;
         public String assetsRoot = null;
-        public int tileSizeX, tileSizeY;
+        public double topLeftX, topLeftY;
+        public int tileSizeW, tileSizeH;
+        public Game game;
         public API api;
         /**
          * Array of tiles, stored left to right. Null tiles will be replaced with a default tile class that allows nothing to enter.
