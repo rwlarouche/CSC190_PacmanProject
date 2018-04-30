@@ -3,64 +3,85 @@
  * Runs using the engine package
  * 
  * CSC190 Pacman Term Project
- * @author Ryan LaRouche
+ * @author Ryan LaRouche, Craig, Nick, Jack, Scott
  */
 package game.PacmanRemastered;
 
 import engine.*;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
+import engine.Map.Map2D;
+import java.util.ArrayList;
 
-public class Game extends Engine { 
-    // Class properties
-    GamePacman pacman;
+public class Game { 
+    // ======= DATA MEMBERS =======
+    protected String title;     // Window title
+    protected double width;     // Window width
+    protected double height;    // Window height
+    protected Pacman pacman;    // Pacman character
+    protected String key = "Right";     // String of name of last key pressed (Right default)
+    protected ArrayList<Sprite> sprites;    // Array of game sprites
+    public Map2D map;
+    // ============================
+
     
-        
-    /**
-     * Initializes initial game properties
-     *  - Title
-     *  - Window dimensions (width/height)
-     *  - Necessary game components (i.e.Game Characters)
-     */
-    public Game(){
-        title = "Pacman Remastered"; // Game title
-        width = height = 500;       // Game window dimensions
-        pacman = new GamePacman(this);
+    // ======== CONSTRUCTOR =======
+    public Game() {
+        title = "Pacman Remastered";
+        width = 640;
+        height = 640;
+        pacman = new Pacman(this);
+        sprites = new ArrayList<>();
+        sprites.add(this.pacman);
     } // constructor
-    
+    // ============================
+
+    // ====== ACCESSOR METHODS ====
     /**
-     * Runs the main components of the PacmanRemastered game
-     * @param args the command line arguments
+     * Returns Pacman object/sprite
+     * @return Pacman object
      */
-    public static void main(String[] args) {
-      // Builds a new engine game session for this game
-      EngineBuild.build(new Game());
+    public Pacman getPacman(){
+        return this.pacman;
     }
     
     /**
-     * Attempts to load BufferedImage asset with File passed as a parameter (i.e.A sprite)
-     * @param path File path pointing to asset being loaded
-     * @return Buffered imaged that was loaded, or null if unable to load
+     * Returns game title
+     * @return title string
      */
-    public static BufferedImage loadAsset(String path) {
-        try {
-            BufferedImage asset = ImageIO.read(new File(path));
-            return asset;
-	} catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public String getTitle(){
+        return this.title;
     }
     
-    @Override
-    public void update() {
-        pacman.update();
-    }              // Updates canvas
+    /**
+     * Returns game screen width
+     * @return width double
+     */
+    public double getWidth(){
+        return this.width;
+    }
     
-    @Override
-    public void render(Graphics g) {
-        pacman.render(g);
-    }    // Draws canvas
+    /**
+     * Returns game screen height
+     * @return height double
+     */
+    public double getHeight(){
+        return this.height;
+    }
+    
+    public ArrayList<Sprite> getSprites() {
+        return this.sprites;
+    }
+    
+    /**
+     * Returns current direction of pacman determined by KeyEvent handleKey
+     */
+    public String getKey() {
+        return key;
+    }
+    // ============================
+    
+    // ====== SETTER METHODS ======
+    public void setKey(String key) {
+        this.key = key;
+    }
+    // ============================
 }
