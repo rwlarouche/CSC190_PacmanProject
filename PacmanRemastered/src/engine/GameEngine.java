@@ -8,6 +8,7 @@
 package engine;
 
 import engine.Map.Map2D;
+import engine.Map.Map2DTile;
 import game.PacmanRemastered.Game;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -95,7 +96,16 @@ public class GameEngine extends Application implements API {
      * Check sprite collisions
      */
     private void collisionDetection(){
-        
+        for (int i = 0; i<sprites.size(); i++) {
+                Map2DTile t1 = sprites.get(i).getMapTile();
+            for (int j = 0; j<sprites.size(); j++) {
+                Map2DTile t2 = sprites.get(j).getMapTile();
+                if (i != j && t1.equals(t2)) {
+                    sprites.get(i).collide(sprites.get(j));
+                    sprites.get(j).collide(sprites.get(j));
+                }
+            }
+        }
     }
     
     /**
