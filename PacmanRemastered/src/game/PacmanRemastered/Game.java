@@ -31,6 +31,7 @@ public class Game {
         pacman = new Pacman(this);
         sprites = new ArrayList<>();
         sprites.add(this.pacman);
+        sprites.add(new PacDot(this));
     } // constructor
     // ============================
 

@@ -125,4 +125,9 @@ public class Pacman implements Sprite{
     public void onMapEvent(Map2DTileEvent e) {
         
     }
+
+    @Override
+    public void collide(Sprite sprite) {
+        System.out.print("Pacman hit");
+    }
 }

@@ -30,8 +30,8 @@ public class PacDot implements Sprite{
         x=y=131; // One temporary dot. Want a while loop that adds dots all aound the board based on the tile
         this.game = game;
 
-        width = 200;
-        length = 200;
+        width = 64;
+        length = 64;
     }
     
     public int getX()
@@ -75,6 +75,11 @@ public class PacDot implements Sprite{
     @Override
     public void onMapEvent(Map2DTileEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void collide(Sprite sprite) {
+       System.out.println("Works!");
     }
     
 }

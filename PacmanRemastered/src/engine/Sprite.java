@@ -14,4 +14,5 @@ public interface Sprite extends Map2DTileEventListener{
     public void draw(int index, GameEngine api);
     public Map2DTile getMapTile();
     public void setMapTile(Map2DTile tile);
+    public void collide(Sprite sprite);
 }
