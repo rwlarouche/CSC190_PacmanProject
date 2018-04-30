@@ -9,6 +9,7 @@ package game.PacmanRemastered;
 
 import engine.*;
 import engine.Map.Map2D;
+import engine.Map.Map2DBuilder;
 import java.util.ArrayList;
 
 public class Game { 
@@ -28,6 +29,7 @@ public class Game {
         title = "Pacman Remastered";
         width = 640;
         height = 640;
+        map = new Map2D(new Map2DBuilder());
         pacman = new Pacman(this);
         sprites = new ArrayList<>();
         sprites.add(this.pacman);

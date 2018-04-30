@@ -29,7 +29,7 @@ public class PacDot implements Sprite{
     {
         x=y=131; // One temporary dot. Want a while loop that adds dots all aound the board based on the tile
         this.game = game;
-
+        setMapTile(this.game.map.getTile(5,5));
         width = 64;
         length = 64;
     }
