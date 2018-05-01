@@ -1,6 +1,7 @@
 package game.PacmanRemastered;
 
 import engine.GameEngine;
+import engine.Map.Events.TileSpriteTraverseEvent;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
@@ -138,7 +139,7 @@ public class Pacman implements Sprite{
 
     @Override
     public void onMapEvent(Map2DTileEvent e) {
-        if(mapTile instanceof Map2DTile)
+        if(e instanceof TileSpriteTraverseEvent)
         {
             System.out.println("Testing");
         }

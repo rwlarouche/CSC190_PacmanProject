@@ -41,7 +41,7 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
         }
         @Override
         public boolean hasNext() {
-            return tagIndex < getTag(getRowCount()-1, getColumnCount()-1);
+            return tagIndex <= getTag(getRowCount()-1, getColumnCount()-1);
         }
         @Override
         public Map2DTile next() {
@@ -159,7 +159,19 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
     public Spliterator<Map2DTile> spliterator() {
         return Iterable.super.spliterator(); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public void drawMap(){
+        Map2D.Map2DIterator iter = (Map2D.Map2DIterator)iterator();
+        while(iter.hasNext()){
+            Map2DTile tile = iter.next();
+            Map2DCoords coords = tile.getAbsCoordinates();
+            System.out.println(coords.x + "," + coords.y);
+            api.drawMapTile(iter.tagIndex -1, tile.getTileImagePath(), coords.x, coords.y, tileDrawW, tileDrawH, tile.getTileImageX(), tile.getTileImageY());
+        }
         
+    }
+    
+    
     public Map2D(Map2DBuilder b){
         eList = new ArrayList<>();
         mapRootX = b.topLeftX;

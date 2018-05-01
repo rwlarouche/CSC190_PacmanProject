@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Multi-file class diagram">
+  <ClassDiagramComponents>
+    <Class name="blinky" package="ghosts" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="speed" type="int" visibility="package"/>
+        <Field name="frame" type="int" visibility="package"/>
+        <Field name="dir" type="int" visibility="package"/>
+        <Field name="horizontal" type="int" visibility="private"/>
+        <Field name="size" type="int" visibility="private"/>
+        <Field name="alive" type="boolean" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+          <Argument type="int" name="s"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getX" returnType="int" visibility="public"/>
+        <Method name="getY" returnType="int" visibility="public"/>
+        <Method name="setX" returnType="void" visibility="public">
+          <Argument type="int" name="x"/>
+        </Method>
+        <Method name="setY" returnType="void" visibility="public">
+          <Argument type="int" name="y"/>
+        </Method>
+        <Method name="valid" returnType="boolean" visibility="private">
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+        </Method>
+        <Method name="move" returnType="boolean" visibility="public"/>
+        <Method name="chase" returnType="void" visibility="public">
+          <Argument type="int" name="speed"/>
+        </Method>
+        <Method name="goBack" returnType="void" visibility="public">
+          <Argument type="int" name="speed"/>
+        </Method>
+        <Method name="levelUp" returnType="int" visibility="public">
+          <Argument type="int" name="speed"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Interface name="GhostInterface" package="ghosts" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Methods>
+        <Method name="move" returnType="boolean" visibility="package"/>
+        <Method name="chase" returnType="void" visibility="package">
+          <Argument type="int" name="a"/>
+        </Method>
+        <Method name="goBack" returnType="void" visibility="package">
+          <Argument type="int" name="a"/>
+        </Method>
+        <Method name="levelUp" returnType="int" visibility="package">
+          <Argument type="int" name="a"/>
+        </Method>
+      </Methods>
+    </Interface>
+    <Enum name="WallStats" package="game.PacmanRemastered.Map" visibility="public" xPosition="620.0" yPosition="20.0">
+      <Literals>
+        <Literal name="up"/>
+        <Literal name="down"/>
+        <Literal name="left"/>
+        <Literal name="right"/>
+        <Literal name="upLeft"/>
+        <Literal name="upRight"/>
+        <Literal name="downLeft"/>
+        <Literal name="downRight"/>
+      </Literals>
+    </Enum>
+    <Class name="PacTileWall" package="game.PacmanRemastered.Map" visibility="public" xPosition="920.0" yPosition="20.0">
+      <Fields>
+        <Field name="wallFrames_internal" type="HashMap&lt;EnumSet&lt;WallStats&gt;, Integer&gt;" visibility="private" isStatic="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Map2DTile" name="up"/>
+          <Argument type="Map2DTile" name="down"/>
+          <Argument type="Map2DTile" name="left"/>
+          <Argument type="Map2DTile" name="right"/>
+          <Argument type="Sprite" name="initEntities"/>
+        </Constructor>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getTileImagePath" returnType="String" visibility="public"/>
+        <Method name="WallMap" returnType="HashMap&lt;EnumSet&lt;WallStats&gt;, Integer&gt;" visibility="package" isStatic="true"/>
+        <Method name="getTileImageX" returnType="int" visibility="public"/>
+        <Method name="getTileImageY" returnType="int" visibility="public"/>
+        <Method name="canEnterTile" returnType="boolean" visibility="protected">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="doAddSprite" returnType="boolean" visibility="protected">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="doRemoveSprite" returnType="boolean" visibility="protected">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="onMapEvent" returnType="void" visibility="public">
+          <Argument type="Map2DTileEvent" name="e"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="PacTileEmpty" package="game.PacmanRemastered.Map" visibility="public" xPosition="1220.0" yPosition="20.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Map2DTile" name="up"/>
+          <Argument type="Map2DTile" name="down"/>
+          <Argument type="Map2DTile" name="left"/>
+          <Argument type="Map2DTile" name="right"/>
+          <Argument type="Sprite" name="initEntities"/>
+        </Constructor>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="onMapEvent" returnType="void" visibility="public">
+          <Argument type="Map2DTileEvent" name="e"/>
+        </Method>
+        <Method name="getTileImagePath" returnType="String" visibility="public"/>
+        <Method name="canEnterTile" returnType="boolean" visibility="protected">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="doAddSprite" returnType="boolean" visibility="protected">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="doRemoveSprite" returnType="boolean" visibility="protected">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="getTileImageX" returnType="int" visibility="public"/>
+        <Method name="getTileImageY" returnType="int" visibility="public"/>
+        <Method name="makeEmptyTileBoardArray" returnType="Map2DTile[][]" visibility="public" isStatic="true">
+          <Argument type="int" name="numRows"/>
+          <Argument type="int" name="numColumns"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="SpawnFruit" package="game.PacmanRemastered" visibility="public" xPosition="1520.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="changeGraphics" returnType="void" visibility="public"/>
+        <Method name="spawn" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Pacman" package="game.PacmanRemastered" visibility="public" xPosition="1820.0" yPosition="20.0">
+      <Fields>
+        <Field name="game" type="Game" visibility="package"/>
+        <Field name="STEP" type="double" visibility="package" isFinal="true"/>
+        <Field name="frame" type="int" visibility="package"/>
+        <Field name="dir" type="String" visibility="package"/>
+        <Field name="dir_num" type="int" visibility="package"/>
+        <Field name="x" type="double" visibility="package"/>
+        <Field name="pic" type="String" visibility="package"/>
+        <Field name="width" type="double" visibility="package"/>
+        <Field name="height" type="double" visibility="package"/>
+        <Field name="mapTile" type="Map2DTile" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Game" name="game"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getX" returnType="double" visibility="public"/>
+        <Method name="getY" returnType="double" visibility="public"/>
+        <Method name="setX" returnType="void" visibility="public">
+          <Argument type="double" name="x"/>
+        </Method>
+        <Method name="setY" returnType="void" visibility="public">
+          <Argument type="double" name="y"/>
+        </Method>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="draw" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="GameEngine" name="api"/>
+        </Method>
+        <Method name="getMapTile" returnType="Map2DTile" visibility="public"/>
+        <Method name="setMapTile" returnType="void" visibility="public">
+          <Argument type="Map2DTile" name="tile"/>
+        </Method>
+        <Method name="onMapEvent" returnType="void" visibility="public">
+          <Argument type="Map2DTileEvent" name="e"/>
+        </Method>
+        <Method name="collide" returnType="void" visibility="public">
+          <Argument type="Sprite" name="sprite"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="PacDot" package="game.PacmanRemastered" visibility="public" xPosition="2120.0" yPosition="20.0">
+      <Fields>
+        <Field name="game" type="Game" visibility="package"/>
+        <Field name="x" type="double" visibility="package"/>
+        <Field name="width" type="int" visibility="package"/>
+        <Field name="mapTile1" type="Map2DTile" visibility="package"/>
+        <Field name="frame" type="int" visibility="package"/>
+        <Field name="dir_num" type="int" visibility="package"/>
+        <Field name="picture" type="String" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Game" name="game"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getX" returnType="double" visibility="public"/>
+        <Method name="setX" returnType="void" visibility="public">
+          <Argument type="double" name="x"/>
+        </Method>
+        <Method name="getY" returnType="double" visibility="public"/>
+        <Method name="setY" returnType="void" visibility="public">
+          <Argument type="double" name="y"/>
+        </Method>
+        <Method name="getLength" returnType="int" visibility="public"/>
+        <Method name="getWidth" returnType="int" visibility="public"/>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="draw" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="GameEngine" name="api"/>
+        </Method>
+        <Method name="getMapTile" returnType="Map2DTile" visibility="public"/>
+        <Method name="setMapTile" returnType="void" visibility="public">
+          <Argument type="Map2DTile" name="tile1"/>
+        </Method>
+        <Method name="onMapEvent" returnType="void" visibility="public">
+          <Argument type="Map2DTileEvent" name="e"/>
+        </Method>
+        <Method name="collide" returnType="void" visibility="public">
+          <Argument type="Sprite" name="sprite"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Game" package="game.PacmanRemastered" visibility="public" xPosition="20.0" yPosition="420.0">
+      <Fields>
+        <Field name="title" type="String" visibility="protected"/>
+        <Field name="width" type="double" visibility="protected"/>
+        <Field name="height" type="double" visibility="protected"/>
+        <Field name="pacman" type="Pacman" visibility="protected"/>
+        <Field name="key" type="String" visibility="protected"/>
+        <Field name="sprites" type="ArrayList&lt;Sprite&gt;" visibility="protected"/>
+        <Field name="map" type="Map2D" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getPacman" returnType="Pacman" visibility="public"/>
+        <Method name="getTitle" returnType="String" visibility="public"/>
+        <Method name="getWidth" returnType="double" visibility="public"/>
+        <Method name="getHeight" returnType="double" visibility="public"/>
+        <Method name="getSprites" returnType="ArrayList&lt;Sprite&gt;" visibility="public"/>
+        <Method name="getKey" returnType="String" visibility="public"/>
+        <Method name="setKey" returnType="void" visibility="public">
+          <Argument type="String" name="key"/>
+        </Method>
+        <Method name="loadMap" returnType="void" visibility="public">
+          <Argument type="API" name="api"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="TileSpriteTraverseEvent" package="engine.Map.Events" visibility="public" xPosition="320.0" yPosition="420.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Map2DTile" name="sender"/>
+          <Argument type="String" name="event"/>
+          <Argument type="Object" name="affected"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="movedTo" returnType="Map2DTile" visibility="public"/>
+        <Method name="direction" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="TileSpriteRemovedEvent" package="engine.Map.Events" visibility="public" xPosition="620.0" yPosition="420.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Map2DTile" name="sender"/>
+          <Argument type="String" name="event"/>
+          <Argument type="Object" name="affected"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="TileSpriteAddedEvent" package="engine.Map.Events" visibility="public" xPosition="920.0" yPosition="420.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Map2DTile" name="sender"/>
+          <Argument type="String" name="event"/>
+          <Argument type="Object" name="affected"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="TileNewNeighborEvent" package="engine.Map.Events" visibility="public" xPosition="1220.0" yPosition="420.0">
+      <Fields>
+        <Field name="direction" type="String" visibility="public"/>
+        <Field name="oldNeighbor" type="Map2DTile" visibility="public"/>
+        <Field name="newNeighbor" type="Map2DTile" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Map2DTile" name="sender"/>
+          <Argument type="String" name="direction"/>
+          <Argument type="Map2DTile" name="oldNeighbor"/>
+          <Argument type="Map2DTile" name="newNeighbor"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="NullTile" package="engine.Map" visibility="public" xPosition="1520.0" yPosition="420.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="getTileImagePath" returnType="String" visibility="public"/>
+        <Method name="canEnterTile" returnType="boolean" visibility="protected">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="doAddSprite" returnType="boolean" visibility="protected">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="doRemoveSprite" returnType="boolean" visibility="protected">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="onMapEvent" returnType="void" visibility="public">
+          <Argument type="Map2DTileEvent" name="e"/>
+        </Method>
+        <Method name="getTileImageX" returnType="int" visibility="public"/>
+        <Method name="getTileImageY" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+    <Interface name="Map2DTileWrapToUp" package="engine.Map" visibility="public" xPosition="1820.0" yPosition="420.0">
+      <Methods/>
+    </Interface>
+    <Interface name="Map2DTileWrapToLeft" package="engine.Map" visibility="public" xPosition="2120.0" yPosition="420.0">
+      <Methods/>
+    </Interface>
+    <Interface name="Map2DTileWrapToRight" package="engine.Map" visibility="public" xPosition="20.0" yPosition="820.0">
+      <Methods/>
+    </Interface>
+    <Interface name="Map2DTileWrapToDown" package="engine.Map" visibility="public" xPosition="320.0" yPosition="820.0">
+      <Methods/>
+    </Interface>
+    <Interface name="Map2DTileEventListener" package="engine.Map" visibility="public" xPosition="620.0" yPosition="820.0">
+      <Methods>
+        <Method name="onMapEvent" returnType="void" visibility="public">
+          <Argument type="Map2DTileEvent" name="e"/>
+        </Method>
+      </Methods>
+    </Interface>
+    <Class name="Map2DTileEvent" package="engine.Map" visibility="public" xPosition="920.0" yPosition="820.0">
+      <Fields>
+        <Field name="sender" type="Map2DTile" visibility="public" isFinal="true"/>
+        <Field name="event" type="String" visibility="public" isFinal="true"/>
+        <Field name="affected" type="Object[]" visibility="public" isFinal="true"/>
+        <Field name="thisObjectID" type="int" visibility="package" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Map2DTile" name="sender"/>
+          <Argument type="String" name="event"/>
+          <Argument type="Object" name="affected"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="hashCode" returnType="int" visibility="public"/>
+        <Method name="equals" returnType="boolean" visibility="public">
+          <Argument type="Object" name="obj"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Map2DTile" package="engine.Map" visibility="public" isAbstract="true" xPosition="1220.0" yPosition="820.0">
+      <Fields>
+        <Field name="map" type="Map2D" visibility="private"/>
+        <Field name="eList" type="ArrayList&lt;Map2DTileEventListener&gt;" visibility="private" isFinal="true"/>
+        <Field name="sprites" type="ArrayList&lt;Sprite&gt;" visibility="protected" isFinal="true"/>
+        <Field name="traversing" type="boolean" visibility="protected"/>
+        <Field name="up" type="Map2DTile" visibility="protected"/>
+        <Field name="left" type="Map2DTile" visibility="protected"/>
+        <Field name="right" type="Map2DTile" visibility="protected"/>
+        <Field name="down" type="Map2DTile" visibility="protected"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Map2DTile" name="up"/>
+          <Argument type="Map2DTile" name="down"/>
+          <Argument type="Map2DTile" name="left"/>
+          <Argument type="Map2DTile" name="right"/>
+          <Argument type="Sprite" name="initEntities"/>
+        </Constructor>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getTileImagePath" returnType="String" visibility="public" isAbstract="true"/>
+        <Method name="getTileImageX" returnType="int" visibility="public" isAbstract="true"/>
+        <Method name="getTileImageY" returnType="int" visibility="public" isAbstract="true"/>
+        <Method name="canEnterTile" returnType="boolean" visibility="protected" isAbstract="true">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="doAddSprite" returnType="boolean" visibility="protected" isAbstract="true">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="doRemoveSprite" returnType="boolean" visibility="protected" isAbstract="true">
+          <Argument type="Sprite" name="entity"/>
+        </Method>
+        <Method name="update" returnType="void" visibility="public" isAbstract="true"/>
+        <Method name="getMap" returnType="Map2D" visibility="public"/>
+        <Method name="setMap" returnType="void" visibility="package">
+          <Argument type="Map2D" name="map"/>
+        </Method>
+        <Method name="getUp" returnType="Map2DTile" visibility="public"/>
+        <Method name="setUp" returnType="boolean" visibility="public">
+          <Argument type="Map2DTile" name="up"/>
+        </Method>
+        <Method name="getLeft" returnType="Map2DTile" visibility="public"/>
+        <Method name="setLeft" returnType="boolean" visibility="public">
+          <Argument type="Map2DTile" name="left"/>
+        </Method>
+        <Method name="getRight" returnType="Map2DTile" visibility="public"/>
+        <Method name="setRight" returnType="boolean" visibility="public">
+          <Argument type="Map2DTile" name="right"/>
+        </Method>
+        <Method name="getDown" returnType="Map2DTile" visibility="public"/>
+        <Method name="setDown" returnType="boolean" visibility="public">
+          <Argument type="Map2DTile" name="down"/>
+        </Method>
+        <Method name="raiseMapEvent" returnType="void" visibility="protected">
+          <Argument type="Map2DTileEvent" name="e"/>
+        </Method>
+        <Method name="addMapEventListener" returnType="void" visibility="public">
+          <Argument type="Map2DTileEventListener" name="e"/>
+        </Method>
+        <Method name="removeMapEventListener" returnType="void" visibility="public">
+          <Argument type="Map2DTileEventListener" name="e"/>
+        </Method>
+        <Method name="doTraverseUp" returnType="boolean" visibility="public">
+          <Argument type="Sprite" name="sprite"/>
+        </Method>
+        <Method name="doTraverseLeft" returnType="boolean" visibility="public">
+          <Argument type="Sprite" name="sprite"/>
+        </Method>
+        <Method name="doTraverseDown" returnType="boolean" visibility="public">
+          <Argument type="Sprite" name="sprite"/>
+        </Method>
+        <Method name="doTraverseRight" returnType="boolean" visibility="public">
+          <Argument type="Sprite" name="sprite"/>
+        </Method>
+        <Method name="getBoardIndicies" returnType="Map2DCoords" visibility="public"/>
+        <Method name="getAbsCoordinates" returnType="Map2DCoords" visibility="public"/>
+        <Method name="snapSpritesToTile" returnType="void" visibility="public"/>
+        <Method name="stream" returnType="Stream&lt;Sprite&gt;" visibility="public"/>
+        <Method name="parallelStream" returnType="Stream&lt;Sprite&gt;" visibility="public"/>
+        <Method name="add" returnType="boolean" visibility="public">
+          <Argument type="Sprite" name="e"/>
+        </Method>
+        <Method name="remove" returnType="boolean" visibility="public">
+          <Argument type="Object" name="o"/>
+        </Method>
+        <Method name="size" returnType="int" visibility="public"/>
+        <Method name="isEmpty" returnType="boolean" visibility="public"/>
+        <Method name="contains" returnType="boolean" visibility="public">
+          <Argument type="Object" name="o"/>
+        </Method>
+        <Method name="toArray" returnType="Sprite[]" visibility="public"/>
+        <Method name="toArray" returnType="T[]" visibility="public">
+          <Argument type="T[]" name="a"/>
+        </Method>
+        <Method name="containsAll" returnType="boolean" visibility="public">
+          <Argument type="Collection&lt;?&gt;" name="c"/>
+        </Method>
+        <Method name="get" returnType="Sprite" visibility="public">
+          <Argument type="int" name="index"/>
+        </Method>
+        <Method name="indexOf" returnType="int" visibility="public">
+          <Argument type="Object" name="o"/>
+        </Method>
+        <Method name="lastIndexOf" returnType="int" visibility="public">
+          <Argument type="Object" name="o"/>
+        </Method>
+        <Method name="listIterator" returnType="ListIterator&lt;Sprite&gt;" visibility="public"/>
+        <Method name="listIterator" returnType="ListIterator&lt;Sprite&gt;" visibility="public">
+          <Argument type="int" name="index"/>
+        </Method>
+        <Method name="subList" returnType="List&lt;Sprite&gt;" visibility="public">
+          <Argument type="int" name="fromIndex"/>
+          <Argument type="int" name="toIndex"/>
+        </Method>
+        <Method name="forEach" returnType="void" visibility="public">
+          <Argument type="Consumer&lt;? super Sprite&gt;" name="action"/>
+        </Method>
+        <Method name="spliterator" returnType="Spliterator&lt;Sprite&gt;" visibility="public"/>
+        <Method name="iterator" returnType="Iterator&lt;Sprite&gt;" visibility="public"/>
+        <Method name="addAll" returnType="boolean" visibility="public">
+          <Argument type="Collection&lt;? extends Sprite&gt;" name="c"/>
+        </Method>
+        <Method name="addAll" returnType="boolean" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="Collection&lt;? extends Sprite&gt;" name="c"/>
+        </Method>
+        <Method name="removeAll" returnType="boolean" visibility="public">
+          <Argument type="Collection&lt;?&gt;" name="c"/>
+        </Method>
+        <Method name="retainAll" returnType="boolean" visibility="public">
+          <Argument type="Collection&lt;?&gt;" name="c"/>
+        </Method>
+        <Method name="replaceAll" returnType="void" visibility="public">
+          <Argument type="UnaryOperator&lt;Sprite&gt;" name="operator"/>
+        </Method>
+        <Method name="sort" returnType="void" visibility="public">
+          <Argument type="Comparator&lt;? super Sprite&gt;" name="c"/>
+        </Method>
+        <Method name="clear" returnType="void" visibility="public"/>
+        <Method name="set" returnType="Sprite" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="Sprite" name="element"/>
+        </Method>
+        <Method name="add" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="Sprite" name="element"/>
+        </Method>
+        <Method name="remove" returnType="Sprite" visibility="public">
+          <Argument type="int" name="index"/>
+        </Method>
+        <Method name="removeIf" returnType="boolean" visibility="public">
+          <Argument type="Predicate&lt;? super Sprite&gt;" name="filter"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Map2DCoords" package="engine.Map" visibility="public" xPosition="1520.0" yPosition="820.0">
+      <Fields>
+        <Field name="x" type="double" visibility="public" isFinal="true"/>
+        <Field name="y" type="double" visibility="public" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Map2DBuilder" package="engine.Map" visibility="public" xPosition="1820.0" yPosition="820.0">
+      <Fields>
+        <Field name="name" type="String" visibility="public"/>
+        <Field name="rootLevelPath" type="String" visibility="public"/>
+        <Field name="assetsRoot" type="String" visibility="public"/>
+        <Field name="topLeftX" type="double" visibility="public"/>
+        <Field name="tileSizeW" type="int" visibility="public"/>
+        <Field name="game" type="Game" visibility="public"/>
+        <Field name="api" type="API" visibility="public"/>
+        <Field name="mapGrid" type="Map2DTile[][]" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="build" returnType="Map2D" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Map2D" package="engine.Map" visibility="public" xPosition="2120.0" yPosition="820.0">
+      <Fields>
+        <Field name="eList" type="ArrayList&lt;Map2DTileEventListener&gt;" visibility="private" isFinal="true"/>
+        <Field name="assetsRoot" type="String" visibility="public" isFinal="true"/>
+        <Field name="levelRootPath" type="String" visibility="public" isFinal="true"/>
+        <Field name="api" type="API" visibility="public" isFinal="true"/>
+        <Field name="game" type="Game" visibility="public" isFinal="true"/>
+        <Field name="mapTiles" type="Map2DTile[][]" visibility="protected"/>
+        <Field name="mapRootX" type="double" visibility="public" isFinal="true"/>
+        <Field name="tileDrawW" type="int" visibility="public" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Map2DBuilder" name="b"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="addMapEventListener" returnType="void" visibility="public">
+          <Argument type="Map2DTileEventListener" name="e"/>
+        </Method>
+        <Method name="removeMapEventListener" returnType="void" visibility="public">
+          <Argument type="Map2DTileEventListener" name="e"/>
+        </Method>
+        <Method name="onMapEvent" returnType="void" visibility="public">
+          <Argument type="Map2DTileEvent" name="e"/>
+        </Method>
+        <Method name="getRowCount" returnType="int" visibility="public"/>
+        <Method name="getColumnCount" returnType="int" visibility="public"/>
+        <Method name="getTile" returnType="Map2DTile" visibility="public">
+          <Argument type="int" name="row"/>
+          <Argument type="int" name="column"/>
+        </Method>
+        <Method name="prepMapTiles" returnType="void" visibility="protected" isFinal="true"/>
+        <Method name="snapAllSpritesToAllTiles" returnType="void" visibility="public" isFinal="true"/>
+        <Method name="stream" returnType="Stream&lt;Map2DTile&gt;" visibility="public"/>
+        <Method name="iterator" returnType="Iterator&lt;Map2DTile&gt;" visibility="public"/>
+        <Method name="forEach" returnType="void" visibility="public">
+          <Argument type="Consumer&lt;? super Map2DTile&gt;" name="action"/>
+        </Method>
+        <Method name="spliterator" returnType="Spliterator&lt;Map2DTile&gt;" visibility="public"/>
+        <Method name="drawMap" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="DisallowedWrapAroundException" package="engine.Map" visibility="public" xPosition="20.0" yPosition="1220.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="message"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Interface name="Sprite" package="engine" visibility="public" xPosition="320.0" yPosition="1220.0">
+      <Methods>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="draw" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="GameEngine" name="api"/>
+        </Method>
+        <Method name="getX" returnType="double" visibility="public"/>
+        <Method name="getY" returnType="double" visibility="public"/>
+        <Method name="setX" returnType="void" visibility="public">
+          <Argument type="double" name="newX"/>
+        </Method>
+        <Method name="setY" returnType="void" visibility="public">
+          <Argument type="double" name="newY"/>
+        </Method>
+        <Method name="getMapTile" returnType="Map2DTile" visibility="public"/>
+        <Method name="setMapTile" returnType="void" visibility="public">
+          <Argument type="Map2DTile" name="tile"/>
+        </Method>
+        <Method name="collide" returnType="void" visibility="public">
+          <Argument type="Sprite" name="sprite"/>
+        </Method>
+      </Methods>
+    </Interface>
+    <Class name="GameEngine" package="engine" visibility="public" xPosition="620.0" yPosition="1220.0">
+      <Fields>
+        <Field name="game" type="Game" visibility="package"/>
+        <Field name="canvas" type="Pane" visibility="package"/>
+        <Field name="key" type="String" visibility="package"/>
+        <Field name="sprites" type="ArrayList&lt;Sprite&gt;" visibility="package"/>
+        <Field name="sprite_images" type="ArrayList&lt;ImageView&gt;" visibility="package"/>
+        <Field name="tile_images" type="ArrayList&lt;ImageView&gt;" visibility="package"/>
+        <Field name="other_images" type="ArrayList&lt;ImageView&gt;" visibility="package"/>
+        <Field name="delay" type="int" visibility="protected"/>
+        <Field name="width" type="double" visibility="protected"/>
+        <Field name="height" type="double" visibility="protected"/>
+        <Field name="title" type="String" visibility="protected"/>
+        <Field name="over" type="boolean" visibility="protected"/>
+        <Field name="timer" type="Timeline" visibility="protected"/>
+        <Field name="map" type="Map2D" visibility="protected"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="addSprite" returnType="void" visibility="public">
+          <Argument type="Sprite" name="sprite"/>
+        </Method>
+        <Method name="removeSprite" returnType="void" visibility="public">
+          <Argument type="Sprite" name="sprite"/>
+        </Method>
+        <Method name="build" returnType="void" visibility="private">
+          <Argument type="Game" name="game"/>
+        </Method>
+        <Method name="collisionDetection" returnType="void" visibility="private"/>
+        <Method name="update" returnType="void" visibility="private"/>
+        <Method name="drawAll" returnType="void" visibility="private"/>
+        <Method name="handleKey" returnType="void" visibility="private">
+          <Argument type="KeyEvent" name="event"/>
+        </Method>
+        <Method name="start" returnType="void" visibility="public">
+          <Argument type="Stage" name="primaryStage"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+        <Method name="drawImage" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="String" name="picname"/>
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+          <Argument type="int" name="w"/>
+          <Argument type="int" name="h"/>
+        </Method>
+        <Method name="drawSprite" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="String" name="picname"/>
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+          <Argument type="int" name="w"/>
+          <Argument type="int" name="h"/>
+          <Argument type="int" name="fx"/>
+          <Argument type="int" name="fy"/>
+        </Method>
+        <Method name="drawMapTile" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="String" name="picname"/>
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+          <Argument type="int" name="w"/>
+          <Argument type="int" name="h"/>
+          <Argument type="int" name="fx"/>
+          <Argument type="int" name="fy"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Interface name="API" package="engine" visibility="public" xPosition="920.0" yPosition="1220.0">
+      <Methods>
+        <Method name="drawImage" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="String" name="picname"/>
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+          <Argument type="int" name="w"/>
+          <Argument type="int" name="h"/>
+        </Method>
+        <Method name="drawSprite" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="String" name="picname"/>
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+          <Argument type="int" name="w"/>
+          <Argument type="int" name="h"/>
+          <Argument type="int" name="fx"/>
+          <Argument type="int" name="fy"/>
+        </Method>
+        <Method name="drawMapTile" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="String" name="picname"/>
+          <Argument type="double" name="x"/>
+          <Argument type="double" name="y"/>
+          <Argument type="int" name="w"/>
+          <Argument type="int" name="h"/>
+          <Argument type="int" name="fx"/>
+          <Argument type="int" name="fy"/>
+        </Method>
+      </Methods>
+    </Interface>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="sender" source="engine.Map.Map2DTileEvent" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <UseRelation source="game.PacmanRemastered.Map.PacTileEmpty" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="engine.Map.NullTile" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="engine.Map.Map2D" target="engine.Map.Map2DTileEventListener"/>
+    <UseRelation source="engine.Map.Map2DBuilder" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="up" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <HasRelation name="game" source="game.PacmanRemastered.PacDot" target="game.PacmanRemastered.Game" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="game.PacmanRemastered.Map.PacTileWall" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="game.PacmanRemastered.Game" target="engine.Sprite" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="game" source="engine.Map.Map2D" target="game.PacmanRemastered.Game" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="game.PacmanRemastered.Game" target="game.PacmanRemastered.Pacman" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="oldNeighbor" source="engine.Map.Events.TileNewNeighborEvent" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <HasRelation name="map" source="game.PacmanRemastered.Game" target="engine.Map.Map2D" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2D"/>
+    <HasRelation name="map" source="engine.Map.Map2DTile" target="engine.Map.Map2D" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2D"/>
+    <UseRelation source="engine.GameEngine" target="engine.Sprite" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="down" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <IsRelation name="is" source="engine.Map.Events.TileNewNeighborEvent" target="engine.Map.Map2DTileEvent"/>
+    <UseRelation source="game.PacmanRemastered.Pacman" target="engine.Sprite" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="game.PacmanRemastered.Map.PacTileWall" target="engine.Sprite" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="sprites" source="engine.GameEngine" target="engine.Sprite" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Sprite&gt;"/>
+    <IsRelation name="is" source="game.PacmanRemastered.Map.PacTileWall" target="engine.Map.Map2DTile"/>
+    <HasRelation name="api" source="engine.Map.Map2D" target="engine.API" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="engine.Sprite" target="engine.Map.Map2DTileEventListener"/>
+    <UseRelation source="engine.GameEngine" target="game.PacmanRemastered.Game" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="sprites" source="engine.Map.Map2DTile" target="engine.Sprite" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Sprite&gt;"/>
+    <HasRelation name="pacman" source="game.PacmanRemastered.Game" target="game.PacmanRemastered.Pacman" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="engine.Map.Events.TileSpriteTraverseEvent" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="mapTile1" source="game.PacmanRemastered.PacDot" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="ghosts.blinky" target="ghosts.GhostInterface"/>
+    <HasRelation name="wallFrames_internal" source="game.PacmanRemastered.Map.PacTileWall" target="game.PacmanRemastered.Map.WallStats" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="HashMap&lt;EnumSet&lt;WallStats&gt;, Integer&gt;"/>
+    <HasRelation name="game" source="engine.GameEngine" target="game.PacmanRemastered.Game" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="left" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <UseRelation source="game.PacmanRemastered.PacDot" target="engine.GameEngine" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="sprites" source="game.PacmanRemastered.Game" target="engine.Sprite" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Sprite&gt;"/>
+    <IsRelation name="is" source="engine.Map.Events.TileSpriteAddedEvent" target="engine.Map.Map2DTileEvent"/>
+    <UseRelation source="game.PacmanRemastered.Pacman" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="newNeighbor" source="engine.Map.Events.TileNewNeighborEvent" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <IsRelation name="is" source="engine.Map.NullTile" target="engine.Map.Map2DTile"/>
+    <UseRelation source="engine.Sprite" target="engine.Sprite" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="engine.Sprite" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="engine.Map.Events.TileSpriteTraverseEvent" target="engine.Map.Map2DTileEvent"/>
+    <UseRelation source="game.PacmanRemastered.PacDot" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="api" source="engine.Map.Map2DBuilder" target="engine.API" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="game.PacmanRemastered.Map.PacTileEmpty" target="engine.Map.Map2DTile"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="game.PacmanRemastered.PacDot" target="engine.Sprite"/>
+    <HasRelation name="game" source="game.PacmanRemastered.Pacman" target="game.PacmanRemastered.Game" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="engine.Map.Map2DTile" target="engine.Map.Map2DTileEventListener"/>
+    <UseRelation source="game.PacmanRemastered.Game" target="engine.API" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="map" source="engine.GameEngine" target="engine.Map.Map2D" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2D"/>
+    <UseRelation source="game.PacmanRemastered.Map.PacTileEmpty" target="engine.Sprite" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="engine.Map.Map2DTileEventListener" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="engine.Map.Map2D" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="game.PacmanRemastered.PacDot" target="engine.Sprite" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="engine.Map.NullTile" target="engine.Sprite" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="game.PacmanRemastered.Pacman" target="engine.GameEngine" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="engine.Sprite" target="engine.GameEngine" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="game" source="engine.Map.Map2DBuilder" target="game.PacmanRemastered.Game" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="game.PacmanRemastered.Map.PacTileWall" target="game.PacmanRemastered.Map.WallStats" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="game.PacmanRemastered.Pacman" target="engine.Sprite"/>
+    <HasRelation name="right" source="engine.Map.Map2DTile" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <HasRelation name="mapTile" source="game.PacmanRemastered.Pacman" target="engine.Map.Map2DTile" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Map2DTile"/>
+    <UseRelation source="engine.Map.Map2DTile" target="engine.Sprite" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="engine.Map.Events.TileSpriteRemovedEvent" target="engine.Map.Map2DTileEvent"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="engine.GameEngine" target="engine.API"/>
+    <HasRelation name="eList" source="engine.Map.Map2DTile" target="engine.Map.Map2DTileEventListener" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Map2DTileEventListener&gt;"/>
+    <UseRelation source="engine.Map.Map2DTile" target="engine.Map.Map2D" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="eList" source="engine.Map.Map2D" target="engine.Map.Map2DTileEventListener" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Map2DTileEventListener&gt;"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

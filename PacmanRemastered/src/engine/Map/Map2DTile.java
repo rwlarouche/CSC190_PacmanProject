@@ -207,8 +207,9 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     
     public Map2DCoords getBoardIndicies(){
         Map2D.Map2DIterator iterate = (Map2D.Map2DIterator)getMap().iterator();
-        while (iterate.hasNext() && iterate.next() != this){}
-        return new Map2DCoords(iterate.getTagColumn(iterate.tagIndex), iterate.getTagRow(iterate.tagIndex));
+        int tag = 0;
+        while (iterate.hasNext() && iterate.next() != this){tag++;}
+        return new Map2DCoords(iterate.getTagColumn(tag), iterate.getTagRow(tag));
     }
 
     public Map2DCoords getAbsCoordinates(){

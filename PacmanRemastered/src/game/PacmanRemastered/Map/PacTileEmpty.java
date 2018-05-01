@@ -33,7 +33,7 @@ public class PacTileEmpty extends Map2DTile{
     
     @Override
     public String getTileImagePath() {
-        return getMap().assetsRoot + "/images/pactiles.png";
+        return getMap().assetsRoot + "images/pactiles.png";
     }
 
     @Override

@@ -25,7 +25,7 @@ public class PacDot implements Sprite{
     int frame;
     int dir_num;
     
-    String picture = "images/packman.png";
+    String picture = "images/DotSprite.png";
     
     public PacDot(Game game)
     {

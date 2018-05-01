@@ -3,12 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game.PacmanRemastered;
+package game.PacmanRemastered.Map;
+
 /**
  *
- * @author csc190
+ * @author "[ ]"
  */
-public interface ObjectInterface {
-    void getTile();
-    void setTile(Object tile);
+public enum WallStats {
+    up,
+    down,
+    left,
+    right,
+    upLeft,
+    upRight,
+    downLeft,
+    downRight;
 }

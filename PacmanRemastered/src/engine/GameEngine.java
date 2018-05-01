@@ -37,6 +37,8 @@ public class GameEngine extends Application implements API {
     
     ArrayList<Sprite> sprites;          // ArrayList of sprites
     ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
+    ArrayList<ImageView> tile_images; 
+    ArrayList<ImageView> other_images; 
     
     protected int delay;                // Track the update delay
     protected double width;             // Width of game frame/canvas
@@ -90,7 +92,9 @@ public class GameEngine extends Application implements API {
         this.height = game.getHeight();
         this.title = game.getTitle();
         this.sprites = game.getSprites();
-        this.sprite_images = new ArrayList<ImageView>();
+        this.sprite_images = new ArrayList<>();
+        this.tile_images = new ArrayList<>();
+        this.other_images = new ArrayList<>();
     }
     
     /**
@@ -152,9 +156,7 @@ public class GameEngine extends Application implements API {
     // ============================
     
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException {
-        build(new Game());  // Build new pacman game (set datamembers)
-        
+    public void start(Stage primaryStage) throws FileNotFoundException {        
         canvas = new Pane();
         
         Scene scene = new Scene(canvas, this.height, this.width, Color.ANTIQUEWHITE);
@@ -162,9 +164,13 @@ public class GameEngine extends Application implements API {
         primaryStage.setTitle(this.title);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        build(new Game());  // Build new pacman game (set datamembers)
+
+        map.drawMap();
         
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKey);
-
+        
         timer = new Timeline(                
                 new KeyFrame(Duration.millis(100), e -> drawAll()), // Update drawing
                 new KeyFrame(Duration.millis(10), e -> update()),   // Update sprites
@@ -186,20 +192,20 @@ public class GameEngine extends Application implements API {
     @Override
     public void drawImage(int index, String picname, int x, int y, int w, int h){
         // Return if invalid index
-        if (index > sprite_images.size() -1) return;
+        if (index > other_images.size() -1) return;
         
         // Add image if not image set
-        if (sprite_images.get(index).getImage() == null) try {
-            sprite_images.get(index).setImage(new Image(new FileInputStream(picname)));
+        if (other_images.get(index).getImage() == null) try {
+            other_images.get(index).setImage(new Image(new FileInputStream(picname)));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        sprite_images.get(index).setFitWidth(w);       // Set image height
-        sprite_images.get(index).setFitHeight(h);      // Set image width
+        other_images.get(index).setFitWidth(w);       // Set image height
+        other_images.get(index).setFitHeight(h);      // Set image width
         
-        sprite_images.get(index).setTranslateX(x);      // Set Y coord
-        sprite_images.get(index).setTranslateY(y);      // Set X coord
+        other_images.get(index).setTranslateX(x);      // Set Y coord
+        other_images.get(index).setTranslateY(y);      // Set X coord
     }
         
     @Override
@@ -224,6 +230,35 @@ public class GameEngine extends Application implements API {
             sprite_images.get(index).setViewport(frame);    // Set sprite frame
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public void drawMapTile(int index, String picname, double x, double y, int w, int h, int fx, int fy){
+        // Return if invalid index
+        if (index > tile_images.size() -1) {
+            tile_images.add(new ImageView());
+            canvas.getChildren().add(tile_images.get(index));
+        }
+        
+        try {
+            Image img = new Image(new FileInputStream(picname));
+            
+             // Add image if not image set
+            if (tile_images.get(index).getImage() == null) tile_images.get(index).setImage(new Image(new FileInputStream(picname)));
+            
+            double fw = img.getWidth();
+            double fh = img.getHeight();
+        
+            // Determine sprite frame
+            Rectangle2D frame = new Rectangle2D(fx, fy, fx+w, fy+h);
+            
+            
+            tile_images.get(index).setTranslateX(x);      // Set Y coord
+            tile_images.get(index).setTranslateY(y);      // Set X coord
+            tile_images.get(index).setViewport(frame);    // Set sprite frame
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
         }
     }
     // ============================

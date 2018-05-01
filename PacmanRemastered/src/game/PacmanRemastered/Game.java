@@ -12,6 +12,7 @@ import engine.Map.Map2D;
 import engine.Map.Map2DBuilder;
 import engine.Map.Map2DTile;
 import game.PacmanRemastered.Map.PacTileEmpty;
+import game.PacmanRemastered.Map.PacTileWall;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
@@ -105,6 +106,9 @@ public class Game {
         b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(10, 10);
         b.mapGrid[4][4].add(getPacman());
         b.mapGrid[0] [2].add(new PacDot(this));
+        b.mapGrid[6] [3].add(new PacDot(this));
+        b.mapGrid[4] [4] = new PacTileWall();
+        b.mapGrid[4] [5] = new PacTileWall();
         b.api = api;
         map = b.build();
         //Adds all sprites in the map to the sprite table.
