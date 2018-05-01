@@ -22,7 +22,7 @@ public class Game {
     protected double width;     // Window width
     protected double height;    // Window height
     protected Pacman pacman;    // Pacman character
-    protected String key = "Right";     // String of name of last key pressed (Right default)
+    protected Direction key = Direction.RIGHT;     // String of name of last key pressed (Right default)
     protected ArrayList<Sprite> sprites;    // Array of game sprites
     public Map2D map;
     // ============================
@@ -31,8 +31,8 @@ public class Game {
     // ======== CONSTRUCTOR =======
     public Game() {
         title = "Pacman Remastered";
-        width = 640;
-        height = 640;
+        width = 10;        // Number of tiles X
+        height = 10;       // Number of tiles Y
         map = null;
         pacman = new Pacman(this);
         sprites = new ArrayList<>();
@@ -79,14 +79,15 @@ public class Game {
     
     /**
      * Returns current direction of pacman determined by KeyEvent handleKey
+     * @return key Returns Direction enum {UP,DOWN,LEFT,RIGHT}
      */
-    public String getKey() {
+    public Direction getKey() {
         return key;
     }
     // ============================
     
     // ====== SETTER METHODS ======
-    public void setKey(String key) {
+    public void setKey(Direction key) {
         this.key = key;
     }
     // ============================

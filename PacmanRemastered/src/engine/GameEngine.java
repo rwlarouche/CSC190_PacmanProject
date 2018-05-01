@@ -33,7 +33,7 @@ public class GameEngine extends Application implements API {
  
     Pane canvas;                        // Main canvas that the game is drawn on
     
-    String key = "Right";               // Track key pressed (Supports Left, Right, Up, Down)
+    Direction key = Direction.RIGHT;               // Track key pressed (Supports Left, Right, Up, Down)
     
     ArrayList<Sprite> sprites;          // ArrayList of sprites
     ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
@@ -88,8 +88,8 @@ public class GameEngine extends Application implements API {
         this.game = game;
         game.loadMap(this);
         this.map = game.map;        
-        this.width = game.getWidth();
-        this.height = game.getHeight();
+        this.width = game.getWidth()*game.map.tileDrawW;
+        this.height = game.getHeight()*game.map.tileDrawH;
         this.title = game.getTitle();
         this.sprites = game.getSprites();
         this.sprite_images = new ArrayList<>();
@@ -139,16 +139,16 @@ public class GameEngine extends Application implements API {
         String key = event.getCode().getName();
         switch(key) {
             case "Right":
-                this.key = "Right";
+                this.key = Direction.RIGHT;
                 break;
             case "Left":
-                this.key = "Left";
+                this.key = Direction.LEFT;
                 break;
             case "Up":
-                this.key = "Up";
+                this.key = Direction.UP;
                 break;
             case "Down":
-                this.key = "Down";
+                this.key = Direction.DOWN;
                 break;
         }
         game.setKey(this.key);

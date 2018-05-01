@@ -7,7 +7,6 @@ package engine.Map;
 
 
 import engine.API;
-import engine.Sprite;
 import game.PacmanRemastered.Game;
 import java.util.ArrayList;
 import java.util.Iterator;
