@@ -157,6 +157,7 @@ public class GameEngine extends Application implements API {
     
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {        
+        build(new Game());  // Build new pacman game (set datamembers)
         canvas = new Pane();
         
         Scene scene = new Scene(canvas, this.height, this.width, Color.ANTIQUEWHITE);
@@ -164,8 +165,6 @@ public class GameEngine extends Application implements API {
         primaryStage.setTitle(this.title);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        build(new Game());  // Build new pacman game (set datamembers)
 
         map.drawMap();
         
