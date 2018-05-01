@@ -86,7 +86,11 @@ public class PacDot implements Sprite{
 
     @Override
     public void onMapEvent(Map2DTileEvent e) {
-        
+
+        if(mapTile1 instanceof Map2DTile)
+        {
+            System.out.println("Test");
+        }
     }
 
     @Override

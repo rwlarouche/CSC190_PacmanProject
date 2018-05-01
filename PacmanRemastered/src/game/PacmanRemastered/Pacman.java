@@ -138,7 +138,10 @@ public class Pacman implements Sprite{
 
     @Override
     public void onMapEvent(Map2DTileEvent e) {
-        
+        if(mapTile instanceof Map2DTile)
+        {
+            System.out.println("Testing");
+        }
     }
 
     @Override
