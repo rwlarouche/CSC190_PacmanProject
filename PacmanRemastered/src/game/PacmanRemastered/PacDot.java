@@ -74,7 +74,10 @@ public class PacDot implements Sprite{
 
     @Override
     public void onMapEvent(Map2DTileEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(mapTile1 instanceof Map2DTile)
+        {
+            System.out.println("Test");
+        }
     }
 
     @Override
