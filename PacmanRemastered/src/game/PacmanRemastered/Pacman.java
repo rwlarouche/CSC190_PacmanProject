@@ -1,5 +1,6 @@
 package game.PacmanRemastered;
 
+import engine.Direction;
 import engine.GameEngine;
 import engine.Map.Events.TileSpriteTraverseEvent;
 import engine.Map.Map2DTile;
@@ -13,7 +14,7 @@ public class Pacman implements Sprite{
     final double STEP = 8;     // Movement speed of pacman	
     int frame;              // Track frame within sprite-sheets
     
-    String dir;             // Corresponds to direction pacman is moving
+    Direction dir;             // Corresponds to direction pacman is moving
     int dir_num;            // Corresponds to sprite frame direction
     
     double x, y;               // Tracks x,y location/coordinates of Pacman
@@ -24,6 +25,8 @@ public class Pacman implements Sprite{
     double width;
     double height;
     Map2DTile mapTile;
+    int tileW = 64;
+    int tileH = 64;
     // ============================
     
     // ======= CONSTRUCTOR ========
@@ -34,7 +37,7 @@ public class Pacman implements Sprite{
     public Pacman(Game game) {
         frame = 0;                  // Initial frame
         x = y = 128;
-        dir = "Right";    // Initial control direction
+        dir = Direction.RIGHT;    // Initial control direction
         dir_num = 39;       // Used by sprite to determine animation direction
         
         this.game = game;
@@ -80,27 +83,88 @@ public class Pacman implements Sprite{
      * Updates Pacman position based on movement direction
      */
     @Override
-    public void update() {
+    public void update() {   
+        if (game.map != null) {
+            tileW = game.map.tileDrawW;
+            tileH = game.map.tileDrawH;
+        }
+          
+        Direction old_dir = dir;
+        double old_dirnum = dir_num;
+        
+        // Get current key 
         dir = game.getKey();
-        switch(dir) {
-            case "Left":
-                x -= STEP;
-                dir_num = 0;
-                break;
-            case "Up":
-                y -= STEP;
-                dir_num = 1;
-                break;
-            case "Right":
-                x += STEP;
-                dir_num = 2;
-                break;
-            case "Down":
-                y += STEP;
-                dir_num = 3;
-                break;
+        
+        // Check is key is a valid movement direction (pacman is fixed along a 64x64 grid)
+        if (x%tileW == 0 && y%tileH == 0) {
+            switch(dir) {
+                case LEFT:
+                    x -= STEP;
+                    dir_num = 0;
+                    break;
+                case UP:
+                    y -= STEP;
+                    dir_num = 1;
+                    break;
+                case RIGHT:
+                    x += STEP;
+                    dir_num = 2;
+                    break;
+                case DOWN:
+                    y += STEP;
+                    dir_num = 3;
+                    break;
+            }
+        } else if (x%tileW != 0) {
+            switch(dir) {
+                case LEFT:
+                    x -= STEP;
+                    dir_num = 0;
+                    break;
+                case RIGHT:
+                    x += STEP;
+                    dir_num = 2;
+                    break;
+            }
+        } else {
+            switch(dir) {
+                case UP:
+                    y -= STEP;
+                    dir_num = 1;
+                    break;
+                case DOWN:
+                    y += STEP;
+                    dir_num = 3;
+                    break;
+            }            
         }
         
+        // Handle movement in same direction if pacman could not turn in new dir
+        // Reset key in game to prev key becuase new key is invalid
+        if (old_dirnum == dir_num) {
+            dir = old_dir;
+            game.setKey(dir);
+            
+                        switch(dir) {
+                case LEFT:
+                    x -= STEP;
+                    dir_num = 0;
+                    break;
+                case UP:
+                    y -= STEP;
+                    dir_num = 1;
+                    break;
+                case RIGHT:
+                    x += STEP;
+                    dir_num = 2;
+                    break;
+                case DOWN:
+                    y += STEP;
+                    dir_num = 3;
+                    break;
+            }
+        }
+/*        
         // Limit x bounds from moving out of frame
         if (x < 0) {
             x = 0;
@@ -114,6 +178,7 @@ public class Pacman implements Sprite{
         } else if (y > height - 64 - STEP) {
             y = width - 64 - STEP;
         }
+*/        
     } // update
             
     @Override
