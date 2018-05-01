@@ -17,7 +17,9 @@ import engine.Sprite;
 public class PacDot implements Sprite{
 
     Game game;
-    int x,y;
+    double x,y;
+
+
     int width, length;
     Map2DTile mapTile1;
     int frame;
@@ -29,19 +31,29 @@ public class PacDot implements Sprite{
     {
         x=y=131; // One temporary dot. Want a while loop that adds dots all aound the board based on the tile
         this.game = game;
-        setMapTile(this.game.map.getTile(5,5));
+        //setMapTile(this.game.map.getTile(5,5));
         width = 64;
         length = 64;
     }
     
-    public int getX()
-    {
+    @Override
+    public double getX() {
         return x;
     }
-    
-    public int getY()
-    {
+
+    @Override
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    @Override
+    public double getY() {
         return y;
+    }
+
+    @Override
+    public void setY(double y) {
+        this.y = y;
     }
     
     public int getLength(){
@@ -74,7 +86,7 @@ public class PacDot implements Sprite{
 
     @Override
     public void onMapEvent(Map2DTileEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override

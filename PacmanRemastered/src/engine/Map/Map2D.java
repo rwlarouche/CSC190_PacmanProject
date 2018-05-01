@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  *
@@ -123,7 +125,7 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
         }
     }
     
-    protected final void snapAllSpritesToAllTiles(){
+    public final void snapAllSpritesToAllTiles(){
         for (Map2DTile tile: this){
             tile.snapSpritesToTile();
         }
@@ -138,6 +140,10 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
      * Tile width and height, in pixels.
      */
     public final int tileDrawW, tileDrawH;
+    
+    public Stream<Map2DTile> stream(){
+        return StreamSupport.stream(spliterator(), false);
+    }
     
     @Override
     public Iterator<Map2DTile> iterator() {

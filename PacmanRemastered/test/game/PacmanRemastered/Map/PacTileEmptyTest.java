@@ -12,6 +12,7 @@ import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
 import game.PacmanRemastered.Game;
+import game.PacmanRemastered.PacDot;
 import game.PacmanRemastered.Pacman;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -171,18 +172,25 @@ public class PacTileEmptyTest {
         b.assetsRoot = "";
         b.tileSizeW = 64;
         b.tileSizeH = 64;
+        b.game = new Game();
         b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(numRows, numColumns);
-        b.mapGrid[b.mapGrid.length/2][b.mapGrid[0].length/2].add(new Pacman(new Game()));
+        b.mapGrid[b.mapGrid.length/2][(b.mapGrid[0].length)/2].add(new Pacman(b.game));
+        b.mapGrid[1] [2].add(new PacDot(b.game));
         Map2D result = b.build();
+        boolean foundSprite = false;
         for (Map2DTile e: result){
             if (e.getMap() == null || (e.getUp() == null && e.getLeft() == null && e.getDown() == null && e.getRight() == null))
                 fail("Map tiles missing associations.");
             for (Sprite s: e){
                 Map2DCoords coords = e.getAbsCoordinates();
-                if (s.getX() != coords.x || s.getY() != e.getAbsCoordinates().y)
+                if (s.getX() != coords.x || s.getY() != e.getAbsCoordinates().y) {
                     fail("One or more sprites un-centered!");
+                }
+                foundSprite = true;
             }
         }
+        if (!foundSprite)
+            fail("There were no sprites!");
         //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");

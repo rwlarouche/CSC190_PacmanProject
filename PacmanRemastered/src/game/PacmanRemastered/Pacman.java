@@ -37,7 +37,7 @@ public class Pacman implements Sprite{
         dir_num = 39;       // Used by sprite to determine animation direction
         
         this.game = game;
-        setMapTile(this.game.map.getTile(10,10));
+        //setMapTile(this.game.map.getTile(10,10));
         width = game.width;
         height = game.height;
     } // constructor
@@ -121,7 +121,7 @@ public class Pacman implements Sprite{
         frame += 1;
         if (frame > 2) {
             frame = 0;
-        }
+        }        
         api.drawSprite(index, pic, x, y, 3, 4, frame, dir_num);
     }
     // ============================

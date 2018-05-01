@@ -10,7 +10,10 @@ package game.PacmanRemastered;
 import engine.*;
 import engine.Map.Map2D;
 import engine.Map.Map2DBuilder;
+import engine.Map.Map2DTile;
+import game.PacmanRemastered.Map.PacTileEmpty;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class Game { 
     // ======= DATA MEMBERS =======
@@ -29,12 +32,11 @@ public class Game {
         title = "Pacman Remastered";
         width = 640;
         height = 640;
-        map = new Map2D(new Map2DBuilder());
+        map = null;
         pacman = new Pacman(this);
         sprites = new ArrayList<>();
         sprites.add(this.pacman);
-        sprites.add(new PacDot(this));
-    } // constructor
+    }// constructor
     // ============================
 
     // ====== ACCESSOR METHODS ====
@@ -87,4 +89,25 @@ public class Game {
         this.key = key;
     }
     // ============================
+    
+    /**
+     * This needs to be changed to load different map files later.
+     * Configures the game map. Can't be used during loading because the map object requires the game object to be constructed first.
+     * @param api 
+     */
+    public void loadMap(API api){
+        Map2DBuilder b = new Map2DBuilder();
+        b.rootLevelPath = "";
+        b.assetsRoot = "";
+        b.tileSizeW = 64;
+        b.tileSizeH = 64;
+        b.game = this;
+        b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(10, 10);
+        b.mapGrid[4][4].add(getPacman());
+        b.mapGrid[0] [2].add(new PacDot(this));
+        b.api = api;
+        map = b.build();
+        //Adds all sprites in the map to the sprite table.
+        map.stream().map(Map2DTile::stream).reduce(Stream::concat).get().filter((e) ->{ return !sprites.contains(e);}).forEachOrdered(sprites::add);
+    }
 }

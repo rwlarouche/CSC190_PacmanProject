@@ -84,6 +84,7 @@ public class GameEngine extends Application implements API {
      */
     private void build(Game game){
         this.game = game;
+        game.loadMap(this);
         this.map = game.map;        
         this.width = game.getWidth();
         this.height = game.getHeight();
@@ -99,8 +100,7 @@ public class GameEngine extends Application implements API {
         for (int i = 0; i<sprites.size(); i++) {
                 Map2DTile t1 = sprites.get(i).getMapTile();
             for (int j = 0; j<sprites.size(); j++) {
-                Map2DTile t2 = sprites.get(j).getMapTile();
-                if (i != j && t1.equals(t2)) {
+                if (i != j && t1.contains(sprites.get(j))) {
                     sprites.get(i).collide(sprites.get(j));
                     sprites.get(j).collide(sprites.get(j));
                 }
@@ -115,6 +115,7 @@ public class GameEngine extends Application implements API {
         for (int i = 0; i<sprites.size(); i++){
             sprites.get(i).update();
         }
+        
     }
     
     /**
@@ -156,15 +157,13 @@ public class GameEngine extends Application implements API {
         
         canvas = new Pane();
         
-        Scene scene = new Scene(canvas, this.height, this.width, Color.BLACK);
+        Scene scene = new Scene(canvas, this.height, this.width, Color.ANTIQUEWHITE);
 
         primaryStage.setTitle(this.title);
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent key) -> {
-            handleKey(key);
-        });
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKey);
 
         timer = new Timeline(                
                 new KeyFrame(Duration.millis(100), e -> drawAll()), // Update drawing

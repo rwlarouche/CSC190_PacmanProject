@@ -13,6 +13,10 @@ import engine.Map.Map2DTileEvent;
  */
 public class TileSpriteTraverseEvent extends Map2DTileEvent {
     
+    public Map2DTile movedTo() { return (Map2DTile)affected[0];}
+    
+    public String direction() {return (String)affected[1];}
+    
     public TileSpriteTraverseEvent(Map2DTile sender, String event, Object... affected) {
         super(sender, event, affected);
     }

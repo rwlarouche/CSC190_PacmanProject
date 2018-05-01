@@ -28,4 +28,8 @@ import game.PacmanRemastered.Game;
         public Map2D build(){
             return new Map2D(this);
         }
+        
+        public Map2DBuilder(){}
     }
+
+
