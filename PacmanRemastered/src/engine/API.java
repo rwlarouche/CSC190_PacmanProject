@@ -33,5 +33,4 @@ public interface API {
     public void drawSprite(int index, String picname, double x, double y, int w, int h, int fx, int fy);    
     
     public void drawMapTile(int index, String picname, double x, double y, int w, int h, int fx, int fy);
-
 }

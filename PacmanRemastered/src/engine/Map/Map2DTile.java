@@ -158,7 +158,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
             sprite.setMapTile(up);
             doRemoveSprite(sprite);
             up.addMapEventListener(sprite);
-            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile up.", up, Direction.UP));
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile up.", up, Direction.UP, sprite));
             return true;
         }
         else return false;
@@ -172,7 +172,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
             sprite.setMapTile(left);
             doRemoveSprite(sprite);
             left.addMapEventListener(sprite);
-            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile left.", left, Direction.LEFT));
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile left.", left, Direction.LEFT, sprite));
             return true;
         }
         else return false;
@@ -186,7 +186,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
             sprite.setMapTile(down);
             doRemoveSprite(sprite);
             down.addMapEventListener(sprite);
-            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile down.", down, Direction.DOWN));
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile down.", down, Direction.DOWN, sprite));
             return true;
         }
         else return false;
@@ -200,7 +200,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
             sprite.setMapTile(right);
             doRemoveSprite(sprite);
             right.addMapEventListener(sprite);
-            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile right.", right, Direction.RIGHT));
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile right.", right, Direction.RIGHT, sprite));
             return true;
         }
         else return false;

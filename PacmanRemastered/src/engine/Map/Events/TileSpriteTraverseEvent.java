@@ -8,6 +8,7 @@ package engine.Map.Events;
 import engine.Direction;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
+import engine.Sprite;
 
 /**
  *
@@ -17,6 +18,8 @@ public class TileSpriteTraverseEvent extends Map2DTileEvent {
     public Map2DTile movedTo() { return (Map2DTile)affected[0];}
     
     public Direction direction() {return (Direction)affected[1];}
+    
+    public Sprite sprite() {return (Sprite)affected[2];}
     
     public TileSpriteTraverseEvent(Map2DTile sender, String event, Object... affected) {
         super(sender, event, affected);

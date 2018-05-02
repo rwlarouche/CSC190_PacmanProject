@@ -91,7 +91,6 @@ public class GameEngine extends Application implements API {
         this.width = game.getWidth()*game.map.tileDrawW;
         this.height = game.getHeight()*game.map.tileDrawH;
         this.title = game.getTitle();
-        this.sprites = game.getSprites();
         this.sprite_images = new ArrayList<>();
         this.tile_images = new ArrayList<>();
         this.other_images = new ArrayList<>();
@@ -172,8 +171,8 @@ public class GameEngine extends Application implements API {
         
         timer = new Timeline(                
                 new KeyFrame(Duration.millis(100), e -> drawAll()), // Update drawing
-                new KeyFrame(Duration.millis(10), e -> update()),   // Update sprites
-                new KeyFrame(Duration.millis(10), e -> collisionDetection())    // Check collisions
+                //new KeyFrame(Duration.millis(10), e -> collisionDetection()),    // Check collisions
+                new KeyFrame(Duration.millis(10), e -> update())   // Update sprites
         );
         timer.setCycleCount(Timeline.INDEFINITE);
         timer.play();

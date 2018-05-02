@@ -101,18 +101,22 @@ public class Pacman implements Sprite {
                 case LEFT:
                     result = mapTile.doTraverseLeft(this);
                     if (result) dir_num = 0;
+                    else dir = oldDir;
                     break;
                 case UP:
                     result = mapTile.doTraverseUp(this);
                     if (result) dir_num = 1;
+                    else dir = oldDir;
                     break;
                 case RIGHT:
                     result = mapTile.doTraverseRight(this);
                     if (result) dir_num = 2;
+                    else dir = oldDir;
                     break;
                 case DOWN:
                     result = mapTile.doTraverseDown(this);
                     if (result) dir_num = 3;
+                    else dir = oldDir;
                     break;
             }
         } else if (x % tileW != 0) {
@@ -123,6 +127,7 @@ public class Pacman implements Sprite {
                     if (result) {
                         dir_num = 0;
                     }
+                    else dir = oldDir;
                     break;
                 case RIGHT:
                     if (oldDir != dir)
@@ -130,6 +135,7 @@ public class Pacman implements Sprite {
                     if (result) {
                         dir_num = 2;
                     }
+                    else dir = oldDir;
                     break;
             }
         } else {
@@ -140,6 +146,7 @@ public class Pacman implements Sprite {
                     if (result) {
                         dir_num = 1;
                     }
+                    else dir = oldDir;
                     break;
                 case DOWN:
                     if (oldDir != dir)
@@ -147,6 +154,7 @@ public class Pacman implements Sprite {
                     if (result) {
                         dir_num = 3;
                     }
+                    else dir = oldDir;
                     break;
             }
         }
@@ -168,7 +176,6 @@ public class Pacman implements Sprite {
                 y += STEP;
                 break;
         }
-
         /*        
         // Limit x bounds from moving out of frame
         if (x < 0) {
