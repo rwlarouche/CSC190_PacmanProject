@@ -105,7 +105,7 @@ public class Game {
         b.tileSizeH = 64;
         b.game = this;
         b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(10, 10);
-        b.mapGrid[4][4].add(getPacman());
+        b.mapGrid[5][4].add(getPacman());
         b.mapGrid[0] [2].add(new PacDot(this));
         b.mapGrid[6] [3].add(new PacDot(this));
         b.mapGrid[4] [4] = new PacTileWall();
