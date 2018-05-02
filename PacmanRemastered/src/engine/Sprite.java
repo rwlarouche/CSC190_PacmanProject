@@ -11,7 +11,7 @@ import engine.Map.Map2DTileEventListener;
 
 public interface Sprite extends Map2DTileEventListener{
     public void update();
-    public void draw(int index, GameEngine api);
+    public void draw(GameEngine api);
     public double getX();
     public double getY();
     public void setX(double newX);

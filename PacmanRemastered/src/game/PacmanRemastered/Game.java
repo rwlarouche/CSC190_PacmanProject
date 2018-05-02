@@ -90,6 +90,16 @@ public class Game {
     public void setKey(Direction key) {
         this.key = key;
     }
+    
+    // Add new sprite into game
+    public void addSprite(Sprite sprite){
+        if (!sprites.contains(sprite)) sprites.add(sprite);
+    }
+    
+    // Remove sprite from game
+    public void removeSprite(Sprite sprite){
+        if (sprites.contains(sprite)) sprites.remove(sprite);
+    }
     // ============================
     
     /**

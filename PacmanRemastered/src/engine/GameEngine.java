@@ -13,6 +13,8 @@ import game.PacmanRemastered.Game;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -35,8 +37,9 @@ public class GameEngine extends Application implements API {
     
     Direction key = Direction.RIGHT;               // Track key pressed (Supports Left, Right, Up, Down)
     
-    ArrayList<Sprite> sprites;          // ArrayList of sprites
-    ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
+//    ArrayList<Sprite> sprites;          // ArrayList of sprites
+    Hashtable<Sprite,ImageView> sprites = new Hashtable<Sprite,ImageView>();
+//    ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
     ArrayList<ImageView> tile_images; 
     ArrayList<ImageView> other_images; 
     
@@ -58,7 +61,8 @@ public class GameEngine extends Application implements API {
      * @param sprite The sprite object to be added
      */
     public void addSprite(Sprite sprite) {
-        sprites.add(sprite);
+        sprites.put(sprite, new ImageView());
+        canvas.getChildren().add(sprites.get(sprite));
     }
     
     /**
@@ -67,15 +71,11 @@ public class GameEngine extends Application implements API {
      * @param sprite The sprite to be removed
      */
     public void removeSprite(Sprite sprite) {
-        int index = sprites.indexOf(sprite);
+        ImageView image = sprites.get(sprite);
+               
+        canvas.getChildren().remove(image);
+        image.setImage(null);
         sprites.remove(sprite);
-        
-        ImageView image = sprite_images.get(index);
-        if (image != null) {
-            canvas.getChildren().remove(image);
-            image.imageProperty().set(null);
-            sprite_images.remove(index);
-        }
     }
     // ============================
     
@@ -91,22 +91,41 @@ public class GameEngine extends Application implements API {
         this.width = game.getWidth()*game.map.tileDrawW;
         this.height = game.getHeight()*game.map.tileDrawH;
         this.title = game.getTitle();
-        this.sprites = game.getSprites();
-        this.sprite_images = new ArrayList<>();
         this.tile_images = new ArrayList<>();
         this.other_images = new ArrayList<>();
+    }
+    
+    /**
+     * Checks if the Game classes' sprites match the Game Engine's sprites
+     * Resolves differences (remove sprites that are not in game class but are in engine
+     * , add sprites that are but are not in engine)
+     */
+    private void checkSprites() {
+        ArrayList<Sprite> gameSprites = game.getSprites();
+        
+        // Add new sprites that are in Game but not engine
+        for (Sprite sprite1 : gameSprites) {
+            if (this.sprites.get(sprite1) == null) addSprite(sprite1);
+        }
+        
+        // Remove sprites that are not in Game but are in engine
+        Set<Sprite> spriteList = this.sprites.keySet();
+        for (Sprite sprite2 : spriteList) {
+            if (!gameSprites.contains(sprite2)) removeSprite(sprite2);
+        }
     }
     
     /**
      * Check sprite collisions
      */
     private void collisionDetection(){
-        for (int i = 0; i<sprites.size(); i++) {
-                Map2DTile t1 = sprites.get(i).getMapTile();
-            for (int j = 0; j<sprites.size(); j++) {
-                if (i != j && t1.contains(sprites.get(j))) {
-                    sprites.get(i).collide(sprites.get(j));
-                    sprites.get(j).collide(sprites.get(j));
+        Set<Sprite> spriteList = sprites.keySet();
+        for (Sprite sprite1 : spriteList) {
+                Map2DTile t1 = sprite1.getMapTile();
+            for (Sprite sprite2 : spriteList) {
+                if (sprite1 != sprite2 && t1.contains(sprite2)) {
+                    sprite1.collide(sprite2);
+                    sprite2.collide(sprite1);
                 }
             }
         }
@@ -116,8 +135,10 @@ public class GameEngine extends Application implements API {
      * Update any sprites by calling their update methods
      */
     private void update(){
-        for (int i = 0; i<sprites.size(); i++){
-            sprites.get(i).update();
+        checkSprites();
+        Set<Sprite> spriteList = sprites.keySet();
+        for (Sprite sprite : spriteList){
+            sprite.update();
         }
         
     }
@@ -126,12 +147,9 @@ public class GameEngine extends Application implements API {
      * Redraw sprite animations
      */
     private void drawAll() {
-        for (int i = 0; i<sprites.size(); i++){
-            if ((i+1) > sprite_images.size()) {
-                sprite_images.add(new ImageView());
-                canvas.getChildren().add(sprite_images.get(i));
-            }
-            sprites.get(i).draw(i, this);
+        Set<Sprite> spriteList = sprites.keySet();
+        for (Sprite sprite : spriteList){
+            sprite.draw(this);
         }
     }
     
@@ -189,34 +207,41 @@ public class GameEngine extends Application implements API {
     // =========== API ============
     // Override all implemented API methods
     @Override
-    public void drawImage(int index, String picname, int x, int y, int w, int h){
-        // Return if invalid index
-        if (index > other_images.size() -1) return;
+    public void drawImage(Sprite sprite, String picname, int x, int y, int w, int h){
+        if (sprites.get(sprite) == null) {
+            addSprite(sprite);
+        }
+        
+        ImageView image = sprites.get(sprite);
+        
         
         // Add image if not image set
-        if (other_images.get(index).getImage() == null) try {
-            other_images.get(index).setImage(new Image(new FileInputStream(picname)));
+        if (image.getImage() == null) try {
+            image.setImage(new Image(new FileInputStream(picname)));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        other_images.get(index).setFitWidth(w);       // Set image height
-        other_images.get(index).setFitHeight(h);      // Set image width
+        image.setFitWidth(w);       // Set image height
+        image.setFitHeight(h);      // Set image width
         
-        other_images.get(index).setTranslateX(x);      // Set Y coord
-        other_images.get(index).setTranslateY(y);      // Set X coord
+        image.setTranslateX(x);      // Set Y coord
+        image.setTranslateY(y);      // Set X coord
     }
         
     @Override
-    public void drawSprite(int index, String picname, double x, double y, int w, int h, int fx, int fy){
-        // Return if invalid index
-        if (index > sprite_images.size() -1) return;
+    public void drawSprite(Sprite sprite, String picname, double x, double y, int w, int h, int fx, int fy){
+        if (sprites.get(sprite) == null) {
+            addSprite(sprite);
+        }
+        
+        ImageView image = sprites.get(sprite);
         
         try {
             Image img = new Image(new FileInputStream(picname));
             
              // Add image if not image set
-            if (sprite_images.get(index).getImage() == null) sprite_images.get(index).setImage(new Image(new FileInputStream(picname)));
+            if (image.getImage() == null) image.setImage(new Image(new FileInputStream(picname)));
             
             double fw = img.getWidth();
             double fh = img.getHeight();
@@ -224,9 +249,9 @@ public class GameEngine extends Application implements API {
             // Determine sprite frame
             Rectangle2D frame = new Rectangle2D(fx*(fw/w), fy*(fh/h), fw/w, fh/h);
             
-            sprite_images.get(index).setTranslateX(x);      // Set Y coord
-            sprite_images.get(index).setTranslateY(y);      // Set X coord
-            sprite_images.get(index).setViewport(frame);    // Set sprite frame
+            image.setTranslateX(x);      // Set Y coord
+            image.setTranslateY(y);      // Set X coord
+            image.setViewport(frame);    // Set sprite frame
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
