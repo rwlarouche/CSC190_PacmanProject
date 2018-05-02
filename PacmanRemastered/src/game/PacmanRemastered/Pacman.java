@@ -21,7 +21,6 @@ public class Pacman implements Sprite {
     double x, y;               // Tracks x,y location/coordinates of Pacman
 
     String pic = "images/PacmanSprite.png";
-
     double width;
     double height;
     Map2DTile mapTile;
@@ -92,6 +91,7 @@ public class Pacman implements Sprite {
         }
 
         // Get current key
+        Direction oldDir = dir;
         dir = game.getKey();
         boolean result = true;
 
@@ -115,23 +115,38 @@ public class Pacman implements Sprite {
                     if (result) dir_num = 3;
                     break;
             }
-         
         } else if (x % tileW != 0) {
             switch (dir) {
                 case LEFT:
-                    if (result) dir_num = 0;
+                    if (oldDir != dir)
+                        result = mapTile.doTraverseLeft(this);
+                    if (result) {
+                        dir_num = 0;
+                    }
                     break;
                 case RIGHT:
-                    if (result) dir_num = 2;
+                    if (oldDir != dir)
+                        result = mapTile.doTraverseRight(this);
+                    if (result) {
+                        dir_num = 2;
+                    }
                     break;
             }
         } else {
             switch (dir) {
                 case UP:
-                    if (result) dir_num = 1;
+                    if (oldDir != dir)
+                        result = mapTile.doTraverseUp(this);
+                    if (result) {
+                        dir_num = 1;
+                    }
                     break;
                 case DOWN:
-                    if (result) dir_num = 3;
+                    if (oldDir != dir)
+                        result = mapTile.doTraverseDown(this);
+                    if (result) {
+                        dir_num = 3;
+                    }
                     break;
             }
         }
