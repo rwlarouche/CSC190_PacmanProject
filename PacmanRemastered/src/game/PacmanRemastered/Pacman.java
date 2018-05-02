@@ -9,13 +9,13 @@ import engine.Sprite;
 
 public class Pacman implements Sprite {
 
-    // ======= DATA MEMBERS =======
     Game game;
 
     final double STEP = 8;     // Movement speed of pacman	
     int frame;              // Track frame within sprite-sheets
 
     Direction dir;             // Corresponds to direction pacman is moving
+    Direction oldDir;
     int dir_num;            // Corresponds to sprite frame direction
 
     double x, y;               // Tracks x,y location/coordinates of Pacman
@@ -37,7 +37,7 @@ public class Pacman implements Sprite {
     public Pacman(Game game) {
         frame = 0;                  // Initial frame
         x = y = 64;
-        dir = Direction.RIGHT;    // Initial control direction
+        dir = oldDir = Direction.RIGHT;    // Initial control direction        
         dir_num = 39;       // Used by sprite to determine animation direction
 
         this.game = game;
@@ -91,8 +91,11 @@ public class Pacman implements Sprite {
         }
 
         // Get current key
-        Direction oldDir = dir;
+        Direction prev_dir = dir;
         dir = game.getKey();
+        if (dir != prev_dir) {
+            oldDir = prev_dir;
+        }
         boolean result = true;
 
         // Check is key is a valid movement direction (pacman is fixed along a 64x64 grid)
@@ -100,38 +103,44 @@ public class Pacman implements Sprite {
             switch (dir) {
                 case LEFT:
                     result = mapTile.doTraverseLeft(this);
-                    if (result) dir_num = 0;
-                    else dir = oldDir;
+                    if (result) {
+                        dir_num = 0;
+                    }
                     break;
                 case UP:
                     result = mapTile.doTraverseUp(this);
-                    if (result) dir_num = 1;
-                    else dir = oldDir;
+                    if (result) {
+                        dir_num = 1;
+                    }
                     break;
                 case RIGHT:
                     result = mapTile.doTraverseRight(this);
-                    if (result) dir_num = 2;
-                    else dir = oldDir;
+                    if (result) {
+                        dir_num = 2;
+                    }
                     break;
                 case DOWN:
                     result = mapTile.doTraverseDown(this);
-                    if (result) dir_num = 3;
-                    else dir = oldDir;
+                    if (result) {
+                        dir_num = 3;
+                    }
                     break;
             }
         } else if (x % tileW != 0) {
             switch (dir) {
                 case LEFT:
-                    if (oldDir != dir)
+                    if (prev_dir != dir) {
                         result = mapTile.doTraverseLeft(this);
+                    }
                     if (result) {
                         dir_num = 0;
                     }
                     else dir = oldDir;
                     break;
                 case RIGHT:
-                    if (oldDir != dir)
+                    if (prev_dir != dir) {
                         result = mapTile.doTraverseRight(this);
+                    }
                     if (result) {
                         dir_num = 2;
                     }
@@ -141,16 +150,18 @@ public class Pacman implements Sprite {
         } else {
             switch (dir) {
                 case UP:
-                    if (oldDir != dir)
+                    if (prev_dir != dir) {
                         result = mapTile.doTraverseUp(this);
+                    }
                     if (result) {
                         dir_num = 1;
                     }
                     else dir = oldDir;
                     break;
                 case DOWN:
-                    if (oldDir != dir)
+                    if (prev_dir != dir) {
                         result = mapTile.doTraverseDown(this);
+                    }
                     if (result) {
                         dir_num = 3;
                     }
@@ -158,23 +169,52 @@ public class Pacman implements Sprite {
                     break;
             }
         }
-        System.out.println(result);
+
         // Handle movement in same direction if pacman could not turn in new dir
-        // Reset key in game to prev key becuase new key is invalid
-        if (result)
-        switch (dir_num) {
-            case 0:
-                x -= STEP;
-                break;
-            case 1:
-                y -= STEP;
-                break;
-            case 2:
-                x += STEP;
-                break;
-            case 3:
-                y += STEP;
-                break;
+        if (result) {
+            switch (dir_num) {
+                case 0:
+                    x -= STEP;
+                    break;
+                case 1:
+                    y -= STEP;
+                    break;
+                case 2:
+                    x += STEP;
+                    break;
+                case 3:
+                    y += STEP;
+                    break;
+            }
+        } else {
+            if (dir != oldDir) {
+                switch (oldDir) {
+                    case LEFT:
+                        result = mapTile.doTraverseLeft(this);
+                        if (result) {
+                            x -= STEP;
+                        }
+                        break;
+                    case UP:
+                        result = mapTile.doTraverseUp(this);
+                        if (result) {
+                            y -= STEP;
+                        }
+                        break;
+                    case RIGHT:
+                        result = mapTile.doTraverseRight(this);
+                        if (result) {
+                            x += STEP;
+                        }
+                        break;
+                    case DOWN:
+                        result = mapTile.doTraverseDown(this);
+                        if (result) {
+                            y += STEP;
+                        }
+                        break;
+                }
+            }
         }
         /*        
         // Limit x bounds from moving out of frame
@@ -194,13 +234,13 @@ public class Pacman implements Sprite {
     } // update
 
     @Override
-    public void draw(int index, GameEngine api) {
+    public void draw(GameEngine api) {
         // Frame is used by draw to parse through sprite-sheet
         frame += 1;
         if (frame > 2) {
             frame = 0;
         }
-        api.drawSprite(index, pic, x, y, 3, 4, frame, dir_num);
+        api.drawSprite(this, pic, x, y, 3, 4, frame, dir_num);
     }
     // ============================
 
@@ -217,12 +257,12 @@ public class Pacman implements Sprite {
     @Override
     public void onMapEvent(Map2DTileEvent e) {
         if (e instanceof TileSpriteTraverseEvent) {
-            System.out.println("Testing");
+           // System.out.println("Testing");
         }
     }
 
     @Override
     public void collide(Sprite sprite) {
-        System.out.print("Pacman hit");
+       // System.out.print("Pacman hit");
     }
 }

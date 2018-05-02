@@ -10,18 +10,18 @@ package engine;
 public interface API {
     /**
      * Draw the image specified by ImageView at coordinates x,y
-     * @param index Index of picture in GameEngine ImageView ArrayList
+     * @param sprite
      * @param picname Picture path
      * @param x Picture x coordinate
      * @param y Picture y coordinate
      * @param w Picture width
      * @param h Picture height
      */
-    public void drawImage(int index, String picname, int x, int y, int w, int h);
+    public void drawImage(Sprite sprite, String picname, int x, int y, int w, int h);
     
     /**
      * Draw the image specified by ImageView at coordinates x,y
-     * @param index Index of picture in GameEngine ImageView ArrayList
+     * @param sprite
      * @param picname Picture path
      * @param x Picture x coordinate
      * @param y Picture y coordinate
@@ -30,7 +30,7 @@ public interface API {
      * @param fx Sprite frame x
      * @param fy Sprite frame y
      */
-    public void drawSprite(int index, String picname, double x, double y, int w, int h, int fx, int fy);    
+    public void drawSprite(Sprite sprite, String picname, double x, double y, int w, int h, int fx, int fy);    
     
     public void drawMapTile(int index, String picname, double x, double y, int w, int h, int fx, int fy);
 }

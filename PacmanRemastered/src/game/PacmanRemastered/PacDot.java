@@ -71,8 +71,8 @@ public class PacDot implements Sprite{
     }
 
     @Override
-    public void draw(int index, GameEngine api) {
-         api.drawSprite(index, picture, x, y, 1, 1, frame, dir_num);
+    public void draw(GameEngine api) {
+         api.drawSprite(this, picture, x, y, 1, 1, frame, dir_num);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class PacDot implements Sprite{
 
     @Override
     public void collide(Sprite sprite) {
-       System.out.println("Works!");
+       if (sprite instanceof Pacman) game.removeSprite(this);
     }
     
 }
