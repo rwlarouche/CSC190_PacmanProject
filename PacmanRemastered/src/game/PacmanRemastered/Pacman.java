@@ -37,7 +37,7 @@ public class Pacman implements Sprite {
      */
     public Pacman(Game game) {
         frame = 0;                  // Initial frame
-        x = y = 128;
+        x = y = 64;
         dir = Direction.RIGHT;    // Initial control direction
         dir_num = 39;       // Used by sprite to determine animation direction
 
@@ -93,43 +93,52 @@ public class Pacman implements Sprite {
 
         // Get current key
         dir = game.getKey();
+        boolean result = true;
 
         // Check is key is a valid movement direction (pacman is fixed along a 64x64 grid)
         if (x % tileW == 0 && y % tileH == 0) {
             switch (dir) {
                 case LEFT:
-                    dir_num = 0;
+                    result = mapTile.doTraverseLeft(this);
+                    if (result) dir_num = 0;
                     break;
                 case UP:
-                    dir_num = 1;
+                    result = mapTile.doTraverseUp(this);
+                    if (result) dir_num = 1;
                     break;
                 case RIGHT:
-                    dir_num = 2;
+                    result = mapTile.doTraverseRight(this);
+                    if (result) dir_num = 2;
                     break;
                 case DOWN:
-                    dir_num = 3;
+                    result = mapTile.doTraverseDown(this);
+                    if (result) dir_num = 3;
                     break;
             }
         } else if (x % tileW != 0) {
             switch (dir) {
                 case LEFT:
-                    dir_num = 0;
+                    result = mapTile.doTraverseLeft(this);
+                    if (result) dir_num = 0;
                     break;
                 case RIGHT:
-                    dir_num = 2;
+                    result = mapTile.doTraverseRight(this);
+                    if (result) dir_num = 2;
                     break;
             }
         } else {
             switch (dir) {
                 case UP:
-                    dir_num = 1;
+                    result = mapTile.doTraverseUp(this);
+                    if (result) dir_num = 1;
                     break;
                 case DOWN:
-                    dir_num = 3;
+                    result = mapTile.doTraverseDown(this);
+                    if (result) dir_num = 3;
                     break;
             }
         }
-
+        System.out.println(result);
         // Handle movement in same direction if pacman could not turn in new dir
         // Reset key in game to prev key becuase new key is invalid
         switch (dir_num) {
