@@ -167,7 +167,6 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
             System.out.println(coords.x + "," + coords.y);
             api.drawMapTile(iter.tagIndex -1, tile.getTileImagePath(), coords.x, coords.y, tileDrawW, tileDrawH, tile.getTileImageX(), tile.getTileImageY());
         }
-        
     }
     
     
