@@ -5,6 +5,7 @@
  */
 package engine.Map;
 
+import engine.Direction;
 import engine.Map.Events.*;
 import engine.Sprite;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         if (!traversing){
             Map2DTile old = this.up;
             this.up = up;
-            raiseMapEvent(new TileNewNeighborEvent(this, "up", old, up));
+            raiseMapEvent(new TileNewNeighborEvent(this, Direction.UP, old, up));
             return true;
         } else return false;
     }
@@ -100,7 +101,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         if (!traversing){
             Map2DTile old = this.left;
             this.left = left;
-            raiseMapEvent(new TileNewNeighborEvent(this, "left", old, left));
+            raiseMapEvent(new TileNewNeighborEvent(this, Direction.LEFT, old, left));
             return true;
         } else return false;
     }
@@ -113,7 +114,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         if (!traversing){
             Map2DTile old = this.right;
             this.right = right;
-            raiseMapEvent(new TileNewNeighborEvent(this, "right", old, right));
+            raiseMapEvent(new TileNewNeighborEvent(this, Direction.RIGHT, old, right));
             return true;
         } else return false;
     }
@@ -126,7 +127,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         if (!traversing){
             Map2DTile old = this.down;
             this.down = down;
-            raiseMapEvent(new TileNewNeighborEvent(this, "down", old, down));
+            raiseMapEvent(new TileNewNeighborEvent(this, Direction.DOWN, old, down));
             return true;
         } else return false;
     }
@@ -157,7 +158,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
             sprite.setMapTile(up);
             doRemoveSprite(sprite);
             up.addMapEventListener(sprite);
-            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile up.", up, "up"));
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile up.", up, Direction.UP));
             return true;
         }
         else return false;
@@ -171,7 +172,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
             sprite.setMapTile(left);
             doRemoveSprite(sprite);
             left.addMapEventListener(sprite);
-            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile left.", left, "left"));
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile left.", left, Direction.LEFT));
             return true;
         }
         else return false;
@@ -185,7 +186,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
             sprite.setMapTile(down);
             doRemoveSprite(sprite);
             down.addMapEventListener(sprite);
-            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile down.", down, "down"));
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile down.", down, Direction.DOWN));
             return true;
         }
         else return false;
@@ -199,7 +200,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
             sprite.setMapTile(right);
             doRemoveSprite(sprite);
             right.addMapEventListener(sprite);
-            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile right.", right, "right"));
+            raiseMapEvent(new TileSpriteTraverseEvent(this, " has moved one tile right.", right, Direction.RIGHT));
             return true;
         }
         else return false;
