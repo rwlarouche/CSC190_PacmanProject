@@ -115,25 +115,22 @@ public class Pacman implements Sprite {
                     if (result) dir_num = 3;
                     break;
             }
+         
         } else if (x % tileW != 0) {
             switch (dir) {
                 case LEFT:
-                    result = mapTile.doTraverseLeft(this);
                     if (result) dir_num = 0;
                     break;
                 case RIGHT:
-                    result = mapTile.doTraverseRight(this);
                     if (result) dir_num = 2;
                     break;
             }
         } else {
             switch (dir) {
                 case UP:
-                    result = mapTile.doTraverseUp(this);
                     if (result) dir_num = 1;
                     break;
                 case DOWN:
-                    result = mapTile.doTraverseDown(this);
                     if (result) dir_num = 3;
                     break;
             }
@@ -141,6 +138,7 @@ public class Pacman implements Sprite {
         System.out.println(result);
         // Handle movement in same direction if pacman could not turn in new dir
         // Reset key in game to prev key becuase new key is invalid
+        if (result)
         switch (dir_num) {
             case 0:
                 x -= STEP;
