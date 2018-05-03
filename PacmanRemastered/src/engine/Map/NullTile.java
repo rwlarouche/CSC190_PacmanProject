@@ -23,7 +23,7 @@ public class NullTile extends Map2DTile{
     }
 
     @Override
-    protected boolean canEnterTile(Sprite entity) {
+    public boolean canEnterTile(Sprite entity) {
         return false;
     }
 

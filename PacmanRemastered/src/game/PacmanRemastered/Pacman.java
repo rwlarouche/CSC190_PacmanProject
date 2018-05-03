@@ -16,8 +16,9 @@ public class Pacman implements Sprite {
 
     Direction dir;             // Corresponds to direction pacman is moving
     Direction oldDir;
+    int lastDir_num;
     int dir_num;            // Corresponds to sprite frame direction
-
+    protected double lastx, lasty;
     double x, y;               // Tracks x,y location/coordinates of Pacman
 
     String pic = "images/PacmanSprite.png";
@@ -93,13 +94,13 @@ public class Pacman implements Sprite {
         // Get current key
         Direction prev_dir = dir;
         dir = game.getKey();
+        boolean result = true;
         if (dir != prev_dir) {
             oldDir = prev_dir;
         }
-        boolean result = true;
-
         // Check is key is a valid movement direction (pacman is fixed along a 64x64 grid)
         if (x % tileW == 0 && y % tileH == 0) {
+            lastDir_num = dir_num;
             switch (dir) {
                 case LEFT:
                     result = mapTile.doTraverseLeft(this);
@@ -135,7 +136,7 @@ public class Pacman implements Sprite {
                     if (result) {
                         dir_num = 0;
                     }
-                    else dir = oldDir;
+                    //else dir = oldDir;
                     break;
                 case RIGHT:
                     if (prev_dir != dir) {
@@ -144,7 +145,7 @@ public class Pacman implements Sprite {
                     if (result) {
                         dir_num = 2;
                     }
-                    else dir = oldDir;
+                    //else dir = oldDir;
                     break;
             }
         } else {
@@ -156,7 +157,7 @@ public class Pacman implements Sprite {
                     if (result) {
                         dir_num = 1;
                     }
-                    else dir = oldDir;
+                    //else dir = oldDir;
                     break;
                 case DOWN:
                     if (prev_dir != dir) {
@@ -165,7 +166,7 @@ public class Pacman implements Sprite {
                     if (result) {
                         dir_num = 3;
                     }
-                    else dir = oldDir;
+                    //else dir = oldDir;
                     break;
             }
         }
@@ -186,36 +187,42 @@ public class Pacman implements Sprite {
                     y += STEP;
                     break;
             }
-        } else {
-            if (dir != oldDir) {
-                switch (oldDir) {
-                    case LEFT:
-                        result = mapTile.doTraverseLeft(this);
-                        if (result) {
-                            x -= STEP;
-                        }
-                        break;
-                    case UP:
-                        result = mapTile.doTraverseUp(this);
-                        if (result) {
-                            y -= STEP;
-                        }
-                        break;
-                    case RIGHT:
-                        result = mapTile.doTraverseRight(this);
-                        if (result) {
-                            x += STEP;
-                        }
-                        break;
-                    case DOWN:
-                        result = mapTile.doTraverseDown(this);
-                        if (result) {
-                            y += STEP;
-                        }
-                        break;
-                }
+        } else  if (!(lastx == x && lasty == y)){
+            switch (oldDir) {
+                case LEFT:
+                    if (lastx <= x) break;
+                    result = mapTile.doTraverseLeft(this);
+                    if (result) {
+                        x -= STEP;
+                    }
+                    break;
+                case UP:
+                    if (lasty <= y) break;
+                    result = mapTile.doTraverseUp(this);
+                    if (result) {
+                        y -= STEP;
+                    }
+                    break;
+                case RIGHT:
+                    if (lastx >= x) break;
+                    result = mapTile.doTraverseRight(this);
+                    if (result) {
+                        x += STEP;
+                    }
+                    break;
+                case DOWN:
+                    if (lasty >= y) break;
+                    result = mapTile.doTraverseDown(this);
+                    if (result) {
+                        y += STEP;
+                    }
+                    break;
             }
         }
+        lastx = x; lasty = y;
+        System.out.println(result);
+        System.out.println(mapTile.getAbsCoordinates().toString());
+        System.out.println("("+x+","+y+")");
         /*        
         // Limit x bounds from moving out of frame
         if (x < 0) {

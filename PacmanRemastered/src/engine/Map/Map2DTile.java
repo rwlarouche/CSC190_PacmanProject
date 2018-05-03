@@ -38,7 +38,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     public abstract int getTileImageY();
     
 
-    protected abstract boolean canEnterTile(Sprite entity); 
+    public abstract boolean canEnterTile(Sprite entity); 
     
     /**
      * Add an Entity to the tile. The actual call to entities.add(Object) must be called in here manually once the entity is prepared.
@@ -133,8 +133,9 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     }
     
     protected void raiseMapEvent(Map2DTileEvent e){
-        eList.forEach((eL) -> {
-            eL.onMapEvent(e);
+        new ArrayList<Map2DTileEventListener>(eList).forEach((eL) -> {
+            if (eList.contains(eL))//This way, if an event causes a sprite to remove itself, it won't caiuse an exception.
+                eL.onMapEvent(e);
         });
     }
     

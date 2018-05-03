@@ -99,7 +99,7 @@ public class PacDot implements Sprite{
 
     @Override
     public void collide(Sprite sprite) {
-       if (sprite instanceof Pacman) game.removeSprite(this);
+       //if (sprite instanceof Pacman) game.removeSprite(this);
     }
     
 }

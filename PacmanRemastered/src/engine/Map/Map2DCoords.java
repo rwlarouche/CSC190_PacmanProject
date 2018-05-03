@@ -12,6 +12,12 @@ package engine.Map;
 public class Map2DCoords {
     final public double x;
     final public double y;
+    
+    @Override
+    public String toString(){
+        return "("+x+ ","+y+")";
+    }
+    
     public Map2DCoords(double x, double y){
         this.x = x;
         this.y = y;

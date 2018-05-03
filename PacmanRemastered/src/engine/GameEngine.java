@@ -39,7 +39,7 @@ public class GameEngine extends Application implements API {
 //    ArrayList<Sprite> sprites;          // ArrayList of sprites
     Hashtable<Sprite,ImageView> sprites = new Hashtable<Sprite,ImageView>();
 //    ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
-    ArrayList<ImageView> tile_images; 
+    ArrayList<ImageView> tile_images;  //This also needs conversion to a hashtable.
     ArrayList<ImageView> other_images; 
     
     protected int delay;                // Track the update delay
@@ -109,7 +109,7 @@ public class GameEngine extends Application implements API {
         
         // Remove sprites that are not in Game but are in engine
         Set<Sprite> spriteList = this.sprites.keySet();
-        for (Sprite sprite2 : spriteList) {
+        for (Sprite sprite2 : new ArrayList<Sprite>(spriteList)) {
             if (!gameSprites.contains(sprite2)) removeSprite(sprite2);
         }
     }
