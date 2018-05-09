@@ -160,12 +160,12 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
     }
     
     public void drawMap(){
-        Map2D.Map2DIterator iter = (Map2D.Map2DIterator)iterator();
-        while(iter.hasNext()){
-            Map2DTile tile = iter.next();
-            Map2DCoords coords = tile.getAbsCoordinates();
-            api.drawMapTile(iter.tagIndex -1, tile.getTileImagePath(), coords.x, coords.y, tileDrawW, tileDrawH, tile.getTileImageX(), tile.getTileImageY());
-        }
+        api.drawMapArea(this, mapRootX, mapRootY, mapRootX, mapRootX);
+        forEach((tile)->{
+            Map2DCoords coords = tile.getLocalPixelCoordinates();
+            api.drawMapTile(tile, tile.getTileImagePath(), coords.x, coords.y, tileDrawW, tileDrawH, tile.getTileImageX(), tile.getTileImageY());
+        });
+        
     }
     
     

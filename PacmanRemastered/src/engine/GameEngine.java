@@ -13,7 +13,7 @@ import game.PacmanRemastered.Game;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,14 +32,18 @@ import javafx.scene.input.KeyEvent;
 public class GameEngine extends Application implements API {
     Game game;                          // Require game as a data member to use its objects
  
-    Pane canvas;                        // Main canvas that the game is drawn on
+    Pane parentPane;
+    
+    Pane mapPane;                        // Main canvas that the game is drawn on
     
     Direction key = Direction.RIGHT;               // Track key pressed (Supports Left, Right, Up, Down)
     
 //    ArrayList<Sprite> sprites;          // ArrayList of sprites
-    Hashtable<Sprite,ImageView> sprites = new Hashtable<Sprite,ImageView>();
+    HashMap<Sprite,ImageView> sprites = new HashMap<>();
 //    ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
+    HashMap<Map2DTile,ImageView> mapTiles = new HashMap<>();
     ArrayList<ImageView> tile_images;  //This also needs conversion to a hashtable.
+    
     ArrayList<ImageView> other_images; 
     
     protected int delay;                // Track the update delay
@@ -61,7 +65,7 @@ public class GameEngine extends Application implements API {
      */
     public void addSprite(Sprite sprite) {
         sprites.put(sprite, new ImageView());
-        canvas.getChildren().add(sprites.get(sprite));
+        mapPane.getChildren().add(sprites.get(sprite));
     }
     
     /**
@@ -72,7 +76,7 @@ public class GameEngine extends Application implements API {
     public void removeSprite(Sprite sprite) {
         ImageView image = sprites.get(sprite);
                
-        canvas.getChildren().remove(image);
+        mapPane.getChildren().remove(image);
         image.setImage(null);
         sprites.remove(sprite);
     }
@@ -103,15 +107,15 @@ public class GameEngine extends Application implements API {
         ArrayList<Sprite> gameSprites = game.getSprites();
         
         // Add new sprites that are in Game but not engine
-        for (Sprite sprite1 : gameSprites) {
-            if (this.sprites.get(sprite1) == null) addSprite(sprite1);
-        }
+        gameSprites.stream().filter((sprite1) -> (this.sprites.get(sprite1) == null)).forEachOrdered((sprite1) -> {
+            addSprite(sprite1);
+        });
         
         // Remove sprites that are not in Game but are in engine
-        Set<Sprite> spriteList = this.sprites.keySet();
-        for (Sprite sprite2 : new ArrayList<Sprite>(spriteList)) {
-            if (!gameSprites.contains(sprite2)) removeSprite(sprite2);
-        }
+        ArrayList<Sprite> spriteList = new ArrayList(sprites.keySet());
+        spriteList.stream().filter((sprite2) -> (!gameSprites.contains(sprite2))).forEachOrdered((sprite2) -> {
+            removeSprite(sprite2);
+        });
     }
     
     /**
@@ -119,15 +123,15 @@ public class GameEngine extends Application implements API {
      */
     private void collisionDetection(){
         Set<Sprite> spriteList = sprites.keySet();
-        for (Sprite sprite1 : spriteList) {
-                Map2DTile t1 = sprite1.getMapTile();
-            for (Sprite sprite2 : spriteList) {
-                if (sprite1 != sprite2 && t1.contains(sprite2)) {
-                    sprite1.collide(sprite2);
-                    sprite2.collide(sprite1);
-                }
-            }
-        }
+        spriteList.forEach((sprite1) -> {
+            Map2DTile t1 = sprite1.getMapTile();
+            spriteList.stream().filter((sprite2) -> (sprite1 != sprite2 && t1.contains(sprite2))).map((sprite2) -> {
+                sprite1.collide(sprite2);
+                return sprite2;
+            }).forEachOrdered((sprite2) -> {
+                sprite2.collide(sprite1);
+            });
+        });
     }
     
     /**
@@ -135,10 +139,9 @@ public class GameEngine extends Application implements API {
      */
     private void update(){
         checkSprites();
-        Set<Sprite> spriteList = sprites.keySet();
-        for (Sprite sprite : spriteList){
+        sprites.keySet().forEach((sprite) -> {
             sprite.update();
-        }
+        });
         
     }
     
@@ -147,9 +150,9 @@ public class GameEngine extends Application implements API {
      */
     private void drawAll() {
         Set<Sprite> spriteList = sprites.keySet();
-        for (Sprite sprite : spriteList){
+        spriteList.forEach((sprite) -> {
             sprite.draw(this);
-        }
+        });
     }
     
     private void handleKey(KeyEvent event){
@@ -175,9 +178,10 @@ public class GameEngine extends Application implements API {
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {        
         build(new Game());  // Build new pacman game (set datamembers)
-        canvas = new Pane();
+        parentPane = new Pane();
+
         
-        Scene scene = new Scene(canvas, this.height, this.width, Color.ANTIQUEWHITE);
+        Scene scene = new Scene(parentPane, this.height, this.width, Color.ANTIQUEWHITE);
 
         primaryStage.setTitle(this.title);
         primaryStage.setScene(scene);
@@ -257,32 +261,37 @@ public class GameEngine extends Application implements API {
     }
     
     @Override
-    public void drawMapTile(int index, String picname, double x, double y, int w, int h, int fx, int fy){
-        // Return if invalid index
-        if (index > tile_images.size() -1) {
-            tile_images.add(new ImageView());
-            canvas.getChildren().add(tile_images.get(index));
-        }
-        
+    public void drawMapTile(Map2DTile tile, String picname, double x, double y, int w, int h, int fx, int fy){
+        ImageView tileView = null;
         try {
-            Image img = new Image(new FileInputStream(picname));
-            
-             // Add image if not image set
-            if (tile_images.get(index).getImage() == null) tile_images.get(index).setImage(new Image(new FileInputStream(picname)));
-            
-            double fw = img.getWidth();
-            double fh = img.getHeight();
-        
-            // Determine sprite frame
-            Rectangle2D frame = new Rectangle2D(fx, fy, fx+w, fy+h);
-            
-            
-            tile_images.get(index).setTranslateX(x);      // Set Y coord
-            tile_images.get(index).setTranslateY(y);      // Set X coord
-            tile_images.get(index).setViewport(frame);    // Set sprite frame
+            if (!mapTiles.containsKey(tile)){
+                tileView = new ImageView(new Image(new FileInputStream(picname)));
+                mapTiles.put(tile, tileView);
+                mapPane.getChildren().add(tileView);
+                
+            }
+            else tileView = mapTiles.get(tile);
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
+        if (tileView == null) return;
+        double fw = tileView.getImage().getWidth();
+        double fh = tileView.getImage().getHeight();
+
+        // Determine sprite frame
+        Rectangle2D frame = new Rectangle2D(fx, fy, fx+w, fy+h);
+
+
+        tileView.setTranslateX(x);      // Set Y coord
+        tileView.setTranslateY(y);      // Set X coord
+        tileView.setViewport(frame);    // Set sprite frame
+    }
+    
+    @Override
+    public void drawMapArea(Map2D map, double x, double y, double w, double h) {
+        mapPane = new Pane();
+        parentPane.getChildren().add(mapPane);
+        mapPane.resizeRelocate(x, y, w, h);
     }
     // ============================
 }

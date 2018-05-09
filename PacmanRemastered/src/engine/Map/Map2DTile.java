@@ -214,13 +214,13 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         return new Map2DCoords(iterate.getTagColumn(tag), iterate.getTagRow(tag));
     }
 
-    public Map2DCoords getAbsCoordinates(){
+    public Map2DCoords getLocalPixelCoordinates(){
         Map2DCoords indicies = getBoardIndicies();
-        return new Map2DCoords(getMap().mapRootX + (indicies.x *getMap().tileDrawW), getMap().mapRootY + (indicies.y *getMap().tileDrawH));
+        return new Map2DCoords((indicies.x *getMap().tileDrawW), (indicies.y *getMap().tileDrawH));
     }
     
     public void snapSpritesToTile(){
-        Map2DCoords coordinates = getAbsCoordinates();
+        Map2DCoords coordinates = getLocalPixelCoordinates();
         this.stream().map((sprite) -> {
             sprite.setX(coordinates.x);
             return sprite;
