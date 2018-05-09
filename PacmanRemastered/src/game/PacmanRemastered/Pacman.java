@@ -102,28 +102,32 @@ public class Pacman implements Sprite {
         // Check is key is a valid movement direction (pacman is fixed along a 64x64 grid)
         if (x % tileW == 0 && y % tileH == 0) {
             switch (dir) {
-                case LEFT:
+                case LEFT:  
                     result = mapTile.doTraverseLeft(this);
                     if (result) {
                         dir_num = 0;
+                        oldDir = dir;
                     }
                     break;
                 case UP:
                     result = mapTile.doTraverseUp(this);
                     if (result) {
                         dir_num = 1;
+                        oldDir = dir;
                     }
                     break;
                 case RIGHT:
                     result = mapTile.doTraverseRight(this);
                     if (result) {
                         dir_num = 2;
+                        oldDir = dir;
                     }
                     break;
                 case DOWN:
                     result = mapTile.doTraverseDown(this);
                     if (result) {
                         dir_num = 3;
+                        oldDir = dir;
                     }
                     break;
             }
@@ -135,6 +139,7 @@ public class Pacman implements Sprite {
                     }
                     if (result) {
                         dir_num = 0;
+                        oldDir = dir;
                     }
                     break;
                 case RIGHT:
@@ -143,6 +148,7 @@ public class Pacman implements Sprite {
                     }
                     if (result) {
                         dir_num = 2;
+                        oldDir = dir;
                     }
                     break;
             }
@@ -154,6 +160,7 @@ public class Pacman implements Sprite {
                     }
                     if (result) {
                         dir_num = 1;
+                        oldDir = dir;
                     }
                     break;
                 case DOWN:
@@ -162,6 +169,7 @@ public class Pacman implements Sprite {
                     }
                     if (result) {
                         dir_num = 3;
+                        oldDir = dir;
                     }
                     break;
             }
@@ -210,6 +218,8 @@ public class Pacman implements Sprite {
                             y += STEP;
                         }
                         break;
+                   // default:
+                   //     dir = oldDir;                       
                 }
             }
         }
