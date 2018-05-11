@@ -6,6 +6,7 @@
 
 package game.PacmanRemastered.Map;
 
+import engine.Direction;
 import engine.Map.Map2D;
 import engine.Map.Map2DBuilder;
 import engine.Map.Map2DTile;
@@ -23,7 +24,7 @@ public class PacTileEmpty extends Map2DTile{
     }
     
     public PacTileEmpty(){
-        super(null,null,null,null);
+        super();
     }
 
     @Override
@@ -37,6 +38,11 @@ public class PacTileEmpty extends Map2DTile{
     }
 
     @Override
+    public boolean canEnterTile(Sprite entity, Direction dir) {
+        return true;//Anything can enter a blank tile, and the only add method other classes can't use already checks if two of the same entity enter the tile.
+    }
+    
+    @Override
     public boolean canEnterTile(Sprite entity) {
         return true;//Anything can enter a blank tile, and the only add method other classes can't use already checks if two of the same entity enter the tile.
     }
@@ -49,11 +55,6 @@ public class PacTileEmpty extends Map2DTile{
     @Override
     protected boolean doRemoveSprite(Sprite entity) {
         return sprites.remove(entity);
-    }
-
-    @Override
-    public void update() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

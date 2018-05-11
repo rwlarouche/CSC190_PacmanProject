@@ -5,6 +5,7 @@
  */
 package engine.Map;
 
+import engine.Direction;
 import engine.Sprite;
 
 /**
@@ -23,9 +24,15 @@ public class NullTile extends Map2DTile{
     }
 
     @Override
+    public boolean canEnterTile(Sprite entity, Direction dir) {
+        return false;
+    }
+    
+    @Override
     public boolean canEnterTile(Sprite entity) {
         return false;
     }
+
 
     @Override
     protected boolean doAddSprite(Sprite entity) {
@@ -35,11 +42,6 @@ public class NullTile extends Map2DTile{
     @Override
     protected boolean doRemoveSprite(Sprite entity) {
         throw new UnsupportedOperationException("Not supported; null tile."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void update() {
-        
     }
 
     @Override

@@ -7,6 +7,7 @@ package engine.Map;
 
 
 import engine.API;
+import engine.Map.Events.TileNewNeighborEvent;
 import game.PacmanRemastered.Game;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,8 +36,17 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
         public int getTagRow(int tag){
             return (tag-getTagColumn(tag))/mapTiles[0].length;
         }
+        //Has some error checking just in case it's needed.
         public Map2DTile getTile(int tag){
-            return mapTiles[getTagRow(tag)][getTagColumn(tag)];
+            Map2DTile tileOut = mapTiles[getTagRow(tag)][getTagColumn(tag)];
+            if (tileOut == null){
+                api.togglePlaying();
+                mapTiles[getTagRow(tag)][getTagColumn(tag)] = tileOut = new NullTile();
+                prepMapTiles();
+                drawMap();
+                api.togglePlaying();
+            }
+            return tileOut;
         }
         @Override
         public boolean hasNext() {
@@ -62,6 +72,8 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
     }
     @Override
     public void onMapEvent(Map2DTileEvent e) {
+        if (e instanceof TileNewNeighborEvent)
+            prepMapTiles();
         eList.forEach((doIt) -> {
             doIt.onMapEvent(e);
         });
@@ -89,24 +101,30 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
     
     /**
      * Prepares map for use and sets the map to it; usually called in constructor, but perhaps it should technically also be called every time a map tile is updated?
-     * @param mapTiles
      */
     protected final void prepMapTiles(){
-        
         for (int ri = 0; ri < mapTiles.length; ri++){
             for (int ci = 0; ci < mapTiles[ri].length; ci++){
-                if (mapTiles[ri][ci] == null)
-                        mapTiles[ri][ci] = new NullTile();
-                Map2DTile curTile = mapTiles[ri][ci];
-                curTile.setMap(this);                
+                if (mapTiles[ri][ci] == null){
+                    mapTiles[ri][ci] = new NullTile();
+                }
+                final Map2DTile curTile = mapTiles[ri][ci];
+                curTile.stream().forEachOrdered((e) -> {curTile.addMapEventListener(e);});
+                curTile.setMap(this);
                 if (ci - 1 > -1){
-                    if (mapTiles[ri][ci-1] == null)
-                        mapTiles[ri][ci-1] = new NullTile();
+                    if (mapTiles[ri][ci-1] == null){
+                        if (curTile.getLeft()!= null)
+                            mapTiles[ri][ci-1] = curTile.getLeft();
+                        else mapTiles[ri][ci-1] = new NullTile();
+                    }
                     curTile.setLeft(mapTiles[ri][ci-1]);
                 }
-                if (ci + 1 < mapTiles[ri].length){
-                    if (mapTiles[ri][ci+1] == null)
-                        mapTiles[ri][ci+1] = new NullTile();
+                if (ci + 1 < mapTiles[ri].length){                    
+                    if (mapTiles[ri][ci+1] == null){
+                        if (curTile.getRight() != null)
+                            mapTiles[ri][ci+1] = curTile.getRight();
+                        else mapTiles[ri][ci+1] = new NullTile();
+                    }
                     curTile.setRight(mapTiles[ri][ci+1]);
                 }
                 if (ri - 1 > -1){
@@ -119,11 +137,11 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
                         mapTiles[ri+1][ci] = new NullTile();
                     curTile.setDown(mapTiles[ri+1][ci]);
                 }
+                curTile.stream().forEachOrdered((e) -> {curTile.addMapEventListener(e);});
                 curTile.addMapEventListener(this);
             }
         }
     }
-    
     public final void snapAllSpritesToAllTiles(){
         for (Map2DTile tile: this){
             tile.snapSpritesToTile();
@@ -162,13 +180,12 @@ public class Map2D implements Iterable<Map2DTile>, Map2DTileEventListener{
     public void drawMap(){
         api.drawMapArea(this, mapRootX, mapRootY, mapRootX, mapRootX);
         forEach((tile)->{
-            Map2DCoords coords = tile.getLocalPixelCoordinates();
+            Map2DCoords coords = tile.getLocalPixelCoordinates(true);
             api.drawMapTile(tile, tile.getTileImagePath(), coords.x, coords.y, tileDrawW, tileDrawH, tile.getTileImageX(), tile.getTileImageY());
         });
         
     }
-    
-    
+
     public Map2D(Map2DBuilder b){
         eList = new ArrayList<>();
         mapRootX = b.topLeftX;

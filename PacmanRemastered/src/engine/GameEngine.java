@@ -41,11 +41,11 @@ public class GameEngine extends Application implements API {
     Direction key = Direction.RIGHT;               // Track key pressed (Supports Left, Right, Up, Down)
     
     // Hashtable tracking all sprites and their corresponding ImageViews
-    HashMap<Sprite,ImageView> sprites = new HashMap<Sprite,ImageView>();
+    HashMap<Sprite,ImageView> sprites = new HashMap<>();
     // Hashtable tracking all textboxes
-    HashMap<UIElement, TextField> textboxes = new HashMap<UIElement, TextField>();
+    HashMap<UIElement, TextField> textboxes = new HashMap<>();
     // Hashtable tracking all buttons
-    HashMap<UIElement, Button> buttons = new HashMap<UIElement, Button>();
+    HashMap<UIElement, Button> buttons = new HashMap<>();
     
 //    ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
     HashMap<Map2DTile,ImageView> mapTiles = new HashMap<>();
@@ -95,10 +95,11 @@ public class GameEngine extends Application implements API {
      * @return FileInputStream of loaded file
      * @throws FileNotFoundException 
      */
-    public FileInputStream loadFile(String file) throws FileNotFoundException {
+    public FileInputStream chooseFile(String file) throws FileNotFoundException {
         return new FileInputStream(file);
     }
     
+    @Override
     public void addTextBox(UIElement textbox) {
         TextField tf = new TextField();
         tf.setText(textbox.getText());
@@ -111,6 +112,7 @@ public class GameEngine extends Application implements API {
         parentPane.getChildren().add(textboxes.get(textbox));
     }
     
+    @Override
     public void updateTextBox(UIElement textbox) {
         if (textboxes.containsKey(textbox)) {
            TextField tf = textboxes.get(textbox);
@@ -118,6 +120,7 @@ public class GameEngine extends Application implements API {
         }
     }
     
+    @Override
     public void removeTextBox(UIElement textbox) {
         TextField tf = textboxes.get(textbox);
                
@@ -126,6 +129,7 @@ public class GameEngine extends Application implements API {
         textboxes.remove(textbox);
     }
     
+    @Override
     public void addButton(UIElement button) {
         Button b = new Button();
         b.setText(button.getText());
@@ -134,18 +138,19 @@ public class GameEngine extends Application implements API {
         b.setMinSize(button.getWidth(), button.getHeight());
         b.setMaxSize(button.getWidth(), button.getHeight());
 
-        b.setOnAction((event) -> { button.action(); });
+        b.setOnAction((event) -> { button.doAction(); });
         
         buttons.put(button, b);
         parentPane.getChildren().add(buttons.get(button));
     }
     
+    @Override
     public void removeButton(UIElement button) {
         Button b = buttons.get(button);
                
         parentPane.getChildren().remove(b);
         b.disarm();
-        buttons.remove(b);    
+        buttons.remove(button);    
     }
     // ============================
     
@@ -329,6 +334,7 @@ public class GameEngine extends Application implements API {
     
     @Override
     public void drawMapTile(Map2DTile tile, String picname, double x, double y, int w, int h, int fx, int fy){
+        if (picname.equals(":alpha255:")) return; //For NullTile objects, or whenever nothing should be drawn.
         ImageView tileView = null;
         try {
             if (!mapTiles.containsKey(tile)){
@@ -361,6 +367,7 @@ public class GameEngine extends Application implements API {
         mapPane.resizeRelocate(x, y, w, h);
     }
     
+    @Override
     public void togglePlaying() {
         playing = !playing;
         if (playing) timer.pause();

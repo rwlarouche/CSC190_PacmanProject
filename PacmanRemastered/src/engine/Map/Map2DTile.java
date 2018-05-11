@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -36,25 +37,35 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     public abstract int getTileImageX();
     
     public abstract int getTileImageY();
-    
 
-    public abstract boolean canEnterTile(Sprite entity); 
+    public abstract boolean canEnterTile(Sprite sprite, Direction fromDir); 
+    
+    public boolean canEnterTile(Sprite sprite){
+        return EnumSet.allOf(Direction.class).stream().anyMatch((c)->{return canEnterTile(sprite, sprite.getDirection());});
+    }
+    
+    /**
+     * Not abstract due to rare need for usage. Allows a sprite to leave the tile.
+     * @param sprite
+     * @param toDir
+     * @return 
+     */
+    public boolean canLeaveTile(Sprite sprite, Direction toDir) {return true;}
     
     /**
      * Add an Entity to the tile. The actual call to entities.add(Object) must be called in here manually once the entity is prepared.
-     * @param entity
+     * @param sprite
      * @return Success of addition operation.
      */
-    protected abstract boolean doAddSprite(Sprite entity);
+    protected abstract boolean doAddSprite(Sprite sprite);
     
     /**
      * Sprite is removed from the tile. Must call sprites.remove from within this method.
-     * @param entity
+     * @param sprite
      * @return 
      */
-    protected abstract boolean doRemoveSprite(Sprite entity);
+    protected abstract boolean doRemoveSprite(Sprite sprite);
     
-    public abstract void update();
     
     private Map2D map;
 
@@ -74,7 +85,8 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
      * Contains all things present on the map tile, including characters, items, powerups, etc.
      */
     final protected ArrayList<Sprite> sprites;
-    protected boolean traversing; //Should actually be a semaphore, but that's okay because we don't need this for the most part yet. It might get removed before the end product.
+    //Not using traversing property for now.
+    //protected boolean traversing; //Should actually be a semaphore, but that's okay because we don't need this for the most part yet. It might get removed before the end product.
     protected Map2DTile up;
     protected Map2DTile left;
     protected Map2DTile right;
@@ -85,12 +97,12 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     }
 
     public boolean setUp(Map2DTile up) {
-        if (!traversing){
+        //if (!traversing){
             Map2DTile old = this.up;
             this.up = up;
             raiseMapEvent(new TileNewNeighborEvent(this, Direction.UP, old, up));
             return true;
-        } else return false;
+        //} else return false;
     }
 
     public Map2DTile getLeft() {
@@ -98,12 +110,12 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     }
 
     public boolean setLeft(Map2DTile left) {
-        if (!traversing){
+        //if (!traversing){
             Map2DTile old = this.left;
             this.left = left;
             raiseMapEvent(new TileNewNeighborEvent(this, Direction.LEFT, old, left));
             return true;
-        } else return false;
+        //} else return false;
     }
 
     public Map2DTile getRight() {
@@ -111,12 +123,12 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     }
 
     public boolean setRight(Map2DTile right) {
-        if (!traversing){
+        //if (!traversing){
             Map2DTile old = this.right;
             this.right = right;
             raiseMapEvent(new TileNewNeighborEvent(this, Direction.RIGHT, old, right));
             return true;
-        } else return false;
+        //} else return false;
     }
 
     public Map2DTile getDown() { //Insert GoldenEye meme here.
@@ -124,16 +136,16 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     }
 
     public boolean setDown(Map2DTile down) {
-        if (!traversing){
+        //if (!traversing){
             Map2DTile old = this.down;
             this.down = down;
             raiseMapEvent(new TileNewNeighborEvent(this, Direction.DOWN, old, down));
             return true;
-        } else return false;
+        //} else return false;
     }
     
     protected void raiseMapEvent(Map2DTileEvent e){
-        new ArrayList<Map2DTileEventListener>(eList).forEach((eL) -> {
+        new ArrayList<>(eList).forEach((eL) -> {
             if (eList.contains(eL))//This way, if an event causes a sprite to remove itself, it won't caiuse an exception.
                 eL.onMapEvent(e);
         });
@@ -151,10 +163,38 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         eList.remove(e);
     }    
     
+    
+    protected Direction getNeighborSide(Map2DTile tile){
+        if (getUp()!=null&&getUp().equals(tile))
+            return Direction.UP;
+        else if (getRight()!=null&&getRight().equals(tile))
+            return Direction.RIGHT;
+        else if (getDown()!=null&&getDown().equals(tile))
+            return Direction.DOWN;
+        else if (getLeft()!=null&&getLeft().equals(tile))
+            return Direction.LEFT;
+        else return null;
+    }
+    
+    protected Map2DTile getNeighborFromDir(Direction dir){
+        switch(dir){
+            case UP:
+                return getUp();
+            case DOWN:
+                return getDown();
+            case LEFT:
+                return getLeft();
+            case RIGHT:
+                return getRight();
+            default:
+                throw new AssertionError(dir.name());
+        }
+    }
+    
     public boolean doTraverseUp(Sprite sprite){
-        if (up == null ||!sprites.contains(sprite))
+        if (up == null ||!sprites.contains(sprite)||!canLeaveTile(sprite, sprite.getDirection()))
             return false;
-        else if (up.canEnterTile(sprite)&&up.doAddSprite(sprite)){
+        else if (up.canEnterTile(sprite, up.getNeighborSide(this))&&up.doAddSprite(sprite)){
             removeMapEventListener(sprite);
             sprite.setMapTile(up);
             doRemoveSprite(sprite);
@@ -166,9 +206,9 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     }
     
     public boolean doTraverseLeft(Sprite sprite){
-        if (left == null || !sprites.contains(sprite))
+        if (left == null || !sprites.contains(sprite)||!canLeaveTile(sprite, sprite.getDirection()))
             return false;
-        else if (left.canEnterTile(sprite)&&left.doAddSprite(sprite)){
+        else if (left.canEnterTile(sprite, left.getNeighborSide(this))&&left.doAddSprite(sprite)){
             removeMapEventListener(sprite);
             sprite.setMapTile(left);
             doRemoveSprite(sprite);
@@ -180,9 +220,9 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     }
     
     public boolean doTraverseDown(Sprite sprite){
-        if (down == null || !sprites.contains(sprite))
+        if (down == null || !sprites.contains(sprite)||!canLeaveTile(sprite, sprite.getDirection()))
             return false;
-        else if (down.canEnterTile(sprite)&&down.doAddSprite(sprite)){
+        else if (down.canEnterTile(sprite, down.getNeighborSide(this))&&down.doAddSprite(sprite)){
             removeMapEventListener(sprite);
             sprite.setMapTile(down);
             doRemoveSprite(sprite);
@@ -194,9 +234,9 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     }
     
     public boolean doTraverseRight(Sprite sprite){
-        if (right == null || !sprites.contains(sprite))
+        if (right == null || !sprites.contains(sprite)||!canLeaveTile(sprite,sprite.getDirection()))
             return false;
-        if (right.canEnterTile(sprite)&&right.doAddSprite(sprite)){
+        if (right.canEnterTile(sprite, right.getNeighborSide(this))&&right.doAddSprite(sprite)){
             removeMapEventListener(sprite);
             sprite.setMapTile(right);
             doRemoveSprite(sprite);
@@ -207,20 +247,24 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         else return false;
     }
     
-    public Map2DCoords getBoardIndicies(){
+    private Map2DCoords indicies;
+    public Map2DCoords getBoardIndicies(boolean recalculate){
+        if (!recalculate && indicies != null)
+            return indicies;
         Map2D.Map2DIterator iterate = (Map2D.Map2DIterator)getMap().iterator();
         int tag = 0;
         while (iterate.hasNext() && iterate.next() != this){tag++;}
-        return new Map2DCoords(iterate.getTagColumn(tag), iterate.getTagRow(tag));
+        indicies = new Map2DCoords(iterate.getTagColumn(tag), iterate.getTagRow(tag));
+        return indicies;
     }
 
-    public Map2DCoords getLocalPixelCoordinates(){
-        Map2DCoords indicies = getBoardIndicies();
+    public Map2DCoords getLocalPixelCoordinates(boolean recalculate){
+        getBoardIndicies(recalculate);
         return new Map2DCoords((indicies.x *getMap().tileDrawW), (indicies.y *getMap().tileDrawH));
     }
     
     public void snapSpritesToTile(){
-        Map2DCoords coordinates = getLocalPixelCoordinates();
+        Map2DCoords coordinates = getLocalPixelCoordinates(true);
         this.stream().map((sprite) -> {
             sprite.setX(coordinates.x);
             return sprite;
@@ -230,16 +274,18 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     }
     
     public Map2DTile(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Sprite... initEntities) {
-        sprites = new ArrayList<>();
-        sprites.addAll(Arrays.asList(initEntities));
-        sprites.forEach((s)->{addMapEventListener(s);});
-        eList = new ArrayList<>();
+        this(initEntities);
         this.up = up;
         this.down = down;
         this.left = left;
         this.right = right;
-        traversing = false;
+        //traversing = false;
     }  
+    
+    public Map2DTile(Sprite... initEntities){
+        this();
+        sprites.addAll(Arrays.asList(initEntities));
+    }
     
     public Map2DTile(){
         sprites = new ArrayList<>();
@@ -248,7 +294,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         this.down = null;
         this.left = null;
         this.right = null;
-        traversing = false;
+        //traversing = false;
     }
 
     @Override

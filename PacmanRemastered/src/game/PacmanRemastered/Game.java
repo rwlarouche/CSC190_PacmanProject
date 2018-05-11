@@ -11,6 +11,7 @@ import engine.*;
 import engine.Map.Map2D;
 import engine.Map.Map2DBuilder;
 import engine.Map.Map2DTile;
+import game.PacmanRemastered.Map.GhostZone;
 import game.PacmanRemastered.Map.PacTileEmpty;
 import game.PacmanRemastered.Map.PacTileWall;
 import java.util.ArrayList;
@@ -122,6 +123,8 @@ public class Game {
         b.mapGrid[6] [3].add(new PacDot(this));
         b.mapGrid[4] [4] = new PacTileWall();
         b.mapGrid[4] [5] = new PacTileWall();
+        b.mapGrid[1][6] = new GhostZone(Direction.UP);
+        b.mapGrid[1][7] = new GhostZone(Direction.UP);
         b.api = api;
         map = b.build();
         //Adds all sprites in the map to the sprite table.

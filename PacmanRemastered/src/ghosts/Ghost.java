@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package ghosts;
+
+import engine.Sprite;
+
 /**
  *
  * @author csc190
  */
-public interface GhostInterface{
+public interface Ghost extends Sprite{
     boolean move(); // Move around the screen
     void chase(int a); // Chase pacman if nearby
     void goBack(int a); // go back to spawn point   

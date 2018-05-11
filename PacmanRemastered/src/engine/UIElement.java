@@ -5,6 +5,9 @@
  */
 package engine;
 
+import java.lang.reflect.Method;
+import java.util.function.Consumer;
+
 public class UIElement {
     // ======= DATA MEMBERS =======
     protected API api;
@@ -13,24 +16,34 @@ public class UIElement {
     protected int y;
     protected int width;
     protected int height;
+    protected Consumer<UIElement> action;
     // ============================
     
     // ======= CONSTRUCTOR ========
     /**
      * Creates a new object to be used as a UI element (i.e. button or textbox)
+     * @param api
      * @param text Text displayed in button
      * @param x X coordinate on screen
      * @param y Y coordinate on screen
      * @param w Width dimension
      * @param h Height dimension
+     * @param action
      */
-    public UIElement(String text, int x, int y, int w, int h) {
+    public UIElement(API api, String text, int x, int y, int w, int h, Consumer<UIElement> action) {
+        this(api,text,x,y,w,h);
+        this.action = action;
+    }
+    
+    public UIElement(API api, String text, int x, int y, int w, int h){
+        this.api = api;
         this.text = text;
         this.x = x;
         this.y = y;
         this.width = w;
         this.height = h;
     }
+    
     // ============================
     
     // ===== ACCESSOR METHODS =====
@@ -74,8 +87,8 @@ public class UIElement {
         return width;
     }
     
-    // Override with desired functionality if element is a button
-    public void action() {};
+    // Fires stored action.
+    public void doAction() {if (action != null) action.accept(this);};
     // ============================
     
     // ======= SET METHODS ========
@@ -85,6 +98,7 @@ public class UIElement {
      */
     public void setText(String s) {
         text = s;
+        api.updateTextBox(this);
     }
     // ============================    
 }

@@ -5,6 +5,7 @@
  */
 package game.PacmanRemastered.Map;
 
+import engine.Direction;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
@@ -32,52 +33,52 @@ public class PacTileWall extends Map2DTile{
         //Conditions will be listed in order of appearance on the sheet so they can automatically be given an index.
         
         retThis.put(EnumSet.allOf(WallStats.class), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.down, WallStats.left, WallStats.right, WallStats.up), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.DOWN, WallStats.LEFT, WallStats.RIGHT, WallStats.UP), autoKeepTrack++);
         retThis.put(EnumSet.noneOf(WallStats.class), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.right, WallStats.down, WallStats.downRight), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.left, WallStats.up, WallStats.upLeft), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.left, WallStats.down, WallStats.downLeft), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.right, WallStats.up, WallStats.upRight), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.right, WallStats.down), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.left, WallStats.up), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.left, WallStats.down), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.right, WallStats.up), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.downLeft)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.upRight)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.upLeft)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.downRight)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.left, WallStats.downLeft, WallStats.upLeft)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.right, WallStats.upRight, WallStats.downRight)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.up, WallStats.upLeft, WallStats.upRight)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.down, WallStats.downLeft, WallStats.downRight)), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.right, WallStats.up, WallStats.down, WallStats.upRight), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.left, WallStats.up, WallStats.down, WallStats.downLeft), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.left, WallStats.right, WallStats.down, WallStats.downRight), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.up, WallStats.left, WallStats.right, WallStats.upLeft), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.down, WallStats.up, WallStats.right, WallStats.downRight), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.down, WallStats.up, WallStats.left, WallStats.upLeft), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.down, WallStats.right, WallStats.left, WallStats.downLeft), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.up, WallStats.right, WallStats.left, WallStats.upRight), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.up, WallStats.down, WallStats.right), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.up, WallStats.left, WallStats.down), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.right, WallStats.left, WallStats.down), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.up, WallStats.left, WallStats.right), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.downLeft, WallStats.upLeft, WallStats.upRight)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.downLeft, WallStats.downRight, WallStats.upRight)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.downRight, WallStats.upLeft, WallStats.upRight)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.downRight, WallStats.upLeft, WallStats.downLeft)), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.down), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.up), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.left), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.right), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.upLeft, WallStats.downLeft)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.upRight, WallStats.downRight)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.upRight, WallStats.upLeft)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.downRight, WallStats.downLeft)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.upRight, WallStats.downLeft)), autoKeepTrack++);
-        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.downRight, WallStats.upLeft)), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.up, WallStats.down), autoKeepTrack++);
-        retThis.put(EnumSet.of(WallStats.left, WallStats.right), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.RIGHT, WallStats.DOWN, WallStats.DOWNRIGHT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.LEFT, WallStats.UP, WallStats.UPLEFT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.LEFT, WallStats.DOWN, WallStats.DOWNLEFT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.RIGHT, WallStats.UP, WallStats.UPRIGHT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.RIGHT, WallStats.DOWN), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.LEFT, WallStats.UP), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.LEFT, WallStats.DOWN), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.RIGHT, WallStats.UP), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.DOWNLEFT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.UPRIGHT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.UPLEFT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.DOWNRIGHT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.LEFT, WallStats.DOWNLEFT, WallStats.UPLEFT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.RIGHT, WallStats.UPRIGHT, WallStats.DOWNRIGHT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.UP, WallStats.UPLEFT, WallStats.UPRIGHT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.DOWN, WallStats.DOWNLEFT, WallStats.DOWNRIGHT)), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.RIGHT, WallStats.UP, WallStats.DOWN, WallStats.UPRIGHT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.LEFT, WallStats.UP, WallStats.DOWN, WallStats.DOWNLEFT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.LEFT, WallStats.RIGHT, WallStats.DOWN, WallStats.DOWNRIGHT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.UP, WallStats.LEFT, WallStats.RIGHT, WallStats.UPLEFT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.DOWN, WallStats.UP, WallStats.RIGHT, WallStats.DOWNRIGHT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.DOWN, WallStats.UP, WallStats.LEFT, WallStats.UPLEFT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.DOWN, WallStats.RIGHT, WallStats.LEFT, WallStats.DOWNLEFT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.UP, WallStats.RIGHT, WallStats.LEFT, WallStats.UPRIGHT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.UP, WallStats.DOWN, WallStats.RIGHT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.UP, WallStats.LEFT, WallStats.DOWN), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.RIGHT, WallStats.LEFT, WallStats.DOWN), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.UP, WallStats.LEFT, WallStats.RIGHT), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.DOWNLEFT, WallStats.UPLEFT, WallStats.UPRIGHT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.DOWNLEFT, WallStats.DOWNRIGHT, WallStats.UPRIGHT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.DOWNRIGHT, WallStats.UPLEFT, WallStats.UPRIGHT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.DOWNRIGHT, WallStats.UPLEFT, WallStats.DOWNLEFT)), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.DOWN), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.UP), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.LEFT), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.RIGHT), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.UPLEFT, WallStats.DOWNLEFT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.UPRIGHT, WallStats.DOWNRIGHT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.UPRIGHT, WallStats.UPLEFT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.DOWNRIGHT, WallStats.DOWNLEFT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.UPRIGHT, WallStats.DOWNLEFT)), autoKeepTrack++);
+        retThis.put(EnumSet.complementOf(EnumSet.of(WallStats.DOWNRIGHT, WallStats.UPLEFT)), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.UP, WallStats.DOWN), autoKeepTrack++);
+        retThis.put(EnumSet.of(WallStats.LEFT, WallStats.RIGHT), autoKeepTrack++);
         
         //No condititons beyond this point, please!
         PacTileWall.wallFrames_internal = retThis;
@@ -89,37 +90,37 @@ public class PacTileWall extends Map2DTile{
     public int getTileImageX() {
         EnumSet<WallStats> wallStats = EnumSet.noneOf(WallStats.class);
         if (getUp() == null || !(getUp() instanceof PacTileEmpty))
-            wallStats.add(WallStats.up);
+            wallStats.add(WallStats.UP);
         if (getDown() == null || !(getDown() instanceof PacTileEmpty))
-            wallStats.add(WallStats.down);
+            wallStats.add(WallStats.DOWN);
         if (getLeft() == null || !(getLeft() instanceof PacTileEmpty))
-            wallStats.add(WallStats.left);
+            wallStats.add(WallStats.LEFT);
         if (getRight() == null || !(getRight() instanceof PacTileEmpty)){
-            wallStats.add(WallStats.right);
+            wallStats.add(WallStats.RIGHT);
         }   
-        if (wallStats.contains(WallStats.down) && wallStats.contains(WallStats.left)){
+        if (wallStats.contains(WallStats.DOWN) && wallStats.contains(WallStats.LEFT)){
             if (getDown().getLeft()== null || !(getDown().getLeft() instanceof PacTileEmpty))
-                wallStats.add(WallStats.downLeft);
+                wallStats.add(WallStats.DOWNLEFT);
             else if (getLeft().getDown()== null || !(getLeft().getDown() instanceof PacTileEmpty))
-                wallStats.add(WallStats.upLeft);
+                wallStats.add(WallStats.UPLEFT);
         }
-        if (wallStats.contains(WallStats.down) && wallStats.contains(WallStats.right)){
+        if (wallStats.contains(WallStats.DOWN) && wallStats.contains(WallStats.RIGHT)){
             if (getDown().getRight()== null || !(getDown().getRight() instanceof PacTileEmpty))
-                wallStats.add(WallStats.downRight);
+                wallStats.add(WallStats.DOWNRIGHT);
             else if (getRight().getDown()== null || !(getRight().getDown() instanceof PacTileEmpty))
-                wallStats.add(WallStats.downRight);
+                wallStats.add(WallStats.DOWNRIGHT);
         }
-        if (wallStats.contains(WallStats.up) && wallStats.contains(WallStats.right)){
+        if (wallStats.contains(WallStats.UP) && wallStats.contains(WallStats.RIGHT)){
             if (getUp().getRight()== null || !(getUp().getRight() instanceof PacTileEmpty))
-                wallStats.add(WallStats.upRight);
+                wallStats.add(WallStats.UPRIGHT);
             else if (getRight().getUp()== null || !(getRight().getUp() instanceof PacTileEmpty))
-                wallStats.add(WallStats.upRight);
+                wallStats.add(WallStats.UPRIGHT);
         }
-        if (wallStats.contains(WallStats.up) && wallStats.contains(WallStats.left)){
+        if (wallStats.contains(WallStats.UP) && wallStats.contains(WallStats.LEFT)){
             if (getUp().getLeft()== null || !(getUp().getLeft() instanceof PacTileEmpty))
-                wallStats.add(WallStats.upLeft);
+                wallStats.add(WallStats.UPLEFT);
             else if (getLeft().getUp()== null || !(getLeft().getUp() instanceof PacTileEmpty))
-                wallStats.add(WallStats.upLeft);
+                wallStats.add(WallStats.UPLEFT);
         }
 
         return WallMap().getOrDefault(wallStats,2) * getMap().tileDrawW;
@@ -131,7 +132,7 @@ public class PacTileWall extends Map2DTile{
     }
 
     @Override
-    public boolean canEnterTile(Sprite entity) {
+    public boolean canEnterTile(Sprite entity, Direction direction) {
         return false;
     }
 
@@ -146,21 +147,16 @@ public class PacTileWall extends Map2DTile{
     }
 
     @Override
-    public void update() {
-        
-    }
-
-    @Override
     public void onMapEvent(Map2DTileEvent e) {
         
     }
     
-    public PacTileWall(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Sprite... initEntities) {
+    public PacTileWall(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right) {
         super(up, down, left, right);
     }
     
     public PacTileWall(){
-        super(null,null,null,null);
+        super();
     }
     
 }

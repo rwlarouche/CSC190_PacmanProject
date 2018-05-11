@@ -3,6 +3,7 @@ package game.PacmanRemastered;
 import engine.Direction;
 import engine.GameEngine;
 import engine.Map.Events.TileSpriteTraverseEvent;
+import engine.Map.Map2DCoords;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
@@ -55,7 +56,7 @@ public class Pacman implements Sprite {
      * @return An int x coordinate
      */
     @Override
-    public double getX() {
+    public double getDrawX() {
         return x;
     }
 
@@ -65,7 +66,7 @@ public class Pacman implements Sprite {
      * @return An int y coordinate
      */
     @Override
-    public double getY() {
+    public double getDrawY() {
         return y;
     }
 
@@ -91,6 +92,7 @@ public class Pacman implements Sprite {
             tileH = game.map.tileDrawH;
         }
 
+        Map2DCoords coords = getMapTile().getLocalPixelCoordinates(false);
         // Get current key
         Direction prev_dir = dir;
         dir = game.getKey();
@@ -99,8 +101,11 @@ public class Pacman implements Sprite {
         }
         boolean result = true;
 
-        // Check is key is a valid movement direction (pacman is fixed along a 64x64 grid)
-        if (x % tileW == 0 && y % tileH == 0) {
+        // Check if key is a valid movement direction (pacman is fixed along a 64x64 grid)
+            if (x % tileW == 0 && y % tileH == 0) {
+            //Sanity check; map tile coordinates should be the same as PacMan's coordinates at this point; let's make sure (this should fix wrap-around issues).    
+            x = coords.x;
+            y = coords.y;
             switch (dir) {
                 case LEFT:  
                     result = mapTile.doTraverseLeft(this);
@@ -131,7 +136,7 @@ public class Pacman implements Sprite {
                     }
                     break;
             }
-        } else if (x % tileW != 0) {
+        } else if (x % tileW != 0 && y% tileH == 0) {
             switch (dir) {
                 case LEFT:
                     if (prev_dir != dir) {
@@ -152,7 +157,8 @@ public class Pacman implements Sprite {
                     }
                     break;
             }
-        } else {
+            //Catch if we've somehow escaped the buonds of the grid.
+        } else if (x % tileW == 0 && y % tileH != 0){//&& (Math.abs(x) - Math.abs(coords.x) <= tileW || Math.abs(coords.x)-Math.abs(x) <= tileW) && (Math.abs(y)-Math.abs(coords.y) <= tileH || Math.abs(coords.y) - Math.abs(y) <= tileH)
             switch (dir) {
                 case UP:
                     if (prev_dir != dir) {
@@ -173,6 +179,10 @@ public class Pacman implements Sprite {
                     }
                     break;
             }
+        }else {//We have a coordinate error and should reset PacMan to his tile. This state can only be reached deliberately, so punish the cheaters!
+                x = coords.x;
+                y = coords.y;
+                return;
         }
 
         // Handle movement in same direction if pacman could not turn in new dir
@@ -271,5 +281,10 @@ public class Pacman implements Sprite {
     @Override
     public void collide(Sprite sprite) {
        // System.out.print("Pacman hit");
+    }
+
+    @Override
+    public Direction getDirection() {
+        return dir;
     }
 }
