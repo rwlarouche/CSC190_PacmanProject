@@ -27,6 +27,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public class GameEngine extends Application implements API {
@@ -38,8 +40,13 @@ public class GameEngine extends Application implements API {
     
     Direction key = Direction.RIGHT;               // Track key pressed (Supports Left, Right, Up, Down)
     
-//    ArrayList<Sprite> sprites;          // ArrayList of sprites
-    HashMap<Sprite,ImageView> sprites = new HashMap<>();
+    // Hashtable tracking all sprites and their corresponding ImageViews
+    HashMap<Sprite,ImageView> sprites = new HashMap<Sprite,ImageView>();
+    // Hashtable tracking all textboxes
+    HashMap<UIElement, TextField> textboxes = new HashMap<UIElement, TextField>();
+    // Hashtable tracking all buttons
+    HashMap<UIElement, Button> buttons = new HashMap<UIElement, Button>();
+    
 //    ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
     HashMap<Map2DTile,ImageView> mapTiles = new HashMap<>();
     ArrayList<ImageView> tile_images;  //This also needs conversion to a hashtable.
@@ -51,7 +58,7 @@ public class GameEngine extends Application implements API {
     protected double height;            // Height of game frame/canvas
     protected String title;             // Name of game
     
-    protected boolean over = false; // Track whether the game is over
+    protected boolean playing = true;
     protected Timeline timer;
     
     //This needs to be set by the game itself.
@@ -79,6 +86,66 @@ public class GameEngine extends Application implements API {
         mapPane.getChildren().remove(image);
         image.setImage(null);
         sprites.remove(sprite);
+    }
+    
+    /**
+     * Loads and returns FileInputStream object of a passed file path OR throws
+     * exception if path not found
+     * @param file
+     * @return FileInputStream of loaded file
+     * @throws FileNotFoundException 
+     */
+    public FileInputStream loadFile(String file) throws FileNotFoundException {
+        return new FileInputStream(file);
+    }
+    
+    public void addTextBox(UIElement textbox) {
+        TextField tf = new TextField();
+        tf.setText(textbox.getText());
+        tf.setTranslateX(textbox.getX());
+        tf.setTranslateY(textbox.getY());
+        tf.setMinSize(textbox.getWidth(), textbox.getHeight());
+        tf.setMaxSize(textbox.getWidth(), textbox.getHeight());
+        
+        textboxes.put(textbox, tf);
+        parentPane.getChildren().add(textboxes.get(textbox));
+    }
+    
+    public void updateTextBox(UIElement textbox) {
+        if (textboxes.containsKey(textbox)) {
+           TextField tf = textboxes.get(textbox);
+           tf.setText(textbox.getText());
+        }
+    }
+    
+    public void removeTextBox(UIElement textbox) {
+        TextField tf = textboxes.get(textbox);
+               
+        parentPane.getChildren().remove(tf);
+        tf.clear();
+        textboxes.remove(textbox);
+    }
+    
+    public void addButton(UIElement button) {
+        Button b = new Button();
+        b.setText(button.getText());
+        b.setTranslateX(button.getX());
+        b.setTranslateY(button.getY());
+        b.setMinSize(button.getWidth(), button.getHeight());
+        b.setMaxSize(button.getWidth(), button.getHeight());
+
+        b.setOnAction((event) -> { button.action(); });
+        
+        buttons.put(button, b);
+        parentPane.getChildren().add(buttons.get(button));
+    }
+    
+    public void removeButton(UIElement button) {
+        Button b = buttons.get(button);
+               
+        parentPane.getChildren().remove(b);
+        b.disarm();
+        buttons.remove(b);    
     }
     // ============================
     
@@ -177,7 +244,7 @@ public class GameEngine extends Application implements API {
     
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {        
-        build(new Game());  // Build new pacman game (set datamembers)
+        build(new Game(this));  // Build new pacman game (set datamembers)
         parentPane = new Pane();
 
         
@@ -292,6 +359,12 @@ public class GameEngine extends Application implements API {
         mapPane = new Pane();
         parentPane.getChildren().add(mapPane);
         mapPane.resizeRelocate(x, y, w, h);
+    }
+    
+    public void togglePlaying() {
+        playing = !playing;
+        if (playing) timer.pause();
+        else timer.play();
     }
     // ============================
 }

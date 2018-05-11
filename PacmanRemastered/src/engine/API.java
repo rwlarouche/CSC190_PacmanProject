@@ -36,7 +36,6 @@ public interface API {
      */
     public void drawSprite(Sprite sprite, String picname, double x, double y, int w, int h, int fx, int fy);    
     
-    
     /**
      * Draws a map tile into the given area.
      * @param tile Tile to use.
@@ -59,4 +58,16 @@ public interface API {
      * @param h Make the map area this height.
      */
     public void drawMapArea(Map2D map, double x, double y, double w, double h);
+
+    public void addButton(UIElement button);
+    
+    public void removeButton(UIElement button);
+    
+    public void addTextBox(UIElement textbox);
+    
+    public void updateTextBox(UIElement textbox);
+    
+    public void removeTextBox(UIElement textbox);
+    
+    public void togglePlaying();
 }
