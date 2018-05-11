@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
@@ -27,7 +29,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
 
 public class GameEngine extends Application implements API {
     // ======= DATA MEMBERS =======
@@ -35,11 +40,15 @@ public class GameEngine extends Application implements API {
  
     Pane canvas;                        // Main canvas that the game is drawn on
     
-    Direction key = Direction.RIGHT;               // Track key pressed (Supports Left, Right, Up, Down)
+    Direction key = Direction.RIGHT;    // Track key pressed (Supports Left, Right, Up, Down)
     
-//    ArrayList<Sprite> sprites;          // ArrayList of sprites
+    // Hashtable tracking all sprites and their corresponding ImageViews
     Hashtable<Sprite,ImageView> sprites = new Hashtable<Sprite,ImageView>();
-//    ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
+    // Hashtable tracking all textboxes
+    Hashtable<UIElement, TextField> textboxes = new Hashtable<UIElement, TextField>();
+    // Hashtable tracking all buttons
+    Hashtable<UIElement, Button> buttons = new Hashtable<UIElement, Button>();
+            
     ArrayList<ImageView> tile_images; 
     ArrayList<ImageView> other_images; 
     
@@ -50,6 +59,8 @@ public class GameEngine extends Application implements API {
     
     protected boolean over = false; // Track whether the game is over
     protected Timeline timer;
+    
+    protected boolean playing = true;
     
     //This needs to be set by the game itself.
     protected Map2D map = null;
@@ -76,6 +87,66 @@ public class GameEngine extends Application implements API {
         canvas.getChildren().remove(image);
         image.setImage(null);
         sprites.remove(sprite);
+    }
+    
+    /**
+     * Loads and returns FileInputStream object of a passed file path OR throws
+     * exception if path not found
+     * @param file
+     * @return FileInputStream of loaded file
+     * @throws FileNotFoundException 
+     */
+    public FileInputStream loadFile(String file) throws FileNotFoundException {
+        return new FileInputStream(file);
+    }
+    
+    public void addTextBox(UIElement textbox) {
+        TextField tf = new TextField();
+        tf.setText(textbox.getText());
+        tf.setTranslateX(textbox.getX());
+        tf.setTranslateY(textbox.getY());
+        tf.setMinSize(textbox.getWidth(), textbox.getHeight());
+        tf.setMaxSize(textbox.getWidth(), textbox.getHeight());
+        
+        textboxes.put(textbox, tf);
+        canvas.getChildren().add(textboxes.get(textbox));
+    }
+    
+    public void updateTextBox(UIElement textbox) {
+        if (textboxes.containsKey(textbox)) {
+           TextField tf = textboxes.get(textbox);
+           tf.setText(textbox.getText());
+        }
+    }
+    
+    public void removeTextBox(UIElement textbox) {
+        TextField tf = textboxes.get(textbox);
+               
+        canvas.getChildren().remove(tf);
+        tf.clear();
+        textboxes.remove(textbox);
+    }
+    
+    public void addButton(UIElement button) {
+        Button b = new Button();
+        b.setText(button.getText());
+        b.setTranslateX(button.getX());
+        b.setTranslateY(button.getY());
+        b.setMinSize(button.getWidth(), button.getHeight());
+        b.setMaxSize(button.getWidth(), button.getHeight());
+
+        b.setOnAction((event) -> { button.action(); });
+        
+        buttons.put(button, b);
+        canvas.getChildren().add(buttons.get(button));
+    }
+    
+    public void removeButton(UIElement button) {
+        Button b = buttons.get(button);
+               
+        canvas.getChildren().remove(b);
+        b.disarm();
+        buttons.remove(b);    
     }
     // ============================
     
@@ -175,11 +246,11 @@ public class GameEngine extends Application implements API {
     
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {        
-        build(new Game());  // Build new pacman game (set datamembers)
+        build(new Game(this));  // Build new pacman game (set datamembers)
         canvas = new Pane();
         
         Scene scene = new Scene(canvas, this.height, this.width, Color.ANTIQUEWHITE);
-
+                
         primaryStage.setTitle(this.title);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -188,7 +259,7 @@ public class GameEngine extends Application implements API {
         
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKey);
         
-        timer = new Timeline(                
+        timer = new Timeline(
                 new KeyFrame(Duration.millis(100), e -> drawAll()), // Update drawing
                 new KeyFrame(Duration.millis(10), e -> update()),   // Update sprites
                 new KeyFrame(Duration.millis(10), e -> collisionDetection())    // Check collisions
@@ -284,6 +355,12 @@ public class GameEngine extends Application implements API {
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
+    }
+    
+    public void togglePlaying() {
+        playing = !playing;
+        if (playing) timer.pause();
+        else timer.play();
     }
     // ============================
 }

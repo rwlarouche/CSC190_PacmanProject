@@ -21,6 +21,7 @@ public class Game {
     protected String title;     // Window title
     protected double width;     // Window width
     protected double height;    // Window height
+    protected API api;
     protected Pacman pacman;    // Pacman character
     protected Direction key = Direction.RIGHT;     // String of name of last key pressed (Right default)
     protected ArrayList<Sprite> sprites;    // Array of game sprites
@@ -29,7 +30,8 @@ public class Game {
 
     
     // ======== CONSTRUCTOR =======
-    public Game() {
+    public Game(API api) {
+        this.api = api;
         title = "Pacman Remastered";
         width = 10;        // Number of tiles X
         height = 10;       // Number of tiles Y

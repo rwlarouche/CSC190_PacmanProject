@@ -33,5 +33,16 @@ public interface API {
     public void drawSprite(Sprite sprite, String picname, double x, double y, int w, int h, int fx, int fy);    
     
     public void drawMapTile(int index, String picname, double x, double y, int w, int h, int fx, int fy);
-
+    
+    public void addButton(UIElement button);
+    
+    public void removeButton(UIElement button);
+    
+    public void addTextBox(UIElement textbox);
+    
+    public void updateTextBox(UIElement textbox);
+    
+    public void removeTextBox(UIElement textbox);
+    
+    public void togglePlaying();
 }
