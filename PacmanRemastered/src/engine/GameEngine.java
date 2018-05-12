@@ -49,7 +49,8 @@ public class GameEngine extends Application implements API {
     
 //    ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
     HashMap<Map2DTile,ImageView> mapTiles = new HashMap<>();
-    ArrayList<ImageView> tile_images;  //This also needs conversion to a hashtable.
+    
+    HashMap<String, Image> loadedImages = new HashMap<>();
     
     ArrayList<ImageView> other_images; 
     
@@ -165,7 +166,6 @@ public class GameEngine extends Application implements API {
         this.width = game.getWidth()*game.getMap().tileDrawW;
         this.height = game.getHeight()*game.getMap().tileDrawH;
         this.title = game.getTitle();
-        this.tile_images = new ArrayList<>();
         this.other_images = new ArrayList<>();
     }
     
@@ -277,6 +277,21 @@ public class GameEngine extends Application implements API {
     public static void main(String[] args) {
         launch(args);
     }
+
+    /**
+     * Loads an image and keeps a reference to it so that we don't wind up with resource leaks.
+     * @param file
+     * @return
+     * @throws FileNotFoundException 
+     */
+    public Image getOrLoadImage(String file) throws FileNotFoundException{
+        Image getImage;
+        if (!loadedImages.containsKey(file)){
+            getImage = new Image(new FileInputStream(file));
+            loadedImages.put(file, getImage);
+        }else getImage = loadedImages.get(file);
+        return getImage;
+    }
     
     // =========== API ============
     // Override all implemented API methods
@@ -291,7 +306,7 @@ public class GameEngine extends Application implements API {
         
         // Add image if not image set
         if (image.getImage() == null) try {
-            image.setImage(new Image(new FileInputStream(picname)));
+            image.setImage(getOrLoadImage(picname));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -315,7 +330,7 @@ public class GameEngine extends Application implements API {
             Image img = new Image(new FileInputStream(picname));
             
              // Add image if not image set
-            if (image.getImage() == null) image.setImage(new Image(new FileInputStream(picname)));
+            if (image.getImage() == null) image.setImage(getOrLoadImage(picname));
             
             double fw = img.getWidth();
             double fh = img.getHeight();
@@ -337,7 +352,7 @@ public class GameEngine extends Application implements API {
         ImageView tileView = null;
         try {
             if (!mapTiles.containsKey(tile)){
-                tileView = new ImageView(new Image(new FileInputStream(picname)));
+                tileView = new ImageView(getOrLoadImage(picname));
                 mapTiles.put(tile, tileView);
                 mapPane.getChildren().add(tileView);
                 
