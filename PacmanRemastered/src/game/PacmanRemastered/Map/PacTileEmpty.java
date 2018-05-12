@@ -12,6 +12,8 @@ import engine.Map.Map2DBuilder;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
+import game.PacmanRemastered.Game;
+import game.PacmanRemastered.PacDot;
 
 /**
  *
@@ -67,11 +69,13 @@ public class PacTileEmpty extends Map2DTile{
         return 0; //The tile image is horizontal.
     }
     
-    public static Map2DTile[][] makeEmptyTileBoardArray(int numRows, int numColumns){
+    public static Map2DTile[][] makeEmptyTileBoardArray(Game game, int numRows, int numColumns){
         Map2DTile[][] tileMaker = new Map2DTile[numRows][numColumns];
         for (int row = 0; row < numRows; row++){
             for (int col = 0; col < numColumns; col++ ){
-                tileMaker[row][col] = new PacTileEmpty();
+                PacTileEmpty tile = new PacTileEmpty();
+                //tile.add(new PacDot(game));
+                tileMaker[row][col] = tile;
             }
         }
         return tileMaker;

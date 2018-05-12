@@ -62,7 +62,7 @@ public class GameEngine extends Application implements API {
     protected Timeline timer;
     
     //This needs to be set by the game itself.
-    protected Map2D map = null;
+    //protected Map2D map = null;
     // ============================
 
     // ====== PUBLIC METHODS ======
@@ -162,9 +162,8 @@ public class GameEngine extends Application implements API {
     private void build(Game game){
         this.game = game;
         game.loadMap(this);
-        this.map = game.map;        
-        this.width = game.getWidth()*game.map.tileDrawW;
-        this.height = game.getHeight()*game.map.tileDrawH;
+        this.width = game.getWidth()*game.getMap().tileDrawW;
+        this.height = game.getHeight()*game.getMap().tileDrawH;
         this.title = game.getTitle();
         this.tile_images = new ArrayList<>();
         this.other_images = new ArrayList<>();
@@ -259,14 +258,14 @@ public class GameEngine extends Application implements API {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        map.drawMap();
+        game.getMap().drawMap();
         
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKey);
         
         timer = new Timeline(                
-                new KeyFrame(Duration.millis(100), e -> drawAll()), // Update drawing
+                new KeyFrame(Duration.millis(100), e -> {if (playing) drawAll();}), // Update drawing
                 //new KeyFrame(Duration.millis(10), e -> collisionDetection()),    // Check collisions
-                new KeyFrame(Duration.millis(10), e -> update())   // Update sprites
+                new KeyFrame(Duration.millis(10), e -> {if (playing) update();})   // Update sprites
         );
         timer.setCycleCount(Timeline.INDEFINITE);
         timer.play();
@@ -362,6 +361,8 @@ public class GameEngine extends Application implements API {
     
     @Override
     public void drawMapArea(Map2D map, double x, double y, double w, double h) {
+        if (mapPane!=null)
+            parentPane.getChildren().remove(mapPane);
         mapPane = new Pane();
         parentPane.getChildren().add(mapPane);
         mapPane.resizeRelocate(x, y, w, h);
@@ -370,8 +371,8 @@ public class GameEngine extends Application implements API {
     @Override
     public void togglePlaying() {
         playing = !playing;
-        if (playing) timer.pause();
-        else timer.play();
+        //if (playing) timer.pause();
+        //else timer.play();
     }
     // ============================
 }

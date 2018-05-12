@@ -16,7 +16,7 @@ import engine.Sprite;
  *
  * @author csc190
  */
-public class PacDot implements Sprite{
+public class PacPill implements Sprite{
 
     Game game;
     double x,y;
@@ -26,9 +26,9 @@ public class PacDot implements Sprite{
     Map2DTile mapTile1;
     int frame;
     
-    String picture = "images/DotSprite.png";
+    String picture = "images/PillSprite.png";
     
-    public PacDot(Game game)
+    public PacPill(Game game)
     {
         x=y=131;
         this.game = game;
