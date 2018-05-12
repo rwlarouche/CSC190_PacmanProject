@@ -3,7 +3,7 @@
  <tileset firstgid="1" source="GhostSet.tsx"/>
  <layer name="Tile Layer 1" width="4" height="4">
   <data encoding="base64">
-   EQAAABIAAAATAAAAFAAAABUAAAAWAAAAFwAAABgAAAAZAAAAGgAAABsAAAAcAAAAHQAAAB4AAAAfAAAAIAAAAA==
+   HgAAABoAAAAWAAAAEgAAAB8AAAAbAAAAFwAAABMAAAAgAAAAHAAAABgAAAAUAAAAHQAAABkAAAAVAAAAEQAAAA==
   </data>
  </layer>
 </map>
