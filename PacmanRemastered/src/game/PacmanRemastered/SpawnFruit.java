@@ -10,6 +10,7 @@ import engine.Map.Events.TileSpriteTraverseEvent;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
+//import javax.swing.Timer;
 
 /**
  *
@@ -19,6 +20,7 @@ public class SpawnFruit implements Sprite{
     
     Game game;
     double x,y;
+  //  protected Timer timer;
     
     int width, length;
     Map2DTile mapTile1;
@@ -28,7 +30,9 @@ public class SpawnFruit implements Sprite{
     String picture = "images/DotSprite.png"; // use for now until we have a fruit sprite 
     // Images of fruit. Every fruit should be declared to a variable in an array
     public SpawnFruit(Game game){
-     
+    
+    //timer = new timer(40,this);
+    
     x=y=150;
     this.game = game;
     width = 64;
@@ -106,5 +110,9 @@ public class SpawnFruit implements Sprite{
            // Start off with the first fruit
            // Every time a level is finished, increment the value of fruit by one for the next fruit
            // Not sure how many fruits we'll have, but for the very last one, don't change the value}
+    }
+
+    private void checkSprites() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

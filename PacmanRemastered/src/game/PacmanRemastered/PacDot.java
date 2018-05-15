@@ -67,7 +67,7 @@ public class PacDot implements Sprite{
     
     @Override
     public void update() {
-
+        
     }
 
     @Override
