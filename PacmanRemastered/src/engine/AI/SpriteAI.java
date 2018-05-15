@@ -16,4 +16,6 @@ public interface SpriteAI extends Sprite{
    void setTarget(Sprite target);
    void setTarget(Map2DTile target);
    boolean buildPath();
+   boolean setPath(AIPath path);
+   AIPath getPath();
 }

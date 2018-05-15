@@ -7,20 +7,15 @@
 package game.PacmanRemastered.Map;
 
 import engine.Direction;
-import engine.Map.Map2D;
-import engine.Map.Map2DBuilder;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
 import game.PacmanRemastered.Game;
-import game.PacmanRemastered.PacDot;
 
 /**
- *
  * 
  */
 public class PacTileEmpty extends Map2DTile{
-
     public PacTileEmpty(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Sprite... initEntities) {
         super(up, down, left, right, initEntities);
     }
@@ -80,5 +75,4 @@ public class PacTileEmpty extends Map2DTile{
         }
         return tileMaker;
     }
-    
 }
