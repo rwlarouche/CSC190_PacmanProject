@@ -12,26 +12,23 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
-
 /**
  *
  * @author csc190
  */
-public class blinky implements GhostInterface{
-    // Buffered image for the blinky
+public class Clyde implements GhostInterface{
     Game game;
-    int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
+    int speed = 2; 
     int frame;
     int dir;
-    
-    Map2DTile mapTile3;
+    Map2DTile mapTile5;
     
     private int horizontal, vertical;
     private int size;
     
     boolean alive = true;
     
-    public blinky(Game game,int x, int y, int s){            
+    public Clyde(Game game,int x, int y, int s){
             frame = 0;
             horizontal = x;
             vertical = y;
@@ -124,31 +121,30 @@ public class blinky implements GhostInterface{
     
     public void chase(int speed)
     {
-        //For this ghost, stay at bottom left of map until pacman can be seen.
-        /* Compare distance (or, #of tiles, between pacman and the ghost.
-        If the distance between pacman and the ghost are close, theh ghost chases after pacman,
-        */
+        
     }
     
     public void goBack(int speed)
     {
         if(alive==false)
         {
- 
+            // Go back to the spawn point, should probably use dikjstra's algorithm
+            // Also change buffer image
         }
     }
     
     public int levelUp(int speed)
     {
+        // If the player completes a level, the speed of the ghost increases
         speed++;
         return speed;
     }
     
     public Map2DTile getMapTile() {
-        return mapTile3;
+        return mapTile5;
     }
 
-    private void setMapTile(Map2DTile tile3) {
-        this.mapTile3 = tile3;
+    private void setMapTile(Map2DTile tile5) {
+        this.mapTile5 = tile5;
     }
 }
