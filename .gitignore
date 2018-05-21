@@ -21,12 +21,12 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 <<<<<<< HEAD
-PacManRemastered/src/GameEngine2/nbproject/private/
-PacManRemastered/src/PacMan2/nbproject/private/
-PacManRemastered/src/GameEngine2/build/
-PacManRemastered/src/PacMan2/build/
-PacManRemastered/src/GameEngine/nbproject/private/
-PacManRemastered/src/GameEngine/build/
+PacManRemastered/src/GameEngine2/nbproject/private/*
+PacManRemastered/src/PacMan2/nbproject/private/*
+PacManRemastered/src/GameEngine2/build/*
+PacManRemastered/src/PacMan2/build/*
+PacManRemastered/src/GameEngine/nbproject/private/*
+PacManRemastered/src/GameEngine/build/*
 =======
-PacManRemastered/src/GameEngine/nbproject/private/
+PacManRemastered/src/GameEngine/nbproject/private/*
 >>>>>>> fcbfb607c9df3cb937eae4a22d9aadf912e06567
