@@ -6,10 +6,13 @@
 package engine.Map;
 
 import engine.API;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
+
 
 /**
  *
@@ -37,16 +40,35 @@ public abstract class Map2DLoader{
     * @param stream Input file stream.
     * @return 
     */
-    public Map2DTile[][] loadMap(Map2DBuilder b, InputStream stream){
-        Scanner mapScan = new Scanner(stream);
+    public Map2DTile[][] loadMap(Map2DBuilder b, InputStream stream) throws FileNotFoundException{
         
-//        if(sc != null){//sc is never null, so this'll always be true.
+          File file = new File("map.txt");  
+       
+          Scanner mapScan = new Scanner(file);
+          String [] size = mapScan.nextLine().split("\\s");
+        
+        char[][] array = new char[Integer.parseInt(size[0])][Integer.parseInt(size[1])];
+        
+        for(int i = 0; i < 4; i++){
+            array[i] = mapScan.nextLine().toCharArray();
+        }
+        
+        for(int k = 0; k < array.length; k++){
+            for(int s = 0; s < array[k].length; s++){
+                System.out.print(array[k][s]+" ");
+            }
+            System.out.println();
+        }
+        mapScan.close();
 //            theString = sc.nextLine();
 //            
-//            while (sc.hasNextLine()) {
-//                theString = theString + "\n" + sc.nextLine();
-//                
-//
+//            while (mapScan.hasNextLine()) {
+//                String line = mapScan.nextLine();
+//                System.out.println(line);
+//            }
+//            mapScan.close();
+        
+        
 //                char[] charArray = theString.toCharArray();
 //                
 //                for(int x = 0; x < charArray.length; x++){
@@ -62,9 +84,8 @@ public abstract class Map2DLoader{
 //                    else if(charArray[x] == '.'){
 //                        b.mapGrid[0][2].add(new PacPill(this));
 //                    }
-//                }}}
-//        else
-//            System.err.println("No Input.");//Don't use; this is a GUI application that won't be showing this to normal users.
+//                }}
+//        
         throw new UnsupportedOperationException("Delete this after you finish writing the method."); //To change body of generated methods, choose Tools | Templates.
    }
     

@@ -27,7 +27,17 @@ public class PacManMapLoader extends Map2DLoader{
 
     @Override
     public Map2DTile translateToTile(char symbol, int row, int column) {
+        
+        switch(symbol){
+            case 'w':
+                System.out.println("Wall");
+            case 'p':
+                System.out.println("Pacman");
+        }
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+    
     }
     
 }
