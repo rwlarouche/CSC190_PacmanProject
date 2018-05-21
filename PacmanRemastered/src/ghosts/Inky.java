@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
  *
  * @author csc190
  */
-public class Inky implements GhostInterface{
+public class Inky extends ghost implements GhostInterface{
 /**
  *
  * @author csc190
@@ -35,6 +35,7 @@ public class Inky implements GhostInterface{
     boolean alive = true;
     
     public Inky(Game game,int x, int y, int s){
+            super(game, x, y, s);
             frame = 0;
             horizontal = x;
             vertical = y;
@@ -62,7 +63,7 @@ public class Inky implements GhostInterface{
         vertical = y;
     }
     
-    private boolean valid(int x, int y)
+    public boolean valid(int x, int y)
     {
         boolean check = true;
         if(x==0 || x>size-1 || y==0 || y>size-1)

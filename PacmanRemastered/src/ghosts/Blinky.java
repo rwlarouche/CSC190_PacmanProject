@@ -7,18 +7,12 @@ package ghosts;
 
 import engine.Map.Map2DTile;
 import game.PacmanRemastered.Game;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 
 /**
  *
  * @author csc190
  */
-public class blinky implements GhostInterface{
-    // Buffered image for the blinky
+public class Blinky extends ghost implements GhostInterface {
     Game game;
     int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
     int frame;
@@ -31,7 +25,8 @@ public class blinky implements GhostInterface{
     
     boolean alive = true;
     
-    public blinky(Game game,int x, int y, int s){            
+    public Blinky(Game game,int x, int y, int s){   
+            super(game, x, y, s);
             frame = 0;
             horizontal = x;
             vertical = y;
@@ -59,7 +54,7 @@ public class blinky implements GhostInterface{
         vertical = y;
     }
     
-    private boolean valid(int x, int y)
+    public boolean valid(int x, int y)
     {
         boolean check = true;
         if(x==0 || x>size-1 || y==0 || y>size-1)
@@ -122,21 +117,11 @@ public class blinky implements GhostInterface{
         return canMove;
     }
     
-    public void chase(int speed)
+    public void doAI(int speed)
     {
-        //For this ghost, stay at bottom left of map until pacman can be seen.
-        /* Compare distance (or, #of tiles, between pacman and the ghost.
-        If the distance between pacman and the ghost are close, theh ghost chases after pacman,
-        */
+        // AI code here
     }
     
-    public void goBack(int speed)
-    {
-        if(alive==false)
-        {
- 
-        }
-    }
     
     public int levelUp(int speed)
     {
@@ -150,5 +135,15 @@ public class blinky implements GhostInterface{
 
     private void setMapTile(Map2DTile tile3) {
         this.mapTile3 = tile3;
+    }
+
+    @Override
+    public void chase(int a) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void goBack(int a) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

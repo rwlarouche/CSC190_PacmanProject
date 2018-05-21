@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
  *
  * @author csc190
  */
-public class Pinky implements GhostInterface{
+public class Pinky extends ghost implements GhostInterface{
     Game game;
     int speed = 2; 
     int frame;
@@ -29,6 +29,7 @@ public class Pinky implements GhostInterface{
     boolean alive = true;
     
     public Pinky(Game game, int x, int y, int s){
+            super(game, x, y, s);
             frame = 0;
             horizontal = x;
             vertical = y;
@@ -56,7 +57,7 @@ public class Pinky implements GhostInterface{
         vertical = y;
     }
     
-    private boolean valid(int x, int y)
+    public boolean valid(int x, int y)
     {
         boolean check = true;
         if(x==0 || x>size-1 || y==0 || y>size-1)
