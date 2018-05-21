@@ -10,14 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * 
  */
-public abstract class Map2DLoader {
+public abstract class Map2DLoader{
     
     /**
      * This should implement a switch statement that will take the characters that were input into the system and
