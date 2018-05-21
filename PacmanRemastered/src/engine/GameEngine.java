@@ -10,8 +10,10 @@ package engine;
 import engine.Map.Map2D;
 import engine.Map.Map2DTile;
 import game.PacmanRemastered.Game;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -30,6 +32,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 
 public class GameEngine extends Application implements API {
     Game game;                          // Require game as a data member to use its objects
@@ -92,12 +95,18 @@ public class GameEngine extends Application implements API {
     /**
      * Loads and returns FileInputStream object of a passed file path OR throws
      * exception if path not found
-     * @param file
+     * @param prompt
      * @return FileInputStream of loaded file
      * @throws FileNotFoundException 
      */
-    public FileInputStream chooseFile(String file) throws FileNotFoundException {
-        return new FileInputStream(file);
+    @Override
+    public InputStream chooseFile(String prompt) throws FileNotFoundException {
+        FileChooser fc = new FileChooser();
+        fc.setTitle(prompt);
+        File file = fc.showOpenDialog(parentPane.getScene().getWindow());
+        if (file != null)
+            return new FileInputStream(file.getAbsolutePath());
+        else return null;
     }
     
     @Override

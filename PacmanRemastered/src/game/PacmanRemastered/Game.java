@@ -144,7 +144,7 @@ public class Game {
      * Configures the game map. Can't be used during loading because the map object requires the game object to be constructed first.
      * @param api 
      */
-    public void loadMap(API api){
+    public void loadMap(API api){       
         Map2DBuilder b = new Map2DBuilder();
         b.rootLevelPath = "";
         b.assetsRoot = "";
@@ -152,59 +152,10 @@ public class Game {
         b.tileSizeH = 64;
         b.game = this;
         b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(this, 10, 10);
-
-        String theString = "";
-
-        File file = new File("map.txt");
-        Scanner sc;
-        
-        try {
-            sc = new Scanner(file);
-            
-            if(sc != null){
-            theString = sc.nextLine();
-        
-            while (sc.hasNextLine()) {
-            theString = theString + "\n" + sc.nextLine();
-            
-
-            char[] charArray = theString.toCharArray();
-            
-            for(int x = 0; x < charArray.length; x++){
-                
-                if(charArray[x] == 'w'){
-                    
-                    b.mapGrid[2][2] = new PacTileWall(); 
-                    
-               }
-                else if(charArray[x] == 'p'){
-                    b.mapGrid[0][0].add(new Pacman(this));
-                }
-                else if(charArray[x] == '.'){
-                    b.mapGrid[0][2].add(new PacPill(this));
-                }
-            }}}
-            else
-                System.err.println("No Input.");
-            
-            
-        
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        
-        //Map2DBuilder b = new Map2DBuilder();
-        //b.rootLevelPath = "";
-        //b.assetsRoot = "";
-        //b.tileSizeW = 64;
-        //b.tileSizeH = 64;
-        //b.game = this;
-        //b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(this, 10, 10);
-        //b.mapGrid[0][0].add(new Pacman(this));
-        //b.mapGrid[0] [2].add(new PacPill(this));
-        //b.mapGrid[6] [3].add(new PacPill(this));
-       // b.mapGrid[4] [3] = new PacTileWall();
+        b.mapGrid[0][0].add(new Pacman(this));
+        b.mapGrid[0] [2].add(new PacPill(this));
+        b.mapGrid[6] [3].add(new PacPill(this));
+        b.mapGrid[4] [3] = new PacTileWall();
        // b.mapGrid[4] [4] = new PacTileWall();
        // b.mapGrid[4] [5] = new PacTileWall();
        // b.mapGrid[5] [3] = new PacTileWall();
