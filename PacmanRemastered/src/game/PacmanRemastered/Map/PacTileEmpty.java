@@ -6,24 +6,22 @@
 
 package game.PacmanRemastered.Map;
 
-import engine.Map.Map2D;
-import engine.Map.Map2DBuilder;
+import engine.Direction;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
+import game.PacmanRemastered.Game;
 
 /**
- *
  * 
  */
 public class PacTileEmpty extends Map2DTile{
-
     public PacTileEmpty(Map2DTile up, Map2DTile down, Map2DTile left, Map2DTile right, Sprite... initEntities) {
         super(up, down, left, right, initEntities);
     }
     
     public PacTileEmpty(){
-        super(null,null,null,null);
+        super();
     }
 
     @Override
@@ -36,6 +34,11 @@ public class PacTileEmpty extends Map2DTile{
         return getMap().assetsRoot + "images/pactiles.png";
     }
 
+    @Override
+    public boolean canEnterTile(Sprite entity, Direction dir) {
+        return true;//Anything can enter a blank tile, and the only add method other classes can't use already checks if two of the same entity enter the tile.
+    }
+    
     @Override
     public boolean canEnterTile(Sprite entity) {
         return true;//Anything can enter a blank tile, and the only add method other classes can't use already checks if two of the same entity enter the tile.
@@ -52,11 +55,6 @@ public class PacTileEmpty extends Map2DTile{
     }
 
     @Override
-    public void update() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public int getTileImageX() {
         return 0; //The current tile image has this as the first one.
     }
@@ -66,14 +64,15 @@ public class PacTileEmpty extends Map2DTile{
         return 0; //The tile image is horizontal.
     }
     
-    public static Map2DTile[][] makeEmptyTileBoardArray(int numRows, int numColumns){
+    public static Map2DTile[][] makeEmptyTileBoardArray(Game game, int numRows, int numColumns){
         Map2DTile[][] tileMaker = new Map2DTile[numRows][numColumns];
         for (int row = 0; row < numRows; row++){
             for (int col = 0; col < numColumns; col++ ){
-                tileMaker[row][col] = new PacTileEmpty();
+                PacTileEmpty tile = new PacTileEmpty();
+                //tile.add(new PacDot(game));
+                tileMaker[row][col] = tile;
             }
         }
         return tileMaker;
     }
-    
 }

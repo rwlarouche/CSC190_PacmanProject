@@ -5,6 +5,7 @@
  */
 package game.PacmanRemastered;
 
+import engine.Direction;
 import engine.GameEngine;
 import engine.Map.Events.TileSpriteTraverseEvent;
 import engine.Map.Map2DTile;
@@ -24,13 +25,12 @@ public class PacDot implements Sprite{
     int width, length;
     Map2DTile mapTile1;
     int frame;
-    int dir_num;
     
     String picture = "images/DotSprite.png";
     
     public PacDot(Game game)
     {
-        x=y=131; // One temporary dot. Want a while loop that adds dots all aound the board based on the tile
+        x=y=131;
         this.game = game;
         //setMapTile(this.game.map.getTile(5,5));
         width = 64;
@@ -38,7 +38,7 @@ public class PacDot implements Sprite{
     }
     
     @Override
-    public double getX() {
+    public double getDrawX() {
         return x;
     }
 
@@ -48,7 +48,7 @@ public class PacDot implements Sprite{
     }
 
     @Override
-    public double getY() {
+    public double getDrawY() {
         return y;
     }
 
@@ -67,12 +67,12 @@ public class PacDot implements Sprite{
     
     @Override
     public void update() {
-        
+
     }
 
     @Override
     public void draw(GameEngine api) {
-         api.drawSprite(this, picture, x, y, 1, 1, frame, dir_num);
+         api.drawSprite(this, picture, x, y, 1, 1, frame, 0);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class PacDot implements Sprite{
         {
             if (((TileSpriteTraverseEvent)e).sprite()==game.getPacman()){
                 mapTile1.remove(this);
-                game.getSprites().remove(this);
+                game.removeSprite(this);
             }
         }
     }
@@ -100,6 +100,11 @@ public class PacDot implements Sprite{
     @Override
     public void collide(Sprite sprite) {
        //if (sprite instanceof Pacman) game.removeSprite(this);
+    }
+
+    @Override
+    public Direction getDirection() {
+        return Direction.UP;
     }
     
 }

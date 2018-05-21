@@ -10,12 +10,12 @@ package game.PacmanRemastered.Map;
  * @author "[ ]"
  */
 public enum WallStats {
-    up,
-    down,
-    left,
-    right,
-    upLeft,
-    upRight,
-    downLeft,
-    downRight;
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    UPLEFT,
+    UPRIGHT,
+    DOWNLEFT,
+    DOWNRIGHT;
 }

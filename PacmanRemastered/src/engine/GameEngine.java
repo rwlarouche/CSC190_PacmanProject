@@ -13,7 +13,7 @@ import game.PacmanRemastered.Game;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,19 +27,31 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public class GameEngine extends Application implements API {
     Game game;                          // Require game as a data member to use its objects
  
-    Pane canvas;                        // Main canvas that the game is drawn on
+    Pane parentPane;
+    
+    Pane mapPane;                        // Main canvas that the game is drawn on
     
     Direction key = Direction.RIGHT;               // Track key pressed (Supports Left, Right, Up, Down)
     
-//    ArrayList<Sprite> sprites;          // ArrayList of sprites
-    Hashtable<Sprite,ImageView> sprites = new Hashtable<Sprite,ImageView>();
+    // Hashtable tracking all sprites and their corresponding ImageViews
+    HashMap<Sprite,ImageView> sprites = new HashMap<>();
+    // Hashtable tracking all textboxes
+    HashMap<UIElement, TextField> textboxes = new HashMap<>();
+    // Hashtable tracking all buttons
+    HashMap<UIElement, Button> buttons = new HashMap<>();
+    
 //    ArrayList<ImageView> sprite_images; // ArrayList of ImageViews assoc. with each sprite
-    ArrayList<ImageView> tile_images;  //This also needs conversion to a hashtable.
+    HashMap<Map2DTile,ImageView> mapTiles = new HashMap<>();
+    
+    HashMap<String, Image> loadedImages = new HashMap<>();
+    
     ArrayList<ImageView> other_images; 
     
     protected int delay;                // Track the update delay
@@ -47,11 +59,11 @@ public class GameEngine extends Application implements API {
     protected double height;            // Height of game frame/canvas
     protected String title;             // Name of game
     
-    protected boolean over = false; // Track whether the game is over
+    protected boolean playing = true;
     protected Timeline timer;
     
     //This needs to be set by the game itself.
-    protected Map2D map = null;
+    //protected Map2D map = null;
     // ============================
 
     // ====== PUBLIC METHODS ======
@@ -61,7 +73,7 @@ public class GameEngine extends Application implements API {
      */
     public void addSprite(Sprite sprite) {
         sprites.put(sprite, new ImageView());
-        canvas.getChildren().add(sprites.get(sprite));
+        mapPane.getChildren().add(sprites.get(sprite));
     }
     
     /**
@@ -72,9 +84,74 @@ public class GameEngine extends Application implements API {
     public void removeSprite(Sprite sprite) {
         ImageView image = sprites.get(sprite);
                
-        canvas.getChildren().remove(image);
+        mapPane.getChildren().remove(image);
         image.setImage(null);
         sprites.remove(sprite);
+    }
+    
+    /**
+     * Loads and returns FileInputStream object of a passed file path OR throws
+     * exception if path not found
+     * @param file
+     * @return FileInputStream of loaded file
+     * @throws FileNotFoundException 
+     */
+    public FileInputStream chooseFile(String file) throws FileNotFoundException {
+        return new FileInputStream(file);
+    }
+    
+    @Override
+    public void addTextBox(UIElement textbox) {
+        TextField tf = new TextField();
+        tf.setText(textbox.getText());
+        tf.setTranslateX(textbox.getX());
+        tf.setTranslateY(textbox.getY());
+        tf.setMinSize(textbox.getWidth(), textbox.getHeight());
+        tf.setMaxSize(textbox.getWidth(), textbox.getHeight());
+        
+        textboxes.put(textbox, tf);
+        parentPane.getChildren().add(textboxes.get(textbox));
+    }
+    
+    @Override
+    public void updateTextBox(UIElement textbox) {
+        if (textboxes.containsKey(textbox)) {
+           TextField tf = textboxes.get(textbox);
+           tf.setText(textbox.getText());
+        }
+    }
+    
+    @Override
+    public void removeTextBox(UIElement textbox) {
+        TextField tf = textboxes.get(textbox);
+               
+        parentPane.getChildren().remove(tf);
+        tf.clear();
+        textboxes.remove(textbox);
+    }
+    
+    @Override
+    public void addButton(UIElement button) {
+        Button b = new Button();
+        b.setText(button.getText());
+        b.setTranslateX(button.getX());
+        b.setTranslateY(button.getY());
+        b.setMinSize(button.getWidth(), button.getHeight());
+        b.setMaxSize(button.getWidth(), button.getHeight());
+
+        b.setOnAction((event) -> { button.doAction(); });
+        
+        buttons.put(button, b);
+        parentPane.getChildren().add(buttons.get(button));
+    }
+    
+    @Override
+    public void removeButton(UIElement button) {
+        Button b = buttons.get(button);
+               
+        parentPane.getChildren().remove(b);
+        b.disarm();
+        buttons.remove(button);    
     }
     // ============================
     
@@ -86,11 +163,9 @@ public class GameEngine extends Application implements API {
     private void build(Game game){
         this.game = game;
         game.loadMap(this);
-        this.map = game.map;        
-        this.width = game.getWidth()*game.map.tileDrawW;
-        this.height = game.getHeight()*game.map.tileDrawH;
+        this.width = game.getWidth()*game.getMap().tileDrawW;
+        this.height = game.getHeight()*game.getMap().tileDrawH;
         this.title = game.getTitle();
-        this.tile_images = new ArrayList<>();
         this.other_images = new ArrayList<>();
     }
     
@@ -103,15 +178,15 @@ public class GameEngine extends Application implements API {
         ArrayList<Sprite> gameSprites = game.getSprites();
         
         // Add new sprites that are in Game but not engine
-        for (Sprite sprite1 : gameSprites) {
-            if (this.sprites.get(sprite1) == null) addSprite(sprite1);
-        }
+        gameSprites.stream().filter((sprite1) -> (this.sprites.get(sprite1) == null)).forEachOrdered((sprite1) -> {
+            addSprite(sprite1);
+        });
         
         // Remove sprites that are not in Game but are in engine
-        Set<Sprite> spriteList = this.sprites.keySet();
-        for (Sprite sprite2 : new ArrayList<Sprite>(spriteList)) {
-            if (!gameSprites.contains(sprite2)) removeSprite(sprite2);
-        }
+        ArrayList<Sprite> spriteList = new ArrayList(sprites.keySet());
+        spriteList.stream().filter((sprite2) -> (!gameSprites.contains(sprite2))).forEachOrdered((sprite2) -> {
+            removeSprite(sprite2);
+        });
     }
     
     /**
@@ -119,15 +194,15 @@ public class GameEngine extends Application implements API {
      */
     private void collisionDetection(){
         Set<Sprite> spriteList = sprites.keySet();
-        for (Sprite sprite1 : spriteList) {
-                Map2DTile t1 = sprite1.getMapTile();
-            for (Sprite sprite2 : spriteList) {
-                if (sprite1 != sprite2 && t1.contains(sprite2)) {
-                    sprite1.collide(sprite2);
-                    sprite2.collide(sprite1);
-                }
-            }
-        }
+        spriteList.forEach((sprite1) -> {
+            Map2DTile t1 = sprite1.getMapTile();
+            spriteList.stream().filter((sprite2) -> (sprite1 != sprite2 && t1.contains(sprite2))).map((sprite2) -> {
+                sprite1.collide(sprite2);
+                return sprite2;
+            }).forEachOrdered((sprite2) -> {
+                sprite2.collide(sprite1);
+            });
+        });
     }
     
     /**
@@ -135,10 +210,9 @@ public class GameEngine extends Application implements API {
      */
     private void update(){
         checkSprites();
-        Set<Sprite> spriteList = sprites.keySet();
-        for (Sprite sprite : spriteList){
+        sprites.keySet().forEach((sprite) -> {
             sprite.update();
-        }
+        });
         
     }
     
@@ -147,9 +221,9 @@ public class GameEngine extends Application implements API {
      */
     private void drawAll() {
         Set<Sprite> spriteList = sprites.keySet();
-        for (Sprite sprite : spriteList){
+        spriteList.forEach((sprite) -> {
             sprite.draw(this);
-        }
+        });
     }
     
     private void handleKey(KeyEvent event){
@@ -174,23 +248,24 @@ public class GameEngine extends Application implements API {
     
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {        
-        build(new Game());  // Build new pacman game (set datamembers)
-        canvas = new Pane();
+        build(new Game(this));  // Build new pacman game (set datamembers)
+        parentPane = new Pane();
+
         
-        Scene scene = new Scene(canvas, this.height, this.width, Color.ANTIQUEWHITE);
+        Scene scene = new Scene(parentPane, this.height, this.width, Color.ANTIQUEWHITE);
 
         primaryStage.setTitle(this.title);
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        map.drawMap();
+        game.getMap().drawMap();
         
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKey);
         
         timer = new Timeline(                
-                new KeyFrame(Duration.millis(100), e -> drawAll()), // Update drawing
+                new KeyFrame(Duration.millis(100), e -> {if (playing) drawAll();}), // Update drawing
                 //new KeyFrame(Duration.millis(10), e -> collisionDetection()),    // Check collisions
-                new KeyFrame(Duration.millis(10), e -> update())   // Update sprites
+                new KeyFrame(Duration.millis(10), e -> {if (playing) update();})   // Update sprites
         );
         timer.setCycleCount(Timeline.INDEFINITE);
         timer.play();
@@ -201,6 +276,21 @@ public class GameEngine extends Application implements API {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    /**
+     * Loads an image and keeps a reference to it so that we don't wind up with resource leaks.
+     * @param file
+     * @return
+     * @throws FileNotFoundException 
+     */
+    public Image getOrLoadImage(String file) throws FileNotFoundException{
+        Image getImage;
+        if (!loadedImages.containsKey(file)){
+            getImage = new Image(new FileInputStream(file));
+            loadedImages.put(file, getImage);
+        }else getImage = loadedImages.get(file);
+        return getImage;
     }
     
     // =========== API ============
@@ -216,7 +306,7 @@ public class GameEngine extends Application implements API {
         
         // Add image if not image set
         if (image.getImage() == null) try {
-            image.setImage(new Image(new FileInputStream(picname)));
+            image.setImage(getOrLoadImage(picname));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -240,7 +330,7 @@ public class GameEngine extends Application implements API {
             Image img = new Image(new FileInputStream(picname));
             
              // Add image if not image set
-            if (image.getImage() == null) image.setImage(new Image(new FileInputStream(picname)));
+            if (image.getImage() == null) image.setImage(getOrLoadImage(picname));
             
             double fw = img.getWidth();
             double fh = img.getHeight();
@@ -257,32 +347,47 @@ public class GameEngine extends Application implements API {
     }
     
     @Override
-    public void drawMapTile(int index, String picname, double x, double y, int w, int h, int fx, int fy){
-        // Return if invalid index
-        if (index > tile_images.size() -1) {
-            tile_images.add(new ImageView());
-            canvas.getChildren().add(tile_images.get(index));
-        }
-        
+    public void drawMapTile(Map2DTile tile, String picname, double x, double y, int w, int h, int fx, int fy){
+        if (picname.equals(":alpha255:")) return; //For NullTile objects, or whenever nothing should be drawn.
+        ImageView tileView = null;
         try {
-            Image img = new Image(new FileInputStream(picname));
-            
-             // Add image if not image set
-            if (tile_images.get(index).getImage() == null) tile_images.get(index).setImage(new Image(new FileInputStream(picname)));
-            
-            double fw = img.getWidth();
-            double fh = img.getHeight();
-        
-            // Determine sprite frame
-            Rectangle2D frame = new Rectangle2D(fx, fy, fx+w, fy+h);
-            
-            
-            tile_images.get(index).setTranslateX(x);      // Set Y coord
-            tile_images.get(index).setTranslateY(y);      // Set X coord
-            tile_images.get(index).setViewport(frame);    // Set sprite frame
+            if (!mapTiles.containsKey(tile)){
+                tileView = new ImageView(getOrLoadImage(picname));
+                mapTiles.put(tile, tileView);
+                mapPane.getChildren().add(tileView);
+                
+            }
+            else tileView = mapTiles.get(tile);
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
+        if (tileView == null) return;
+        double fw = tileView.getImage().getWidth();
+        double fh = tileView.getImage().getHeight();
+
+        // Determine sprite frame
+        Rectangle2D frame = new Rectangle2D(fx, fy, fx+w, fy+h);
+
+
+        tileView.setTranslateX(x);      // Set Y coord
+        tileView.setTranslateY(y);      // Set X coord
+        tileView.setViewport(frame);    // Set sprite frame
+    }
+    
+    @Override
+    public void drawMapArea(Map2D map, double x, double y, double w, double h) {
+        if (mapPane!=null)
+            parentPane.getChildren().remove(mapPane);
+        mapPane = new Pane();
+        parentPane.getChildren().add(mapPane);
+        mapPane.resizeRelocate(x, y, w, h);
+    }
+    
+    @Override
+    public void togglePlaying() {
+        playing = !playing;
+        //if (playing) timer.pause();
+        //else timer.play();
     }
     // ============================
 }

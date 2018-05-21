@@ -11,9 +11,15 @@ import engine.*;
 import engine.Map.Map2D;
 import engine.Map.Map2DBuilder;
 import engine.Map.Map2DTile;
+import game.PacmanRemastered.Map.GhostZone;
 import game.PacmanRemastered.Map.PacTileEmpty;
 import game.PacmanRemastered.Map.PacTileWall;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Game { 
@@ -21,15 +27,18 @@ public class Game {
     protected String title;     // Window title
     protected double width;     // Window width
     protected double height;    // Window height
+    protected int pelletCount;
+    protected API api;
     protected Pacman pacman;    // Pacman character
     protected Direction key = Direction.RIGHT;     // String of name of last key pressed (Right default)
     protected ArrayList<Sprite> sprites;    // Array of game sprites
-    public Map2D map;
+    protected Map2D map;
     // ============================
 
     
     // ======== CONSTRUCTOR =======
-    public Game() {
+    public Game(API api) {
+        this.api = api;
         title = "Pacman Remastered";
         width = 10;        // Number of tiles X
         height = 10;       // Number of tiles Y
@@ -47,6 +56,10 @@ public class Game {
      */
     public Pacman getPacman(){
         return this.pacman;
+    }
+    
+    public Map2D getMap(){
+        return map;
     }
     
     /**
@@ -94,12 +107,36 @@ public class Game {
     // Add new sprite into game
     public void addSprite(Sprite sprite){
         if (!sprites.contains(sprite)) sprites.add(sprite);
+        if (sprite instanceof Pacman){
+            if (pacman != null) removeSprite(pacman);
+            pacman = (Pacman)sprite;
+        }
+            
+        if (sprite instanceof PacDot || sprite instanceof PacPill)
+            pelletCount++;
     }
     
     // Remove sprite from game
     public void removeSprite(Sprite sprite){
-        if (sprites.contains(sprite)) sprites.remove(sprite);
+        if (sprites.contains(sprite)) sprites.remove(sprite); else return;
+        if (sprite instanceof Pacman)
+            pacman = null;
+        else if (sprite instanceof PacDot || sprite instanceof PacPill){
+            pelletCount--;
+            if (pelletCount == 0)
+                levelClear();
+        }
     }
+    
+    public void levelClear(){
+        api.togglePlaying();
+        new ArrayList<>(sprites).forEach(this::removeSprite);
+        loadMap(api);
+        map.drawMap();
+        setKey(Direction.RIGHT);
+        api.togglePlaying();
+    }
+    
     // ============================
     
     /**
@@ -114,15 +151,69 @@ public class Game {
         b.tileSizeW = 64;
         b.tileSizeH = 64;
         b.game = this;
-        b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(10, 10);
-        b.mapGrid[0][0].add(getPacman());
-        b.mapGrid[0] [2].add(new PacDot(this));
-        b.mapGrid[6] [3].add(new PacDot(this));
-        b.mapGrid[4] [4] = new PacTileWall();
-        b.mapGrid[4] [5] = new PacTileWall();
+        b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(this, 10, 10);
+
+        String theString = "";
+
+        File file = new File("map.txt");
+        Scanner sc;
+        
+        try {
+            sc = new Scanner(file);
+            
+            if(sc != null){
+            theString = sc.nextLine();
+        
+            while (sc.hasNextLine()) {
+            theString = theString + "\n" + sc.nextLine();
+            
+
+            char[] charArray = theString.toCharArray();
+            
+            for(int x = 0; x < charArray.length; x++){
+                
+                if(charArray[x] == 'w'){
+                    
+                    b.mapGrid[2][2] = new PacTileWall(); 
+                    
+               }
+                else if(charArray[x] == 'p'){
+                    b.mapGrid[0][0].add(new Pacman(this));
+                }
+                else if(charArray[x] == '.'){
+                    b.mapGrid[0][2].add(new PacPill(this));
+                }
+            }}}
+            else
+                System.err.println("No Input.");
+            
+            
+        
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+        //Map2DBuilder b = new Map2DBuilder();
+        //b.rootLevelPath = "";
+        //b.assetsRoot = "";
+        //b.tileSizeW = 64;
+        //b.tileSizeH = 64;
+        //b.game = this;
+        //b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(this, 10, 10);
+        //b.mapGrid[0][0].add(new Pacman(this));
+        //b.mapGrid[0] [2].add(new PacPill(this));
+        //b.mapGrid[6] [3].add(new PacPill(this));
+       // b.mapGrid[4] [3] = new PacTileWall();
+       // b.mapGrid[4] [4] = new PacTileWall();
+       // b.mapGrid[4] [5] = new PacTileWall();
+       // b.mapGrid[5] [3] = new PacTileWall();
+       // b.mapGrid[5] [5] = new PacTileWall();
+        b.mapGrid[1][6] = new GhostZone(Direction.UP);
+        b.mapGrid[1][7] = new GhostZone(Direction.UP);
         b.api = api;
         map = b.build();
         //Adds all sprites in the map to the sprite table.
-        map.stream().map(Map2DTile::stream).reduce(Stream::concat).get().filter((e) ->{ return !sprites.contains(e);}).forEachOrdered(sprites::add);
+        map.stream().map(Map2DTile::stream).reduce(Stream::concat).get().filter((e) ->{ return !sprites.contains(e);}).forEachOrdered(this::addSprite);
     }
 }
