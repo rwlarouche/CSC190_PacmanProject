@@ -26,14 +26,14 @@ public class blinky implements Ghost{
     // Buffered image for the blinky
     Game game;
 
-    //final double STEP = 8;     // Movement speed of pacman	
-    int frame;              // Track frame within sprite-sheets
+    
+    int frame;              
 
-    Direction dir;             // Corresponds to direction pacman is moving
+    Direction dir;             
     Direction oldDir;
-    int dir_num;            // Corresponds to sprite frame direction
+    int dir_num;            
 
-    double x, y;               // Tracks x,y location/coordinates of Pacman
+    double x, y;               
 
     String pic = "images/GhostSheet.png";
     double width;
@@ -41,6 +41,7 @@ public class blinky implements Ghost{
     Map2DTile mapTile;
     int tileW = 64;
     int tileH = 64;
+    
     int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
     //int frame;
     //int dir;
@@ -144,6 +145,7 @@ public class blinky implements Ghost{
     
     public void chase(int speed)
     {
+        
         /* Compare distance (or, #of tiles, between pacman and the ghost.
         If the distance between pacman and the ghost are close, theh ghost chases after pacman,
         */
@@ -191,7 +193,9 @@ public class blinky implements Ghost{
 
     @Override
     public void setY(double newY) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.vertical = vertical;
+        
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
