@@ -10,11 +10,22 @@ package game.PacmanRemastered;
 import engine.*;
 import engine.Map.Map2D;
 import engine.Map.Map2DBuilder;
+import engine.Map.Map2DLoader;
 import engine.Map.Map2DTile;
 import game.PacmanRemastered.Map.GhostZone;
+import game.PacmanRemastered.Map.PacManMapLoader;
 import game.PacmanRemastered.Map.PacTileEmpty;
 import game.PacmanRemastered.Map.PacTileWall;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Game { 
@@ -28,6 +39,8 @@ public class Game {
     protected Direction key = Direction.RIGHT;     // String of name of last key pressed (Right default)
     protected ArrayList<Sprite> sprites;    // Array of game sprites
     protected Map2D map;
+    protected String lastMapString;
+    protected PacManMapLoader mapLoader;
     // ============================
 
     
@@ -41,6 +54,7 @@ public class Game {
         pacman = new Pacman(this);
         sprites = new ArrayList<>();
         sprites.add(this.pacman);
+        mapLoader = new PacManMapLoader(api, this);
     }// constructor
     // ============================
 
@@ -126,7 +140,7 @@ public class Game {
     public void levelClear(){
         api.togglePlaying();
         new ArrayList<>(sprites).forEach(this::removeSprite);
-        loadMap(api);
+        loadMap(api, false);
         map.drawMap();
         setKey(Direction.RIGHT);
         api.togglePlaying();
@@ -138,25 +152,41 @@ public class Game {
      * This needs to be changed to load different map files later.
      * Configures the game map. Can't be used during loading because the map object requires the game object to be constructed first.
      * @param api 
+     * @param newMap 
      */
-    public void loadMap(API api){
+    public void loadMap(API api, Boolean newMap){
         Map2DBuilder b = new Map2DBuilder();
         b.rootLevelPath = "";
         b.assetsRoot = "";
         b.tileSizeW = 64;
         b.tileSizeH = 64;
         b.game = this;
-        b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(this, 10, 10);
-        b.mapGrid[0][0].add(new Pacman(this));
-        b.mapGrid[0] [2].add(new PacPill(this));
-        b.mapGrid[6] [3].add(new PacPill(this));
-        b.mapGrid[4] [3] = new PacTileWall();
-        b.mapGrid[4] [4] = new PacTileWall();
-        b.mapGrid[4] [5] = new PacTileWall();
-        b.mapGrid[5] [3] = new PacTileWall();
-        b.mapGrid[5] [5] = new PacTileWall();
-        b.mapGrid[1][6] = new GhostZone(Direction.UP);
-        b.mapGrid[1][7] = new GhostZone(Direction.UP);
+        if (mapLoader.getLastLoadedString().equals("") || newMap){
+            try 
+                {
+                
+            b.mapGrid = mapLoader.loadMap();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else b.mapGrid = mapLoader.reload();
+            
+
+        
+//        b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(this, 10, 10);
+//        b.mapGrid[0][0].add(new Pacman(this));
+//        b.mapGrid[0] [2].add(new PacPill(this));
+//        b.mapGrid[6] [3].add(new PacPill(this));
+//        b.mapGrid[4] [3] = new PacTileWall();
+//        b.mapGrid[4] [4] = new PacTileWall();
+//        b.mapGrid[4] [5] = new PacTileWall();
+//        b.mapGrid[5] [3] = new PacTileWall();
+//        b.mapGrid[5] [5] = new PacTileWall();
+//        b.mapGrid[1][6] = new GhostZone(Direction.UP);
+//        b.mapGrid[1][7] = new GhostZone(Direction.UP);
+
         b.api = api;
         map = b.build();
         //Adds all sprites in the map to the sprite table.

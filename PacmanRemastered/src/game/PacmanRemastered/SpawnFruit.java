@@ -144,7 +144,7 @@ public class SpawnFruit implements Sprite{
     }
 
     @Override
-    public void draw(GameEngine api) {
+    public void draw(engine.API api) {
        api.drawSprite(this, picture1, x, y, 1, 1, frame, 0);
       }
 }

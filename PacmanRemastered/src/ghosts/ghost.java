@@ -5,7 +5,11 @@
  */
 package ghosts;
 
+import engine.Direction;
+import engine.GameEngine;
 import engine.Map.Map2DTile;
+import engine.Map.Map2DTileEvent;
+import engine.Sprite;
 import game.PacmanRemastered.Game;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -17,12 +21,14 @@ import javax.imageio.ImageIO;
  *
  * @author csc190
  */
-abstract public class Ghost implements GhostInterface{
+abstract public class Ghost implements Sprite{
     // Buffered image for the ghost
     Game game;
     int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
     int frame;
     int dir;
+    
+    
     
     Map2DTile mapTile3;
     
@@ -31,22 +37,25 @@ abstract public class Ghost implements GhostInterface{
     
     boolean alive = true;
     
+    public abstract void doAI();
+    
+    public abstract int getGhostSpriteLocationX();
+    
     public Ghost(Game game,int x, int y, int s){            
         this.game = game;
             frame = 0;
             horizontal = x;
             vertical = y;
             size = s;
-            setMapTile(this.game.getMap().getTile(5,5));
        }
    
-    public int getX()
-    {
+    @Override
+    public double getDrawX() {
         return horizontal;
     }
-    
-    public int getY()
-    {
+
+    @Override
+    public double getDrawY() {
         return vertical;
     }
     
@@ -70,7 +79,6 @@ abstract public class Ghost implements GhostInterface{
         return check;
     }
     
-    @Override
     public boolean move()
     {
         boolean canMove = true;
@@ -124,17 +132,13 @@ abstract public class Ghost implements GhostInterface{
         return canMove;
     }
     
-    public void doAI(int speed)
-    {
-        // AI code here
-    }
+
     
     /**
      *
      * @param speed
      * @return
      */
-    @Override
     public int levelUp(int speed)
     {
         speed++;
@@ -153,5 +157,41 @@ abstract public class Ghost implements GhostInterface{
     @Override
     public void setMapTile(Map2DTile tile3) {
         this.mapTile3 = tile3;
+    }
+
+    @Override
+    public void update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void draw(engine.API api) {
+        api.drawSprite(this, "images/GhostSheet.png", getDrawX(), getDrawY(), getMapTile().getMap().tileDrawW, getMapTile().getMap().tileDrawH,
+                getGhostSpriteLocationX() * getMapTile().getMap().tileDrawW, dir);
+    }
+
+    @Override
+    public void setX(double newX) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setY(double newY) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Direction getDirection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void collide(Sprite sprite) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public void onMapEvent(Map2DTileEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

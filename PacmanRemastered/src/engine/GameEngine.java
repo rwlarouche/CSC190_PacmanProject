@@ -22,6 +22,8 @@ import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
@@ -105,7 +107,7 @@ public class GameEngine extends Application implements API {
         fc.setTitle(prompt);
         File file = fc.showOpenDialog(parentPane.getScene().getWindow());
         if (file != null)
-            return new FileInputStream(file.getAbsolutePath());
+            return new FileInputStream(file.toString());
         else return null;
     }
     
@@ -148,7 +150,9 @@ public class GameEngine extends Application implements API {
         b.setMinSize(button.getWidth(), button.getHeight());
         b.setMaxSize(button.getWidth(), button.getHeight());
 
-        b.setOnAction((event) -> { button.doAction(); });
+        b.setOnAction((ActionEvent event) -> {
+            button.doAction();
+        });
         
         buttons.put(button, b);
         parentPane.getChildren().add(buttons.get(button));
@@ -171,7 +175,7 @@ public class GameEngine extends Application implements API {
      */
     private void build(Game game){
         this.game = game;
-        game.loadMap(this);
+        game.loadMap(this, false);
         this.width = game.getWidth()*game.getMap().tileDrawW;
         this.height = game.getHeight()*game.getMap().tileDrawH;
         this.title = game.getTitle();
@@ -256,17 +260,19 @@ public class GameEngine extends Application implements API {
     // ============================
     
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException {        
-        build(new Game(this));  // Build new pacman game (set datamembers)
+    public void start(Stage primaryStage) throws FileNotFoundException {             
         parentPane = new Pane();
 
-        
         Scene scene = new Scene(parentPane, this.height, this.width, Color.ANTIQUEWHITE);
 
         primaryStage.setTitle(this.title);
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        build(new Game(this));  // Build new pacman game (set datamembers)
+
+        scene.getWindow().setWidth(width);    
+        scene.getWindow().setHeight(height);
         game.getMap().drawMap();
         
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKey);

@@ -37,11 +37,12 @@ public class PacManMapLoader extends Map2DLoader{
             case 'w':
                 return new PacTileWall();
             case 'P':
-                return new PacTileEmpty(null,null,null,null, game.getPacman());
+                return new PacTileEmpty(null,null,null,null, new Pacman(game));
             case '.':
                 return new PacTileEmpty(null,null,null,null, new PacDot(game));
             case 'b':
                 return new PacTileEmpty(null, null, null, null, new Blinky(game, 0, 0, 0));
+            //Blinky starts the game on an empty tile, always.
             case 'p':
                 GhostZone gz = new GhostZone(Direction.UP);
                 gz.add(new Pinky(game, 0, 0, 0));

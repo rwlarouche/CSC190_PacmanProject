@@ -71,7 +71,7 @@ public class PacDot implements Sprite{
     }
 
     @Override
-    public void draw(GameEngine api) {
+    public void draw(engine.API api) {
          api.drawSprite(this, picture, x, y, 1, 1, frame, 0);
     }
 

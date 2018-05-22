@@ -6,12 +6,16 @@
 package engine.Map;
 
 import engine.API;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -30,7 +34,18 @@ public abstract class Map2DLoader{
      * @param column
      * @return The corresponding map tile, or 
      */
-   public abstract Map2DTile translateToTile(char symbol, int row, int column);
+   public abstract Map2DTile translateToTile(char symbol, int row, int column); 
+   
+   
+   private String lastMapLoaded;
+   
+   public String getLastLoadedString(){
+        return lastMapLoaded;
+   }
+    
+   public Map2DTile[][] reload(){
+       return loadMap(new ByteArrayInputStream(lastMapLoaded.getBytes(StandardCharsets.UTF_8)));
+   }
     
    public final API api; 
     
@@ -42,17 +57,34 @@ public abstract class Map2DLoader{
     * @return 
     */
     public Map2DTile[][] loadMap(InputStream stream){
-       //My implementation begins here:
+//       try {
+//           //My implementation begins here:
+//           stream.mark(0);
+//           int b = stream.read();
+//           System.out.write(b);
+//           stream.reset();
+//           int avail = stream.available();
+//           System.out.write(avail);
+//       } catch (IOException ex) {
+//           Logger.getLogger(Map2DLoader.class.getName()).log(Level.SEVERE, null, ex);
+//       }
+       
         try (Scanner fileScan = new Scanner(stream)){
-            int mapWidth = Integer.parseInt(fileScan.nextLine());
-            int mapHeight = Integer.parseInt(fileScan.nextLine());
+            int mapWidth = fileScan.nextInt();
+            int mapHeight = fileScan.nextInt();
+            fileScan.skip("\\s");
+            lastMapLoaded = mapWidth + "\n" + mapHeight;
             Map2DTile[][] mapGrid = new Map2DTile[mapHeight][mapWidth];
             for (int row = 0; row < mapHeight; row++){
-                String oneLine = fileScan.nextLine().chars().sequential().filter(c ->!Character.isWhitespace(c))
+                String oneLine = "";
+                        do{
+                            oneLine = fileScan.nextLine().chars().sequential().filter(c ->!Character.isWhitespace(c))
                         .limit(mapWidth).mapToObj(i -> (char)i).map(c -> c.toString()).collect(Collectors.joining(""));
+                        } while (fileScan.hasNext() && oneLine.equals(""));
                 for (int col = 0; col < mapWidth; col++){
                     mapGrid[row][col] = translateToTile(oneLine.charAt(col),row,col);
                 }
+                lastMapLoaded += "\n" + oneLine;
             }
             return mapGrid;
         }
@@ -136,5 +168,6 @@ public abstract class Map2DLoader{
     
     public Map2DLoader(API api){
         this.api = api;
+        lastMapLoaded = "";
     }
 }
