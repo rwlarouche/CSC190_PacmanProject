@@ -5,14 +5,18 @@
  */
 package ghosts;
 
+import engine.Direction;
+import engine.GameEngine;
 import engine.Map.Map2DTile;
+import engine.Map.Map2DTileEvent;
+import engine.Sprite;
 import game.PacmanRemastered.Game;
 
 /**
  *
  * @author csc190
  */
-public class Blinky extends ghost{
+public class Blinky extends Ghost{
     Game game;
     int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
     int frame;
@@ -135,7 +139,7 @@ public class Blinky extends ghost{
         return mapTile3;
     }
 
-    private void setMapTile(Map2DTile tile3) {
+    public void setMapTile(Map2DTile tile3) {
         this.mapTile3 = tile3;
     }
 
@@ -146,6 +150,51 @@ public class Blinky extends ghost{
 
     @Override
     public void goBack(int a) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void draw(GameEngine api) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double getDrawX() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double getDrawY() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setX(double newX) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setY(double newY) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Direction getDirection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void collide(Sprite sprite) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onMapEvent(Map2DTileEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

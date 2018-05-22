@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
  *
  * @author csc190
  */
-abstract public class ghost implements GhostInterface{
+abstract public class Ghost implements GhostInterface{
     // Buffered image for the ghost
     Game game;
     int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
@@ -31,7 +31,7 @@ abstract public class ghost implements GhostInterface{
     
     boolean alive = true;
     
-    public ghost(Game game,int x, int y, int s){            
+    public Ghost(Game game,int x, int y, int s){            
         this.game = game;
             frame = 0;
             horizontal = x;

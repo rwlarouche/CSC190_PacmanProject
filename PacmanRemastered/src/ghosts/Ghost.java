@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
  *
  * @author csc190
  */
-abstract public class ghost implements GhostInterface{
+abstract public class Ghost implements GhostInterface{
     // Buffered image for the ghost
     Game game;
     int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
@@ -31,12 +31,13 @@ abstract public class ghost implements GhostInterface{
     
     boolean alive = true;
     
-    public ghost(Game game,int x, int y, int s){            
+    public Ghost(Game game,int x, int y, int s){            
+        this.game = game;
             frame = 0;
             horizontal = x;
             vertical = y;
             size = s;
-            setMapTile(this.game.map.getTile(5,5));
+            setMapTile(this.game.getMap().getTile(5,5));
        }
    
     public int getX()
@@ -69,6 +70,7 @@ abstract public class ghost implements GhostInterface{
         return check;
     }
     
+    @Override
     public boolean move()
     {
         boolean canMove = true;
@@ -127,18 +129,29 @@ abstract public class ghost implements GhostInterface{
         // AI code here
     }
     
-    
+    /**
+     *
+     * @param speed
+     * @return
+     */
+    @Override
     public int levelUp(int speed)
     {
         speed++;
         return speed;
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public Map2DTile getMapTile() {
         return mapTile3;
     }
 
-    private void setMapTile(Map2DTile tile3) {
+    @Override
+    public void setMapTile(Map2DTile tile3) {
         this.mapTile3 = tile3;
     }
 }
