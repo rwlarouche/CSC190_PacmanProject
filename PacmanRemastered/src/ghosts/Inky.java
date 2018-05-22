@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
  *
  * @author csc190
  */
-public class Inky extends ghost implements GhostInterface{
+public class Inky extends ghost{
 /**
  *
  * @author csc190

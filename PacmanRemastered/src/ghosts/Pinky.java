@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
  *
  * @author csc190
  */
-public class Pinky extends ghost implements GhostInterface{
+public class Pinky extends ghost{
     Game game;
     int speed = 2; 
     int frame;

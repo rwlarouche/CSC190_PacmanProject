@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
  *
  * @author csc190
  */
-public class Clyde extends ghost implements GhostInterface{
+public class Clyde extends ghost{
     Game game;
     int speed = 2; 
     int frame;
