@@ -5,7 +5,11 @@
  */
 package ghosts;
 
+import engine.Direction;
+import engine.GameEngine;
 import engine.Map.Map2DTile;
+import engine.Map.Map2DTileEvent;
+import engine.Sprite;
 import game.PacmanRemastered.Game;
 
 /**
@@ -144,6 +148,56 @@ public class Blinky extends ghost implements GhostInterface {
 
     @Override
     public void goBack(int a) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public void draw(GameEngine api) {
+        // Frame is used by draw to parse through sprite-sheet
+        frame += 1;
+        if (frame > 2) {
+            frame = 0;
+        }
+        api.drawSprite(this, pic, x, y, 3, 4, frame, dir_num);
+    }
+
+    @Override
+    public void update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double getDrawX() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double getDrawY() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setX(double newX) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setY(double newY) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Direction getDirection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void collide(Sprite sprite) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onMapEvent(Map2DTileEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
