@@ -7,18 +7,22 @@ package ghosts;
 
 import engine.Map.Map2DTile;
 import game.PacmanRemastered.Game;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 
 /**
  *
  * @author csc190
  */
-public class Blinky extends ghost implements GhostInterface {
+abstract public class ghost implements GhostInterface{
+    // Buffered image for the ghost
     Game game;
     int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
     int frame;
     int dir;
-    
-    String pic = "images/PacmanSprite.png";
     
     Map2DTile mapTile3;
     
@@ -27,13 +31,13 @@ public class Blinky extends ghost implements GhostInterface {
     
     boolean alive = true;
     
-    public Blinky(Game game,int x, int y, int s){   
-            super(game, x, y, s);
+    public ghost(Game game,int x, int y, int s){            
+        this.game = game;
             frame = 0;
             horizontal = x;
             vertical = y;
             size = s;
-            setMapTile(this.game.map.getTile(5,5));
+            setMapTile(this.game.getMap().getTile(5,5));
        }
    
     public int getX()
@@ -66,6 +70,7 @@ public class Blinky extends ghost implements GhostInterface {
         return check;
     }
     
+    @Override
     public boolean move()
     {
         boolean canMove = true;
@@ -124,28 +129,29 @@ public class Blinky extends ghost implements GhostInterface {
         // AI code here
     }
     
-    
+    /**
+     *
+     * @param speed
+     * @return
+     */
+    @Override
     public int levelUp(int speed)
     {
         speed++;
         return speed;
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public Map2DTile getMapTile() {
         return mapTile3;
     }
 
-    private void setMapTile(Map2DTile tile3) {
+    @Override
+    public void setMapTile(Map2DTile tile3) {
         this.mapTile3 = tile3;
-    }
-
-    @Override
-    public void chase(int a) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void goBack(int a) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

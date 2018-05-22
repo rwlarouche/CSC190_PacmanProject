@@ -7,30 +7,27 @@ package ghosts;
 
 import engine.Map.Map2DTile;
 import game.PacmanRemastered.Game;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
+
 /**
  *
  * @author csc190
  */
-public class Pinky extends ghost implements GhostInterface{
+public class Blinky extends ghost{
     Game game;
-    int speed = 2; 
+    int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
     int frame;
     int dir;
-    Map2DTile mapTile4;
     
     String pic = "images/PacmanSprite.png";
+    
+    Map2DTile mapTile3;
     
     private int horizontal, vertical;
     private int size;
     
     boolean alive = true;
     
-    public Pinky(Game game, int x, int y, int s){
+    public Blinky(Game game,int x, int y, int s){   
             super(game, x, y, s);
             frame = 0;
             horizontal = x;
@@ -122,35 +119,33 @@ public class Pinky extends ghost implements GhostInterface{
         return canMove;
     }
     
-    public void chase(int speed)
+    public void doAI(int speed)
     {
-        //For this ghost, wander around until pacman is seen
-        /* Compare distance (or, #of tiles, between pacman and the ghost.
-        If the distance between pacman and the ghost are close, theh ghost chases after pacman,
-        */
+        // AI code here
     }
     
-    public void goBack(int speed)
-    {
-        if(alive==false)
-        {
-            // Go back to the spawn point, should probably use dikjstra's algorithm
-            // Also change buffer image
-        }
-    }
     
     public int levelUp(int speed)
     {
-        // If the player completes a level, the speed of the ghost increases
         speed++;
         return speed;
     }
     
     public Map2DTile getMapTile() {
-        return mapTile4;
+        return mapTile3;
     }
 
-    private void setMapTile(Map2DTile tile4) {
-        this.mapTile4 = tile4;
+    private void setMapTile(Map2DTile tile3) {
+        this.mapTile3 = tile3;
+    }
+
+    @Override
+    public void chase(int a) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void goBack(int a) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

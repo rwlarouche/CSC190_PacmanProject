@@ -36,7 +36,7 @@ public class Clyde extends ghost implements GhostInterface{
             horizontal = x;
             vertical = y;
             size = s;
-            setMapTile(this.game.map.getTile(5,5));
+            setMapTile(this.game.getMap().getTile(5,5));
        }
    
     public int getX()

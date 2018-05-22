@@ -13,7 +13,7 @@ import game.PacmanRemastered.Game;
 import game.PacmanRemastered.PacDot;
 import game.PacmanRemastered.PacPill;
 import game.PacmanRemastered.Pacman;
-import ghosts.blinky;
+import ghosts.*;
 
 /**
  * Loads a PacMan map.
@@ -41,7 +41,7 @@ public class PacManMapLoader extends Map2DLoader{
                 return new PacTileEmpty(null,null,null,null, new PacDot(game));
             case 'b':
                 GhostZone gz = new GhostZone(Direction.UP);
-                //gz.add(new blinky(game));
+                gz.add(new Blinky(game, 0, 0, 0));
                 return gz;
             default: 
                 return null;

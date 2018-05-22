@@ -9,7 +9,7 @@ import engine.Direction;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
-import ghosts.Ghost;
+import ghosts.ghost;
 import java.util.Arrays;
 import java.util.EnumSet;
 
@@ -48,7 +48,7 @@ public class GhostZone extends Map2DTile{
     public boolean canEnterTile(Sprite sprite, Direction fromDir) {
         Map2DTile src = getNeighborFromDir(fromDir);
         return 
-                sprite instanceof Ghost &&
+                sprite instanceof ghost &&
                 ((src instanceof GhostZone)?true:canPassTheseWays.contains(fromDir));
     }
     
