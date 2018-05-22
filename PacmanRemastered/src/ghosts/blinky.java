@@ -7,9 +7,11 @@ package ghosts;
 
 import engine.Direction;
 import engine.GameEngine;
+import engine.Map.Events.TileSpriteTraverseEvent;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
+import game.PacmanRemastered.Game;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -22,10 +24,26 @@ import javax.imageio.ImageIO;
  */
 public class blinky implements Ghost{
     // Buffered image for the blinky
-    
+    Game game;
+
+    //final double STEP = 8;     // Movement speed of pacman	
+    int frame;              // Track frame within sprite-sheets
+
+    Direction dir;             // Corresponds to direction pacman is moving
+    Direction oldDir;
+    int dir_num;            // Corresponds to sprite frame direction
+
+    double x, y;               // Tracks x,y location/coordinates of Pacman
+
+    String pic = "images/GhostSheet.png";
+    double width;
+    double height;
+    Map2DTile mapTile;
+    int tileW = 64;
+    int tileH = 64;
     int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
-    int frame;
-    int dir;
+    //int frame;
+    //int dir;
     
     private int horizontal, vertical;
     private int size;
@@ -154,12 +172,21 @@ public class blinky implements Ghost{
 
     @Override
     public void draw(GameEngine api) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Frame is used by draw to parse through sprite-sheet
+        frame += 1;
+        if (frame > 2) {
+            frame = 0;
+        }
+        api.drawSprite(this, pic, x, y, 3, 4, frame, dir_num);
+        
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void setX(double newX) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.horizontal = horizontal;
+        
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -169,27 +196,36 @@ public class blinky implements Ghost{
 
     @Override
     public Map2DTile getMapTile() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return mapTile;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void setMapTile(Map2DTile tile) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
+        this.mapTile = tile;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void collide(Sprite sprite) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void onMapEvent(Map2DTileEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (e instanceof TileSpriteTraverseEvent) {
+           // System.out.println("Testing");
+        }
+        
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Direction getDirection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return dir;
+        
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

@@ -64,25 +64,8 @@ public abstract class Map2DLoader{
        }
         
         
-//                char[] charArray = theString.toCharArray();
-//                
-//                for(int x = 0; x < charArray.length; x++){
-//                    
-//                    if(charArray[x] == 'w'){
-//                        
-//                        b.mapGrid[2][2] = new PacTileWall();
-//                        
-//                    }
-//                    else if(charArray[x] == 'p'){
-//                        b.mapGrid[0][0].add(new Pacman(this));
-//                    }
-//                    else if(charArray[x] == '.'){
-//                        b.mapGrid[0][2].add(new PacPill(this));
-//                    }
-//                }}
-//        
-        throw new UnsupportedOperationException("Delete this after you finish writing the method."); //To change body of generated methods, choose Tools | Templates.
-       //return translateToTile();
+        //throw new UnsupportedOperationException("Delete this after you finish writing the method."); //To change body of generated methods, choose Tools | Templates.
+       return null;
    }
     
     /**

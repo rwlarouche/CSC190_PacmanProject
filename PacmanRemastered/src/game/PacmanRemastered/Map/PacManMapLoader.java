@@ -10,6 +10,7 @@ import engine.Direction;
 import engine.Map.Map2DLoader;
 import engine.Map.Map2DTile;
 import game.PacmanRemastered.Game;
+import game.PacmanRemastered.PacDot;
 import game.PacmanRemastered.PacPill;
 import game.PacmanRemastered.Pacman;
 
@@ -36,15 +37,12 @@ public class PacManMapLoader extends Map2DLoader{
                 return new PacTileWall();
             case 'p':
                 return new PacTileEmpty(null,null,null,null, game.getPacman());
-            //case '.':
-                //return new PacTileEmpty(null,null,null,null, game.addPacDot());
+            case '.':
+                return new PacTileEmpty(null,null,null,null, new PacDot(game));
             case 'g':
                 return new GhostZone(Direction.UP);
             default: 
                 return null;
-        //return ;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
         }
         
     }
