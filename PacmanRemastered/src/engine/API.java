@@ -10,6 +10,7 @@ package engine;
 import engine.Map.Map2D;
 import engine.Map.Map2DTile;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public interface API {
     /**
@@ -70,4 +71,12 @@ public interface API {
     public void removeTextBox(UIElement textbox);
     
     public void togglePlaying();
+    
+    /**
+     * Prompt user to choose file and returns either an InputStream for it or null.
+     * @param prompt
+     * @return
+     * @throws FileNotFoundException 
+     */
+    public InputStream chooseFile(String prompt) throws FileNotFoundException;
 }

@@ -10,43 +10,45 @@ import engine.GameEngine;
 import engine.Map.Map2DTile;
 import engine.Map.Map2DTileEvent;
 import engine.Sprite;
+import game.PacmanRemastered.Game;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
-
 /**
  *
  * @author csc190
  */
-public class blinky implements Ghost{
-    // Buffered image for the blinky
-    
-    int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
+public class Pinky extends Ghost{
+    Game game;
+    int speed = 2; 
     int frame;
     int dir;
+    Map2DTile mapTile4;
+    
+    String pic = "images/PacmanSprite.png";
     
     private int horizontal, vertical;
     private int size;
     
     boolean alive = true;
     
-    public blinky(int x, int y, int s){
+    public Pinky(Game game, int x, int y, int s){
+            super(game, x, y, s);
             frame = 0;
             horizontal = x;
             vertical = y;
             size = s;
+            setMapTile(this.game.getMap().getTile(5,5));
        }
    
-    
-    public double getX()
+    public int getX()
     {
         return horizontal;
     }
     
-
-    public double getY()
+    public int getY()
     {
         return vertical;
     }
@@ -61,7 +63,7 @@ public class blinky implements Ghost{
         vertical = y;
     }
     
-    private boolean valid(int x, int y)
+    public boolean valid(int x, int y)
     {
         boolean check = true;
         if(x==0 || x>size-1 || y==0 || y>size-1)
@@ -126,6 +128,7 @@ public class blinky implements Ghost{
     
     public void chase(int speed)
     {
+        //For this ghost, wander around until pacman is seen
         /* Compare distance (or, #of tiles, between pacman and the ghost.
         If the distance between pacman and the ghost are close, theh ghost chases after pacman,
         */
@@ -146,6 +149,14 @@ public class blinky implements Ghost{
         speed++;
         return speed;
     }
+    
+    public Map2DTile getMapTile() {
+        return mapTile4;
+    }
+
+    public void setMapTile(Map2DTile tile4) {
+        this.mapTile4 = tile4;
+    }
 
     @Override
     public void update() {
@@ -154,6 +165,16 @@ public class blinky implements Ghost{
 
     @Override
     public void draw(GameEngine api) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double getDrawX() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double getDrawY() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -168,12 +189,7 @@ public class blinky implements Ghost{
     }
 
     @Override
-    public Map2DTile getMapTile() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setMapTile(Map2DTile tile) {
+    public Direction getDirection() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -184,21 +200,6 @@ public class blinky implements Ghost{
 
     @Override
     public void onMapEvent(Map2DTileEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Direction getDirection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public double getDrawX() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public double getDrawY() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
