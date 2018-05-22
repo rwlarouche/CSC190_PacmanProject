@@ -17,21 +17,27 @@ import javax.imageio.ImageIO;
  *
  * @author csc190
  */
-abstract public class ghost implements GhostInterface{
-    // Buffered image for the ghost
+public class Inky extends ghost implements GhostInterface{
+/**
+ *
+ * @author csc190
+ */
     Game game;
-    int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
+    int speed = 2; 
     int frame;
     int dir;
     
-    Map2DTile mapTile3;
+    String pic = "images/PacmanSprite.png";
+    
+    Map2DTile mapTile2;
     
     private int horizontal, vertical;
     private int size;
     
     boolean alive = true;
     
-    public ghost(Game game,int x, int y, int s){            
+    public Inky(Game game,int x, int y, int s){
+            super(game, x, y, s);
             frame = 0;
             horizontal = x;
             vertical = y;
@@ -122,23 +128,35 @@ abstract public class ghost implements GhostInterface{
         return canMove;
     }
     
-    public void doAI(int speed)
+    public void chase(int speed)
     {
-        // AI code here
+        //For this ghost, wander around until pacman is seen
+        /* Compare distance (or, #of tiles, between pacman and the ghost.
+        If the distance between pacman and the ghost are close, theh ghost chases after pacman,
+        */
     }
     
+    public void goBack(int speed)
+    {
+        if(alive==false)
+        {
+            // Go back to the spawn point, should probably use dikjstra's algorithm
+            // Also change buffer image
+        }
+    }
     
     public int levelUp(int speed)
     {
+        // If the player completes a level, the speed of the ghost increases
         speed++;
         return speed;
     }
-    
-    public Map2DTile getMapTile() {
-        return mapTile3;
-    }
 
-    private void setMapTile(Map2DTile tile3) {
-        this.mapTile3 = tile3;
+    public Map2DTile getMapTile() {
+        return mapTile2;
+    }
+    
+    private void setMapTile(Map2DTile tile2) {
+         this.mapTile2=tile2;
     }
 }

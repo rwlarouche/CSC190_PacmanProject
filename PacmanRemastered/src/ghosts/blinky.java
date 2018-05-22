@@ -5,48 +5,43 @@
  */
 package ghosts;
 
-import engine.Direction;
-import engine.GameEngine;
 import engine.Map.Map2DTile;
-import engine.Map.Map2DTileEvent;
-import engine.Sprite;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
+import game.PacmanRemastered.Game;
 
 /**
  *
  * @author csc190
  */
-public class blinky implements Ghost{
-    // Buffered image for the blinky
-    
+public class Blinky extends ghost implements GhostInterface {
+    Game game;
     int speed = 2; //Ghost speed. Speed is incremented every time the player completes a level
     int frame;
     int dir;
+    
+    String pic = "images/PacmanSprite.png";
+    
+    Map2DTile mapTile3;
     
     private int horizontal, vertical;
     private int size;
     
     boolean alive = true;
     
-    public blinky(int x, int y, int s){
+    public Blinky(Game game,int x, int y, int s){   
+            super(game, x, y, s);
             frame = 0;
             horizontal = x;
             vertical = y;
             size = s;
+            setMapTile(this.game.map.getTile(5,5));
        }
    
-    
-    public double getX()
+    public int getX()
     {
         return horizontal;
     }
     
-
-    public double getY()
+    public int getY()
     {
         return vertical;
     }
@@ -61,7 +56,7 @@ public class blinky implements Ghost{
         vertical = y;
     }
     
-    private boolean valid(int x, int y)
+    public boolean valid(int x, int y)
     {
         boolean check = true;
         if(x==0 || x>size-1 || y==0 || y>size-1)
@@ -124,81 +119,33 @@ public class blinky implements Ghost{
         return canMove;
     }
     
-    public void chase(int speed)
+    public void doAI(int speed)
     {
-        /* Compare distance (or, #of tiles, between pacman and the ghost.
-        If the distance between pacman and the ghost are close, theh ghost chases after pacman,
-        */
+        // AI code here
     }
     
-    public void goBack(int speed)
-    {
-        if(alive==false)
-        {
-            // Go back to the spawn point, should probably use dikjstra's algorithm
-            // Also change buffer image
-        }
-    }
     
     public int levelUp(int speed)
     {
-        // If the player completes a level, the speed of the ghost increases
         speed++;
         return speed;
     }
-
-    @Override
-    public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void draw(GameEngine api) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setX(double newX) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setY(double newY) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
+    
     public Map2DTile getMapTile() {
+        return mapTile3;
+    }
+
+    private void setMapTile(Map2DTile tile3) {
+        this.mapTile3 = tile3;
+    }
+
+    @Override
+    public void chase(int a) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void setMapTile(Map2DTile tile) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void collide(Sprite sprite) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void onMapEvent(Map2DTileEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Direction getDirection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public double getDrawX() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public double getDrawY() {
+    public void goBack(int a) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
