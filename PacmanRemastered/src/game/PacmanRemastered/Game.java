@@ -10,20 +10,11 @@ package game.PacmanRemastered;
 import engine.*;
 import engine.Map.Map2D;
 import engine.Map.Map2DBuilder;
-import engine.Map.Map2DLoader;
 import engine.Map.Map2DTile;
-import game.PacmanRemastered.Map.GhostZone;
 import game.PacmanRemastered.Map.PacManMapLoader;
-import game.PacmanRemastered.Map.PacTileEmpty;
-import game.PacmanRemastered.Map.PacTileWall;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -172,23 +163,10 @@ public class Game {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else b.mapGrid = mapLoader.reload();
-            
-
-        
-//        b.mapGrid = PacTileEmpty.makeEmptyTileBoardArray(this, 10, 10);
-//        b.mapGrid[0][0].add(new Pacman(this));
-//        b.mapGrid[0] [2].add(new PacPill(this));
-//        b.mapGrid[6] [3].add(new PacPill(this));
-//        b.mapGrid[4] [3] = new PacTileWall();
-//        b.mapGrid[4] [4] = new PacTileWall();
-//        b.mapGrid[4] [5] = new PacTileWall();
-//        b.mapGrid[5] [3] = new PacTileWall();
-//        b.mapGrid[5] [5] = new PacTileWall();
-//        b.mapGrid[1][6] = new GhostZone(Direction.UP);
-//        b.mapGrid[1][7] = new GhostZone(Direction.UP);
-
         b.api = api;
         map = b.build();
+        width = map.getColumnCount();
+        height = map.getRowCount();
         //Adds all sprites in the map to the sprite table.
         map.stream().map(Map2DTile::stream).reduce(Stream::concat).get().filter((e) ->{ return !sprites.contains(e);}).forEachOrdered(this::addSprite);
     }
