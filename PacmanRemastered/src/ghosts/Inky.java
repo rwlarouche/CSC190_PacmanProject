@@ -27,6 +27,8 @@ public class Inky extends ghost implements GhostInterface{
     int frame;
     int dir;
     
+    String pic = "images/PacmanSprite.png";
+    
     Map2DTile mapTile2;
     
     private int horizontal, vertical;

@@ -23,6 +23,8 @@ public class Pinky extends ghost implements GhostInterface{
     int dir;
     Map2DTile mapTile4;
     
+    String pic = "images/PacmanSprite.png";
+    
     private int horizontal, vertical;
     private int size;
     

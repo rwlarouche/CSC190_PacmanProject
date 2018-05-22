@@ -18,6 +18,8 @@ public class Blinky extends ghost implements GhostInterface {
     int frame;
     int dir;
     
+    String pic = "images/PacmanSprite.png";
+    
     Map2DTile mapTile3;
     
     private int horizontal, vertical;

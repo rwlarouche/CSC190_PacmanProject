@@ -23,6 +23,8 @@ public class Clyde extends ghost implements GhostInterface{
     int dir;
     Map2DTile mapTile5;
     
+    String pic = "images/PacmanSprite.png";
+    
     private int horizontal, vertical;
     private int size;
     
