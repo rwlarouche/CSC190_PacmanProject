@@ -49,7 +49,7 @@ public abstract class Map2DLoader{
         
         char[][] array = new char[Integer.parseInt(size[0])][Integer.parseInt(size[1])];
         
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 30; i++){
             array[i] = mapScan.nextLine().toCharArray();
         }
         
@@ -87,6 +87,7 @@ public abstract class Map2DLoader{
 //                }}
 //        
         throw new UnsupportedOperationException("Delete this after you finish writing the method."); //To change body of generated methods, choose Tools | Templates.
+       //return translateToTile();
    }
     
     /**
