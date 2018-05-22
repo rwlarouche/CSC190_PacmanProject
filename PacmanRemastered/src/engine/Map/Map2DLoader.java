@@ -40,26 +40,20 @@ public abstract class Map2DLoader{
     * @param stream Input file stream.
     * @return 
     */
-    public Map2DTile[][] loadMap(Map2DBuilder b, InputStream stream) throws FileNotFoundException{
+    public Map2DTile[][] loadMap(InputStream stream){
         
-          File file = new File("map.txt");  
        
-          Scanner mapScan = new Scanner(file);
-          String [] size = mapScan.nextLine().split("\\s");
-        
-        char[][] array = new char[Integer.parseInt(size[0])][Integer.parseInt(size[1])];
-        
-        for(int i = 0; i < 30; i++){
-            array[i] = mapScan.nextLine().toCharArray();
-        }
-        
-        for(int k = 0; k < array.length; k++){
-            for(int s = 0; s < array[k].length; s++){
-                System.out.print(array[k][s]+" ");
-            }
-            System.out.println();
-        }
-        mapScan.close();
+       try (Scanner mapScan = new Scanner(stream)) {
+           String [] size = mapScan.nextLine().split("\\s");
+           char[][] array = new char[Integer.parseInt(size[0])][Integer.parseInt(size[1])];
+           for(int i = 0; i < 30; i++){
+               array[i] = mapScan.nextLine().toCharArray();
+           }  for (int k = 0; k < array.length; k++) {
+               for(int s = 0; s < array[k].length; s++){
+                   System.out.print(array[k][s]+" ");
+               }
+               System.out.println();
+           }
 //            theString = sc.nextLine();
 //            
 //            while (mapScan.hasNextLine()) {
@@ -67,6 +61,7 @@ public abstract class Map2DLoader{
 //                System.out.println(line);
 //            }
 //            mapScan.close();
+       }
         
         
 //                char[] charArray = theString.toCharArray();
@@ -97,10 +92,10 @@ public abstract class Map2DLoader{
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public Map2DTile[][] loadMap(Map2DBuilder b) throws FileNotFoundException, IOException{
+    public Map2DTile[][] loadMap() throws FileNotFoundException, IOException{
         Map2DTile[][] returnTiles;
        try (InputStream IS = api.chooseFile("Select a level file to load....")) {
-           returnTiles = loadMap(b,IS);
+           returnTiles = loadMap(IS);
        }
         return returnTiles;
     }

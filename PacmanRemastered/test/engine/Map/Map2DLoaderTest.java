@@ -64,11 +64,19 @@ public class Map2DLoaderTest {
     @Test
     public void testLoadMap_Map2DBuilder_InputStream() throws Exception{
         System.out.println("loadMap");
-        Map2DBuilder b = null;
-        InputStream stream = new ByteArrayInputStream("".getBytes(StandardCharsets.UTF_8));
+        Map2DBuilder b = new Map2DBuilder();
+        InputStream stream = new ByteArrayInputStream((
+"5\n"+
+"5\n"+
+"wwwww\n" +
+"w...w\n" +
+"w.p.w\n" +
+"w...w\n" +
+"wwwww"
+                ).getBytes(StandardCharsets.UTF_8));
         Map2DLoader instance = new Map2DLoaderImpl();
         Map2DTile[][] expResult = null;
-        Map2DTile[][] result = instance.loadMap(b, stream);
+        Map2DTile[][] result = instance.loadMap(stream);
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -80,10 +88,10 @@ public class Map2DLoaderTest {
     @Test
     public void testLoadMap_Map2DBuilder() throws Exception {
         System.out.println("loadMap");
-        Map2DBuilder b = null;
+        Map2DBuilder b = new Map2DBuilder();
         Map2DLoader instance = new Map2DLoaderImpl();
         Map2DTile[][] expResult = null;
-        Map2DTile[][] result = instance.loadMap(b);
+        Map2DTile[][] result = instance.loadMap();
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
