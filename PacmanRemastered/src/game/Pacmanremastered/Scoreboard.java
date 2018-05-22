@@ -3,70 +3,68 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game.Pacmanremastered;
+package game.PacmanRemastered;
 
 import engine.API;
-import game.PacmanRemastered.Game;
-import java.awt.Button;
+import engine.Map.Events.TileSpriteTraverseEvent;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Frame;
+import static java.awt.Font.BOLD;
 import java.awt.Graphics2D;
-import java.awt.Label;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import static java.awt.image.ImageObserver.HEIGHT;
+import static java.awt.image.ImageObserver.WIDTH;
+import static javafx.scene.text.FontWeight.BOLD;
+import engine.Map.Map2DTile;
+import engine.Map.Map2DTileEvent;
+import javax.swing.JLabel;
+import engine.GameEngine;
+import engine.Map.Events.TileSpriteTraverseEvent;
+import engine.Sprite;
 
 /**
  *
  * @author csc190
  */
-public class Scoreboard extends Frame implements ActionListener, API{
+public class Scoreboard implements API{
     
-    private Label lblCount;
-    private TextField tfCount;
-    private Button BtnCount;
-    private int score = 0;
+    Game game;
+    public int score = 0;
+    double x,y, width, height;
+    Font displayFont = new Font("Helvetica", Font.BOLD, 14);
     
     public Scoreboard(API api){
-        setLayout(new FlowLayout());
-        lblCount = new Label("Score");
-        add(lblCount);
-        
-        tfCount = new TextField(score);
-        tfCount.setEditable(false);
-        add(tfCount);
-        
-        setVisible(true);
+        x=y=0;
+        this.game = game;
+        width = game.width;
+        height = game.height;
     }
     
-    public void drawboard(Graphics2D g)
-    {
-       int i;
-       String s;
-       Font scoreFont = new Font("Helvetica", Font.BOLD, 14);
-       g.setFont(scoreFont);
-       g.setColor(new Color(96, 128, 255));
-       s = "Score: " + score;
-       g.drawString(s, 1, 1);
-    }
+    JLabel scoreboard = new JLabel("Score: " +score);
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        score=score+100;
-        tfCount.setText(score + "");
+    public void showScore(Graphics2D g)
+    {
+        int i;
+        String s;
+        g.setFont(displayFont);
+        g.setColor(new Color(96, 128, 255));
+        s="Score: "+score;
+        g.drawString(s, 1, 1);
+    }
+  
+    public void updateScore(Map2DTileEvent e){
+      if(e instanceof TileSpriteTraverseEvent)
+        {
+                score=score+100;            
+        }
     }
 
     @Override
     public void drawImage(int index, String picname, int x, int y, int w, int h) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void drawSprite(int index, String picname, double x, double y, int w, int h, int fx, int fy) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
-
-    
 }
