@@ -6,9 +6,12 @@
 package game.PacmanRemastered.Map;
 
 import engine.API;
+import engine.Direction;
 import engine.Map.Map2DLoader;
 import engine.Map.Map2DTile;
 import game.PacmanRemastered.Game;
+import game.PacmanRemastered.PacPill;
+import game.PacmanRemastered.Pacman;
 
 /**
  * Loads a PacMan map.
@@ -30,14 +33,20 @@ public class PacManMapLoader extends Map2DLoader{
         
         switch(symbol){
             case 'w':
-                System.out.println("Wall");
+                return new PacTileWall();
             case 'p':
-                System.out.println("Pacman");
+                return new PacTileEmpty(null,null,null,null, game.getPacman());
+            //case '.':
+                //return new PacTileEmpty(null,null,null,null, game.addPacDot());
+            case 'g':
+                return new GhostZone(Direction.UP);
+            default: 
+                return null;
+        //return ;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
         }
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
-    
     }
     
 }
