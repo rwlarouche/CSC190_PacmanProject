@@ -9,6 +9,7 @@ import engine.API;
 import engine.Direction;
 import engine.Map.Map2DLoader;
 import engine.Map.Map2DTile;
+import engine.Map.NullTile;
 import game.PacmanRemastered.Game;
 import game.PacmanRemastered.PacDot;
 import game.PacmanRemastered.PacPill;
@@ -35,16 +36,26 @@ public class PacManMapLoader extends Map2DLoader{
         switch(symbol){
             case 'w':
                 return new PacTileWall();
-            case 'p':
+            case 'P':
                 return new PacTileEmpty(null,null,null,null, game.getPacman());
             case '.':
                 return new PacTileEmpty(null,null,null,null, new PacDot(game));
             case 'b':
+                return new PacTileEmpty(null, null, null, null, new Blinky(game, 0, 0, 0));
+            case 'p':
                 GhostZone gz = new GhostZone(Direction.UP);
-                gz.add(new Blinky(game, 0, 0, 0));
+                gz.add(new Pinky(game, 0, 0, 0));
+                return gz;
+            case 'i':
+                gz = new GhostZone(Direction.UP);
+                gz.add(new Inky(game, 0, 0, 0));
+                return gz;
+            case 'c':
+                gz = new GhostZone(Direction.UP);
+                gz.add(new Clyde(game, 0, 0, 0));
                 return gz;
             default: 
-                return null;
+                return new NullTile();
         }
         
     }

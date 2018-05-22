@@ -49,7 +49,7 @@ public abstract class Map2DLoader{
             Map2DTile[][] mapGrid = new Map2DTile[mapHeight][mapWidth];
             for (int row = 0; row < mapHeight; row++){
                 String oneLine = fileScan.nextLine().chars().sequential().filter(c ->!Character.isWhitespace(c))
-                        .limit(mapWidth).mapToObj(Integer::toString).collect(Collectors.joining(""));
+                        .limit(mapWidth).mapToObj(i -> (char)i).map(c -> c.toString()).collect(Collectors.joining(""));
                 for (int col = 0; col < mapWidth; col++){
                     mapGrid[row][col] = translateToTile(oneLine.charAt(col),row,col);
                 }
