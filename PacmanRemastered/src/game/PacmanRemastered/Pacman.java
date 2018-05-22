@@ -251,7 +251,7 @@ public class Pacman implements Sprite {
     } // update
 
     @Override
-    public void draw(GameEngine api) {
+    public void draw(engine.API api) {
         // Frame is used by draw to parse through sprite-sheet
         frame += 1;
         if (frame > 2) {

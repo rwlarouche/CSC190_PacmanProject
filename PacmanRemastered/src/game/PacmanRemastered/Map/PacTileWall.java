@@ -99,27 +99,27 @@ public class PacTileWall extends Map2DTile{
             wallStats.add(WallStats.RIGHT);
         }   
         if (wallStats.contains(WallStats.DOWN) && wallStats.contains(WallStats.LEFT)){
-            if (getDown().getLeft()== null || !(getDown().getLeft() instanceof PacTileEmpty))
+            if (getDown() == null || getDown().getLeft()== null || !(getDown().getLeft() instanceof PacTileEmpty))
                 wallStats.add(WallStats.DOWNLEFT);
-            else if (getLeft().getDown()== null || !(getLeft().getDown() instanceof PacTileEmpty))
+            else if (getLeft() == null || getLeft().getDown()== null || !(getLeft().getDown() instanceof PacTileEmpty))
                 wallStats.add(WallStats.UPLEFT);
         }
         if (wallStats.contains(WallStats.DOWN) && wallStats.contains(WallStats.RIGHT)){
-            if (getDown().getRight()== null || !(getDown().getRight() instanceof PacTileEmpty))
+            if (getDown() == null || getDown().getRight()== null || !(getDown().getRight() instanceof PacTileEmpty))
                 wallStats.add(WallStats.DOWNRIGHT);
-            else if (getRight().getDown()== null || !(getRight().getDown() instanceof PacTileEmpty))
+            else if (getRight() == null || getRight().getDown()== null || !(getRight().getDown() instanceof PacTileEmpty))
                 wallStats.add(WallStats.DOWNRIGHT);
         }
         if (wallStats.contains(WallStats.UP) && wallStats.contains(WallStats.RIGHT)){
-            if (getUp().getRight()== null || !(getUp().getRight() instanceof PacTileEmpty))
+            if (getUp() == null || getUp().getRight()== null || !(getUp().getRight() instanceof PacTileEmpty))
                 wallStats.add(WallStats.UPRIGHT);
-            else if (getRight().getUp()== null || !(getRight().getUp() instanceof PacTileEmpty))
+            else if (getRight() == null || getRight().getUp()== null || !(getRight().getUp() instanceof PacTileEmpty))
                 wallStats.add(WallStats.UPRIGHT);
         }
         if (wallStats.contains(WallStats.UP) && wallStats.contains(WallStats.LEFT)){
-            if (getUp().getLeft()== null || !(getUp().getLeft() instanceof PacTileEmpty))
+            if (getUp() == null || getUp().getLeft()== null || !(getUp().getLeft() instanceof PacTileEmpty))
                 wallStats.add(WallStats.UPLEFT);
-            else if (getLeft().getUp()== null || !(getLeft().getUp() instanceof PacTileEmpty))
+            else if (getLeft() == null || getLeft().getUp()== null || !(getLeft().getUp() instanceof PacTileEmpty))
                 wallStats.add(WallStats.UPLEFT);
         }
 

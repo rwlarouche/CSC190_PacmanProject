@@ -46,27 +46,34 @@ public class blinky implements Ghost{
     //int frame;
     //int dir;
     
+    
+    
+    Map2DTile mapTile3;
+    
     private int horizontal, vertical;
     private int size;
     
     boolean alive = true;
     
-    public blinky(int x, int y, int s){
+    public abstract void doAI();
+    
+    public abstract int getGhostSpriteLocationX();
+    
+    public Ghost(Game game,int x, int y, int s){            
+        this.game = game;
             frame = 0;
             horizontal = x;
             vertical = y;
             size = s;
        }
    
-    
-    public double getX()
-    {
+    @Override
+    public double getDrawX() {
         return horizontal;
     }
-    
 
-    public double getY()
-    {
+    @Override
+    public double getDrawY() {
         return vertical;
     }
     
@@ -80,7 +87,7 @@ public class blinky implements Ghost{
         vertical = y;
     }
     
-    private boolean valid(int x, int y)
+    public boolean valid(int x, int y)
     {
         boolean check = true;
         if(x==0 || x>size-1 || y==0 || y>size-1)
@@ -160,9 +167,13 @@ public class blinky implements Ghost{
         }
     }
     
+    /**
+     *
+     * @param speed
+     * @return
+     */
     public int levelUp(int speed)
     {
-        // If the player completes a level, the speed of the ghost increases
         speed++;
         return speed;
     }
@@ -233,12 +244,12 @@ public class blinky implements Ghost{
     }
 
     @Override
-    public double getDrawX() {
+    public void collide(Sprite sprite) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
-    public double getDrawY() {
+    public void onMapEvent(Map2DTileEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

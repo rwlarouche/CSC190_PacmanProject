@@ -16,6 +16,8 @@ import game.PacmanRemastered.Map.PacTileEmpty;
 import game.PacmanRemastered.Map.PacTileWall;
 import ghosts.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Game { 
@@ -29,6 +31,8 @@ public class Game {
     protected Direction key = Direction.RIGHT;     // String of name of last key pressed (Right default)
     protected ArrayList<Sprite> sprites;    // Array of game sprites
     protected Map2D map;
+    protected String lastMapString;
+    protected PacManMapLoader mapLoader;
     // ============================
 
     
@@ -42,6 +46,7 @@ public class Game {
         pacman = new Pacman(this);
         sprites = new ArrayList<>();
         sprites.add(this.pacman);
+        mapLoader = new PacManMapLoader(api, this);
     }// constructor
     // ============================
 
@@ -127,7 +132,7 @@ public class Game {
     public void levelClear(){
         api.togglePlaying();
         new ArrayList<>(sprites).forEach(this::removeSprite);
-        loadMap(api);
+        loadMap(api, false);
         map.drawMap();
         setKey(Direction.RIGHT);
         api.togglePlaying();
@@ -139,8 +144,9 @@ public class Game {
      * This needs to be changed to load different map files later.
      * Configures the game map. Can't be used during loading because the map object requires the game object to be constructed first.
      * @param api 
+     * @param newMap 
      */
-    public void loadMap(API api){
+    public void loadMap(API api, Boolean newMap){
         Map2DBuilder b = new Map2DBuilder();
         b.rootLevelPath = "";
         b.assetsRoot = "";
@@ -161,6 +167,8 @@ public class Game {
         b.mapGrid[2][2].add(new blinky(0,0,0));
         b.api = api;
         map = b.build();
+        width = map.getColumnCount();
+        height = map.getRowCount();
         //Adds all sprites in the map to the sprite table.
         map.stream().map(Map2DTile::stream).reduce(Stream::concat).get().filter((e) ->{ return !sprites.contains(e);}).forEachOrdered(this::addSprite);
     }

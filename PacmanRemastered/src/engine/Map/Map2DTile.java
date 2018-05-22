@@ -284,7 +284,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     
     public Map2DTile(Sprite... initEntities){
         this();
-        sprites.addAll(Arrays.asList(initEntities));
+        addAll(Arrays.asList(initEntities));
     }
     
     public Map2DTile(){
@@ -310,7 +310,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
 
     @Override
     public boolean add(Sprite e) {
-        if (!sprites.contains(e) && canEnterTile(e) && doAddSprite(e))
+        if (e != null && !sprites.contains(e) && canEnterTile(e) && doAddSprite(e))
         {
             raiseMapEvent(new TileSpriteAddedEvent(this, "Sprite entered tile.", e));
             addMapEventListener(e);
@@ -319,7 +319,14 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
         }
         else return false;
     }
-
+    @Override
+    @Deprecated
+    public boolean addAll(Collection<? extends Sprite> c) {
+        boolean allGood = true;
+        for (Sprite s: c)
+            allGood = add(s);
+        return allGood;
+    }
     @Override
     public boolean remove(Object o) {
         boolean retThis = doRemoveSprite((Sprite)o);
@@ -410,11 +417,7 @@ public abstract class Map2DTile implements Iterable<Sprite>,List<Sprite>,Map2DTi
     
     
     
-    @Override
-    @Deprecated
-    public boolean addAll(Collection<? extends Sprite> c) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+
 
     @Override
     @Deprecated
